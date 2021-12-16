@@ -1,4 +1,15 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser, User
+
+class Account(models.Model): 
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    mobile = models.BigIntegerField()
+    tasks_alert = models.BooleanField(default=True)
+    deadline_alert = models.BooleanField(default=True)
+    profile_picture = models.ImageField(upload_to="profile-pictures/")
+    
+    def __str__(self): 
+        return self.user.username
 
 
 class Game(models.Model):
@@ -14,7 +25,7 @@ class Game(models.Model):
     related_questions = models.BooleanField(default=False)
     status = models.CharField(max_length=1, choices=STATUS)
     release_date = models.DateTimeField(blank=True)
-    logo = models.ImageField()
+    logo = models.ImageField(upload_to="game-pictures/")
 
 class WeekGame(models.Model): 
     ALLOWED_WEEKS = (
@@ -39,6 +50,8 @@ class Question(models.Model):
     related_question = models.CharField(blank=True, max_length=200)
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)
+
+
 
 
 

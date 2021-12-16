@@ -1,7 +1,8 @@
 from rest_framework.decorators import permission_classes
-from adminAPI.models import Game, WeekGame, Question
-from rest_framework import viewsets, permissions
-from .serializers import GameSerializer, WeekGameSerializer, QuestionSerializer
+from adminAPI.models import Game, WeekGame, Question, Account
+from rest_framework import serializers, viewsets, permissions
+
+from .serializers import AccountSerializer, GameSerializer, WeekGameSerializer, QuestionSerializer
 
 # Game Viewset
 class GameViewSet(viewsets.ModelViewSet):
@@ -26,3 +27,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = QuestionSerializer
+
+class AccountsViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = AccountSerializer
