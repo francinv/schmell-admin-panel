@@ -1,6 +1,7 @@
 from django.db.models import fields
 from rest_framework import serializers
 from adminAPI.models import Game, WeekGame, Question
+from .models import Account
 
 # Game serializer
 class GameSerializer(serializers.ModelSerializer):
@@ -18,4 +19,9 @@ class WeekGameSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
+        fields = '__all__'
+
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
         fields = '__all__'
