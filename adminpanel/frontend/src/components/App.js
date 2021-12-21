@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { BrowserRouter } from "react-router-dom";
+import MainComp from './MainComp';
 
 class App extends Component {
     render() {
-        return (<h1>React App</h1>);
+        return (
+            <BrowserRouter>
+                <MainComp />
+            </BrowserRouter>
+            
+        );
     }
 }
 
