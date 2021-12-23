@@ -33,11 +33,20 @@ const SideBar = ({activeTab, setActiveTab}) => {
         fontFamily: 'Quicksand',
     }));
 
-    function getOpacity(isWanted) {
+    function getStyling(isWanted) {
         if (isWanted === activeTab) {
-            return 1;
+            const styling = {
+                opacity: 1,
+                borderLeft: '3px solid #e0e000',
+                background: 'rgba(159,162,180,0.08)',
+                
+            }
+            return styling
         } else {
-            return 0.5;
+            const styling = {
+                opacity: 0.5,
+            }
+            return styling
         }
     }
 
@@ -78,8 +87,9 @@ const SideBar = ({activeTab, setActiveTab}) => {
             <CustomListItem 
                 button 
                 key="overview" 
-                sx={{
-                    opacity: getOpacity('O'),
+                sx={getStyling('O')}
+                onClick={() => {
+                    setActiveTab('O');
                 }}
             >
                 <ListItemIcon>
@@ -93,8 +103,9 @@ const SideBar = ({activeTab, setActiveTab}) => {
             <CustomListItem 
                 button 
                 key="tasks" 
-                sx={{
-                    opacity: getOpacity('T'),
+                sx={getStyling('T')}
+                onClick={() => {
+                    setActiveTab('T');
                 }}
             >
                 <ListItemIcon>
@@ -102,19 +113,37 @@ const SideBar = ({activeTab, setActiveTab}) => {
                 </ListItemIcon>
                 <CustomText>Oppgaver</CustomText>
             </CustomListItem>
-            <CustomListItem button key="idea" sx={{opacity: getOpacity('I'),}}>
+            <CustomListItem 
+                button 
+                key="idea" 
+                sx={getStyling('I')}
+                onClick={() => {
+                    setActiveTab('I');
+                }}>
                 <ListItemIcon>
                     <LightbulbIcon htmlColor="#e0e000"/>
                 </ListItemIcon>
                 <CustomText>Ideer</CustomText>
             </CustomListItem>
-            <CustomListItem button key="games" sx={{opacity: getOpacity('G'),}}>
+            <CustomListItem 
+                button 
+                key="games" 
+                sx={getStyling('G')}
+                onClick={() => {
+                    setActiveTab('G');
+                }}>
                 <ListItemIcon>
                     <SportsEsportsIcon htmlColor="#e0e000"/>
                 </ListItemIcon>
                 <CustomText>Spill</CustomText>
             </CustomListItem>
-            <CustomListItem button key="statistics" sx={{opacity: getOpacity('S'),}}>
+            <CustomListItem 
+                button 
+                key="statistics" 
+                sx={getStyling('S')}
+                onClick={() => {
+                    setActiveTab('S');
+                }}>
                 <ListItemIcon>
                     <EqualizerIcon htmlColor="#e0e000"/>
                 </ListItemIcon>
@@ -123,7 +152,13 @@ const SideBar = ({activeTab, setActiveTab}) => {
         </List>
         <Divider />
         <List>
-            <CustomListItem button key="settings" sx={{opacity: getOpacity('P'),}}>
+            <CustomListItem 
+                button 
+                key="settings" 
+                sx={getStyling('P')}
+                onClick={() => {
+                    setActiveTab('P');
+                }}>
                 <ListItemIcon>
                     <SettingsIcon htmlColor="#e0e000"/>
                 </ListItemIcon>
