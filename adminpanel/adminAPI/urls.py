@@ -1,10 +1,9 @@
 from rest_framework import routers, urlpatterns
-from .api import AccountsViewSet, GameViewSet, WeekGameViewSet, QuestionViewSet
+from .api import UserViewSet, GameViewSet, QuestionViewSet
 
 router = routers.DefaultRouter()
-router.register('game', GameViewSet, 'games')
-router.register('game/week', WeekGameViewSet, 'weekgame')
-router.register('game/week/question', QuestionViewSet, 'question')
-router.register('user', AccountsViewSet, 'accounts')
+router.register('game', GameViewSet, 'weekgame')
+router.register('game_question', QuestionViewSet, 'question')
+router.register('user', UserViewSet, 'users')
 
 urlpatterns = router.urls
