@@ -1,0 +1,12 @@
+tasks:
+  - init: |
+      pipenv shell
+      pipenv install 
+      cd adminpanel
+      python manage.py migrate
+    command: |
+      python manage.py runserver
+ports:
+  - port: 8000
+    visibility: private
+    onOpen: open-preview
