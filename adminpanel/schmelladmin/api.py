@@ -7,11 +7,17 @@ from .serializers import GameSerializer, QuestionSerializer, UserSerializer, Wee
 
 # Game Viewset
 class GameViewSet(viewsets.ModelViewSet):
-    queryset = Game.objects.all()
+    serializer_class = GameSerializer
     permission_classes = [
         permissions.AllowAny
     ]
-    serializer_class = GameSerializer
+    def get_queryset(self):
+        queryset = Game.objects.all()
+        name = self.request.query_params.get('name')
+        if name is not None:
+            queryset = queryset.filter(name=name)
+        return queryset
+    
 
 class WeekViewSet(viewsets.ModelViewSet):
     queryset = Week.objects.all()
