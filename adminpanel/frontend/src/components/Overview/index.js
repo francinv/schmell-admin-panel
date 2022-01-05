@@ -1,21 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Typography } from '@mui/material';
-import LogIn from './LogIn';
-import SideBar from './SideBar';
+import SideBar from '../SideBar';
 
-const MainComp = () => {
-    const isLoggedIn = true;
 
-    const [activeTab, setActiveTab] = useState('O');
-
-    if (isLoggedIn) {
-        return (
-            <Box sx={{display:'flex',}}>
+const OverviewComp = ({activeTab, setActiveTab}) => {
+    return (
+        <Box sx={{display:'flex',}}>
                 <SideBar activeTab={activeTab} setActiveTab={setActiveTab}/>
                 <Box
                     component="main"
                     sx={{ flexGrow: 1}}
                 >
+                    <Typography variant='h1'>Oversikt</Typography>
                     <Typography paragraph>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
                         tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
@@ -32,13 +28,7 @@ const MainComp = () => {
                     </Typography>
                 </Box>
             </Box>
-        );
-    } else {
-        return (
-            <LogIn />
-        )
-    }
-    
+    );
 }
 
-export default MainComp;
+export default OverviewComp;

@@ -9,6 +9,8 @@ import { styled } from '@mui/system';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { FormControl, IconButton, InputAdornment, InputLabel, Link, OutlinedInput, TextField } from '@mui/material';
+import { logIn } from '../../features/user/userSlice';
+import { useAppDispatch } from '../../features/hooks';
 
 
 const theme = createTheme({
@@ -22,36 +24,37 @@ const theme = createTheme({
   },
 });
 
-const LogIn = () => {
-    const [values, setValues] = React.useState({
-        password: '',
-        email: '',
-        showPassword: false,
-    });
-    
-      const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-      };
-    
-      const handleClickShowPassword = () => {
-        setValues({
-          ...values,
-          showPassword: !values.showPassword,
-        });
-      };
-    
-      const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-      };
+const actionDispatch = (dispatch) => ({
+  setUser: () => dispatch(logIn()),
+});
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+export default function LogIn() {
+  const [values, setValues] = React.useState({
+    password: '',
+    email: '',
+    showPassword: false,
+  });  
+  const { setUser } = actionDispatch(useAppDispatch());
+    
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+    
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
     });
+  };
+    
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };    
+
+  const HandleSubmit = (event) => {
+    event.preventDefault();
+    setUser();
+    const data = new FormData(event.currentTarget);
   };
 
   return (
@@ -80,6 +83,9 @@ const LogIn = () => {
                 display:'flex',
                 alignItems:'center',
             }}
+            component="form"
+            onSubmit={HandleSubmit}
+            noValidate
         >
             <img className='img_logo' src="/static/images/assetlogo.png" width={350}/>
             <Typography 
@@ -171,6 +177,7 @@ const LogIn = () => {
             </FormControl>
             <Button 
               variant='contained'
+              type="submit"
               sx={{
                 width:'80%',
                 height:48,
@@ -193,5 +200,3 @@ const LogIn = () => {
     </ThemeProvider>
   );
 }
-
-export default LogIn;
