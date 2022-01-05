@@ -1,6 +1,5 @@
-from django.db.models import fields
 from rest_framework import serializers
-from adminAPI.models import Game, WeekGame, Question
+from schmelladmin.models import Game, Question, User
 
 # Game serializer
 class GameSerializer(serializers.ModelSerializer):
@@ -8,14 +7,16 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = '__all__'
 
-# WeekGame serializer
-class WeekGameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = WeekGame
-        fields = '__all__'
 
 #Question serializer
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = '__all__'
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'mobile_number', 'alerts_task', 'alerts_deadlines', 'profile_picture')
+

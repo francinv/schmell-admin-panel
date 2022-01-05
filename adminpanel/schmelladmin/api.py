@@ -1,7 +1,9 @@
+
 from rest_framework.decorators import permission_classes
-from adminAPI.models import Game, WeekGame, Question
+from schmelladmin.models import Game, Question, User
 from rest_framework import viewsets, permissions
-from .serializers import GameSerializer, WeekGameSerializer, QuestionSerializer
+
+from .serializers import GameSerializer, QuestionSerializer, UserSerializer
 
 # Game Viewset
 class GameViewSet(viewsets.ModelViewSet):
@@ -11,14 +13,6 @@ class GameViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = GameSerializer
 
-# WeekGame Viewset
-class WeekGameViewSet(viewsets.ModelViewSet):
-    queryset = WeekGame.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
-    serializer_class = WeekGameSerializer
-
 # Question Viewset
 class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
@@ -26,3 +20,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = QuestionSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = UserSerializer
