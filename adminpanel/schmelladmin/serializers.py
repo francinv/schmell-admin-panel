@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from schmelladmin.models import Game, Question, User
+from schmelladmin.models import Game, Question, User, Week
 
 # Game serializer
 class GameSerializer(serializers.ModelSerializer):
@@ -7,7 +7,11 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = '__all__'
 
-
+class WeekSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Week
+        fields='__all__'
+        
 #Question serializer
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
