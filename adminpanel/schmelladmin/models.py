@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db.models.fields import CharField
 
 class User(AbstractUser):
     mobile_number = models.IntegerField(blank=True, null=True)
@@ -16,6 +17,16 @@ class Game(models.Model):
         ('R', 'Ready'),
         ('P', 'Deployed'),
     )
+    name = models.CharField(max_length=200)
+    description = models.CharField(max_length=500)
+    related_questions = models.BooleanField(default=False)
+    last_updated = models.DateField()
+    status = models.CharField(max_length=1, choices=STATUS)
+    logo = models.ImageField(upload_to="game-pictures/")
+    release_date = models.DateTimeField(blank=True)
+    def __str__(self): 
+        return self.name
+class Week(models.Model):
     ALLOWED_WEEKS = (
         (1, 'Week 1'), (2, 'Week 2'), (3, 'Week 3'), (4, 'Week 4'), (5, 'Week 5'), (6, 'Week 6'),
         (7, 'Week 7'), (8, 'Week 8'), (9, 'Week 9'), (10, 'Week 10'), (11, 'Week 11'), (12, 'Week 12'),
@@ -27,21 +38,20 @@ class Game(models.Model):
         (43, 'Week 43'), (44, 'Week 44'), (45, 'Week 45'), (46, 'Week 46'), (47, 'Week 47'), (48, 'Week 48'),
         (49, 'Week 49'), (50, 'Week 50'), (51, 'Week 51'), (52, 'Week 52')
     )
-    name = models.CharField(max_length=200)
-    week_number = models.IntegerField(choices=ALLOWED_WEEKS)
-    last_updated = models.DateField()
-    related_tasks = models.IntegerField(default=0)
-    description = models.CharField(max_length=500)
-    related_questions = models.BooleanField(default=False)
-    status = models.CharField(max_length=1, choices=STATUS)
-    release_date = models.DateTimeField(blank=True)
-    logo = models.ImageField(upload_to="game-pictures/")
-
+    game = models.ForeignKey(
+        Game,
+        on_delete=models.CASCADE
+    )
+    week_number = CharField(max_length=2, choices=ALLOWED_WEEKS)
+    
+    def __str__(self): 
+        return self.game.name + " | Week " + self.week_number
+    
 class Question(models.Model): 
-    related_week = models.ForeignKey(Game, on_delete=models.CASCADE)
+    related_week = models.ForeignKey(Week, on_delete=models.CASCADE)
     type = models.CharField(max_length=200)
     question_desc = models.CharField(max_length=500)
     hint = models.CharField(max_length=500)
-    related_question = models.CharField(blank=True, max_length=200)
+    related_question = models.BooleanField(default=False)
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)
