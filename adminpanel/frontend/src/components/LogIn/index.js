@@ -116,7 +116,9 @@ export default function LogIn() {
                     color='secondary'
                     sx={{
                       fontFamily:'Quicksand',
-
+                      '&.Mui-focused': {
+                        color: 'black',
+                      },
                     }}
                     className="input-sign-in"
                 />
