@@ -17,15 +17,16 @@ class Game(models.Model):
         ('R', 'Ready'),
         ('P', 'Deployed'),
     )
-    name = models.CharField(max_length=200)
-    description = models.CharField(max_length=500)
-    related_questions = models.BooleanField(default=False)
-    last_updated = models.DateField()
-    status = models.CharField(max_length=1, choices=STATUS)
-    logo = models.ImageField(upload_to="game-pictures/")
+    name = models.CharField(max_length=200, blank=True)
+    description = models.CharField(max_length=500, blank=True)
+    related_questions = models.BooleanField(default=False, blank=True)
+    last_updated = models.DateField(blank=True)
+    status = models.CharField(max_length=1, choices=STATUS, blank=True)
+    logo = models.ImageField(upload_to="game-pictures/", blank=True)
     release_date = models.DateTimeField(blank=True)
     def __str__(self): 
         return self.name
+
 class Week(models.Model):
     ALLOWED_WEEKS = (
         (1, 'Week 1'), (2, 'Week 2'), (3, 'Week 3'), (4, 'Week 4'), (5, 'Week 5'), (6, 'Week 6'),
@@ -52,6 +53,6 @@ class Question(models.Model):
     type = models.CharField(max_length=200)
     question_desc = models.CharField(max_length=500)
     hint = models.CharField(max_length=500)
-    related_question = models.BooleanField(default=False)
+    related_question = models.IntegerField(blank=True)
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)

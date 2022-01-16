@@ -7,7 +7,7 @@ import { selectUserIsLoggedIn } from '../features/selectors';
 import TasksComp from './Tasks';
 import OverviewComp from './Overview';
 import IdeasComp from './Ideas';
-import GamesComp from './Games';
+import GamesComp from './Games/GameComponent';
 import SettingsComp from './Settings';
 import StatisticsComp from './Statistics';
 
@@ -29,7 +29,6 @@ function App() {
         } else if (activeTab === 'P') {
             return <SettingsComp activeTab={activeTab} setActiveTab={setActiveTab}/>
         }
-        
     } else {
         return (
             <LogIn />
