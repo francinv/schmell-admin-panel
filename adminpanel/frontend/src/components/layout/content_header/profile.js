@@ -1,20 +1,15 @@
 import React from "react";
 import { Avatar, Box, IconButton, Menu, MenuItem, Typography } from "@mui/material"
 import { CARD_TEXT } from "../../styles/Typography";
-import { logOut } from "../../../features/user/userSlice";
+import { setLogOut } from "../../../features/user/userSlice";
 import { useAppDispatch } from "../../../features/hooks";
 
 const actionDispatch = (dispatch) => ({
-    logOut: () => dispatch(logOut()),
+    logOut: () => dispatch(setLogOut()),
 })
 
 export const ProfileAvatar = ({user}) => {
     const {logOut} = actionDispatch(useAppDispatch());
-
-    //TODO - update this with logged in User
-
-    const name = "Francin Vincent"
-    const img_src = "http://127.0.0.1:8000/media/profile-pictures/016C1748-8E59-41EE-A0F4-9AFE1EF4474E.jpg"
 
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const handleOpenUserMenu = (event) => {
@@ -41,21 +36,18 @@ export const ProfileAvatar = ({user}) => {
                     marginRight: '0.5rem',
                 }}
             >
-                {name}
+                {user.first_name} {user.last_name}
             </Typography>
             <IconButton
                 onClick={handleOpenUserMenu}
             >
                 <Avatar
-                    alt={name}
-                    src={img_src}
+                    alt={user.username}
+                    src={user.profile_picture}
                     sx= {{
                         width: 44,
                         height: 44,
                         cursor: 'pointer',
-                        // '&:hover': {
-                        //     opacity: 0.5,
-                        // }
                     }}  
                 />
             </IconButton>

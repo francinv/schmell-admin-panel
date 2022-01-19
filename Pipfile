@@ -10,6 +10,8 @@ django-rest-knox = "*"
 psycopg2 = "*"
 pytz = "*"
 pillow = "*"
+django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 

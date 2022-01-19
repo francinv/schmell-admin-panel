@@ -1,15 +1,15 @@
 import React from "react";
-import { Button, IconButton, Modal, Typography } from "@mui/material";
+import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../styles/Typography";
-import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField, RadioThreeButtons, RadioTwoButtons } from "../form";
+import { InputTextArea, InputTextField } from "../form";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { fetchGamesFromServer, fetchQuestions, postGame, postGames, postImage, postQuestion, updateGame } from "../../core/APIfunctions";
-import { setGames, setQuestions } from "../../features/games/gameSlice";
+import { updateGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
 import { useSelector } from "react-redux";
-import { selectedGame, selectedWeek, selectQuestions } from "../../features/selectors";
+import { selectedGame, selectedWeek } from "../../features/selectors";
+import { postQuestion } from "../../features/questions/questionSlice";
 
 const style_container = {
     position: 'absolute',
@@ -28,16 +28,15 @@ const style_container = {
 };
 
 const actionDispatch = (dispatch) => ({
-    setQuestions: (query) => dispatch(setQuestions(query)),
-    setGames: (query) => dispatch(setGames(query))
+    postQuestion: (query) => dispatch(postQuestion(query)),
+    updateGame: (query) => dispatch(updateGame(query))
 })
 
 const CreateQuestionForm = ({open, handleClose}) => {
-    const { setQuestions } = actionDispatch(useAppDispatch());
-    const { setGames } = actionDispatch(useAppDispatch());
     const week = useSelector(selectedWeek);
-    const questions = useSelector(selectQuestions);
     const game = useSelector(selectedGame);
+    const { postQuestion } = actionDispatch(useAppDispatch());
+    const { updateGame } = actionDispatch(useAppDispatch());
 
     const [values, setValues] = React.useState({
         type: '',
@@ -46,7 +45,8 @@ const CreateQuestionForm = ({open, handleClose}) => {
         related_question: '',
         phase: '',
         function: '',
-        related_week: week.id
+        related_week: week.id,
+        related_game: game.id
     });
 
     const handleChange = (prop) => (event) => {
@@ -55,15 +55,13 @@ const CreateQuestionForm = ({open, handleClose}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const initialQuestions = questions;
         postQuestion(values);
-        setQuestions(await fetchQuestions(week.id));
-        if (initialQuestions === questions) {
-            setQuestions(await fetchQuestions(week.id));
-        }
         const today = new Date().toISOString().split('T')[0];
-        updateGame({last_updated: today}, game.id);
-        setGames(await fetchGamesFromServer());
+        const temp = {
+            content: today,
+            id: game.id,
+        }   
+        updateGame(temp);
         handleClose();
     }
 

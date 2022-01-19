@@ -1,31 +1,27 @@
-import React, { useEffect, useState } from "react";
-import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
-import { Box, IconButton } from "@mui/material";
+import React, { useEffect } from "react";
+import { Box } from "@mui/material";
 import { HeaderContainer } from "../layout/content_header/header";
-import { H2 } from "../styles/Typography";
 import CreateGameForm from "./CreateGame";
 import GameCard from "./Cards/GameCard";
-import { useSelector } from "react-redux";
-import { selectGames } from "../../features/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { selectGames, selectGameStatus } from "../../features/selectors";
 import { CreateGameCard } from "./CustomComponents/CreateGameCard";
+import { sortGames } from "../../utils/sortUtil";
+import { fetchGames } from "../../features/games/gameSlice";
 
 export const GameOverview = ({setStage}) => {
     const games = useSelector(selectGames);
+    const gameStatus = useSelector(selectGameStatus);
+    const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    
-
-    function getSortedGames(games) {
-        let tempGames = games.slice();
-        var arr = tempGames.sort((a,b) => {
-            return a.id - b.id;
-        })
-        return arr;
-    }
-
-
+    useEffect(() => {
+        if (gameStatus === 'idle') {
+            dispatch(fetchGames())
+          }
+    }, [games, gameStatus])
     
     return (
         <Box
@@ -46,7 +42,7 @@ export const GameOverview = ({setStage}) => {
                     justifyContent: 'center',
                 }}
             >
-                {getSortedGames(games).map((game) => (
+                {sortGames(games).map((game) => (
                     <GameCard game={game} key={game.id} setStage={setStage}/>
                 ))}
                     <CreateGameCard handleOpen={handleOpen}/>

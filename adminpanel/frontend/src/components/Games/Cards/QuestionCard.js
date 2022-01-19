@@ -1,20 +1,20 @@
 import React, {useState} from 'react';
-import { Box, Button, ButtonBase, IconButton } from '@mui/material';
-import { sortDate } from '../../../utils/dateUtil';
+import { Box, IconButton } from '@mui/material';
 import { CARD_TEXT, H2, H3 } from '../../styles/Typography';
-import { changeQuestion, deleteQuestion, fetchGame, fetchGamesFromServer, fetchQuestions, fetchWeeks, updateGame } from '../../../core/APIfunctions';
-import { setGames, setQuestions, setSelectedGame, setWeeks } from '../../../features/games/gameSlice';
+import { updateGame } from '../../../features/games/gameSlice';
 import { useAppDispatch } from '../../../features/hooks';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector } from 'react-redux';
-import { selectedGame, selectedWeek, selectQuestions } from '../../../features/selectors';
+import { selectedGame } from '../../../features/selectors';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { QuestionTextArea, TextInputQuestion } from '../../form';
+import { deleteQuestion, updateQuestion } from '../../../features/questions/questionSlice';
 
 const actionDispatch = (dispatch) => ({
-    setQuestions: (query) => dispatch(setQuestions(query)),
-    setGames: (query) => dispatch(setGames(query))
+    deleteQuestion: (query) => dispatch(deleteQuestion(query)),
+    updateQuestion: (query) => dispatch(updateQuestion(query)),
+    updateGame: (query) => dispatch(updateGame(query))
 })
 
 const QuestionCard = ({question}) => {
@@ -31,17 +31,10 @@ const QuestionCard = ({question}) => {
 }
 
 const SimpleQuestionDisplay = ({question, setStateChangeQuestion}) => {
-    const { setQuestions } = actionDispatch(useAppDispatch());
-    const questions = useSelector(selectQuestions);
-    const week = useSelector(selectedWeek);
+    const { deleteQuestion } = actionDispatch(useAppDispatch());
 
-    const handleDelete = async () => {
-        const initialQuestions = questions;
+    const handleDelete = () => {
         deleteQuestion(question.id);
-        setQuestions(await fetchQuestions(week.id));
-        if (initialQuestions === questions) {
-            setQuestions(await fetchQuestions(week.id));
-        }
     }
 
     return (
@@ -97,12 +90,10 @@ const SimpleQuestionDisplay = ({question, setStateChangeQuestion}) => {
 }
 
 const ChangeQuestionCard = ({question, setStateChangeQuestion}) => {
-    const week = useSelector(selectedWeek);
-    const questions = useSelector(selectQuestions);
     const game = useSelector(selectedGame);
-    const { setQuestions } = actionDispatch(useAppDispatch());
-    const { setGames } = actionDispatch(useAppDispatch());
-    
+    const { updateQuestion } = actionDispatch(useAppDispatch());
+    const { updateGame } = actionDispatch(useAppDispatch());
+
     const [values, setValues] = React.useState({
         type: question.type,
         question_desc: question.question_desc,
@@ -117,15 +108,17 @@ const ChangeQuestionCard = ({question, setStateChangeQuestion}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const initialQuestions = questions;
-        changeQuestion(values, question.id);
-        setQuestions(await fetchQuestions(week.id));
-        if (initialQuestions === questions) {
-            setQuestions(await fetchQuestions(week.id));
+        const tempQuestion = {
+            content: values,
+            id: question.id,
         }
         const today = new Date().toISOString().split('T')[0];
-        updateGame({last_updated: today}, game.id);
-        setGames(await fetchGamesFromServer()); 
+        updateQuestion(tempQuestion);
+        const tempGame = {
+            content: today,
+            id: game.id,
+        }
+        updateGame(tempGame);
         setStateChangeQuestion(false);
     }
 

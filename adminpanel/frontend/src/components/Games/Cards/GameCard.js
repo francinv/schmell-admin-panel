@@ -2,43 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, ButtonBase, IconButton } from '@mui/material';
 import { sortDate } from '../../../utils/dateUtil';
 import { CARD_TEXT, H2 } from '../../styles/Typography';
-import { deleteGame, fetchGame, fetchGamesFromServer, fetchWeeks } from '../../../core/APIfunctions';
-import { setGames, setSelectedGame, setWeeks } from '../../../features/games/gameSlice';
+import { deleteGame, setCount, setGames, setSelectedGame, setWeeks } from '../../../features/games/gameSlice';
 import { useAppDispatch } from '../../../features/hooks';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { selectGames } from '../../../features/selectors';
 import { useSelector } from 'react-redux';
-import { getCountOfQuestions } from '../../../utils/gameUtil';
+import { getCount, getCountOfQuestions } from '../../../utils/gameUtil';
 
 const actionDispatch = (dispatch) => ({
     setSelectedGame: (query) => dispatch(setSelectedGame(query)),
-    setWeeks: (query) => dispatch(setWeeks(query)),
-    setGames: (query) => dispatch(setGames(query))
+    deleteGame: (query) => dispatch(deleteGame(query))
 })
 
 const GameCard = ({game, setStage}) => {
     const { setSelectedGame } = actionDispatch(useAppDispatch());
-    const { setWeeks } = actionDispatch(useAppDispatch());
-    const { setGames } = actionDispatch(useAppDispatch());
-    var [count, setCount] = useState(0);
-    const games = useSelector(selectGames);
-    
-    useEffect(() => {
-        getCount();
-    }, [count])
-    
+    const { deleteGame } = actionDispatch(useAppDispatch());
+
     const [buttonStyle, setButtonStyle] = useState(
         {
             display:'none',
             marginLeft:'auto',
         }
     );
-
-    async function getCount(){
-        const temp = await getCountOfQuestions(game);
-        setCount(temp);
-    }
-
 
     let sorted_Date = sortDate(game.last_updated);
     let related = game.related_questions ? "Ja" : "Nei";
@@ -55,21 +40,18 @@ const GameCard = ({game, setStage}) => {
         return color;
     }
 
-    const handleClick = async () => {
-        const tempGame = await fetchGame(game.name);
-        setSelectedGame(tempGame[0]);
-        setWeeks(await fetchWeeks(game.id));
+    const handleClick = () => {
+        setSelectedGame(game.id);
         setStage('W');
     }
 
-    const handleDelete = async () => {
-        const initialGames = games;
+    const handleDelete = () => {
         deleteGame(game.id);
-        setGames(await fetchGamesFromServer());
-        if (initialGames === games) {
-            setGames(await fetchGamesFromServer());
-        }
     }
+
+    const spanStyle = {
+        color: 'black',
+    };
 
     return (
         <Box
@@ -123,8 +105,8 @@ const GameCard = ({game, setStage}) => {
                     }}
                     className='container_game_card'
                 >
-                    <CARD_TEXT><b>Antall spørsmål:</b> {count}</CARD_TEXT>
-                    <CARD_TEXT><b>Sist oppdatert:</b> <CARD_TEXT sx={{color: isGreenOrRed()}}>{sorted_Date}</CARD_TEXT></CARD_TEXT>
+                    <CARD_TEXT><b>Antall spørsmål:</b> {getCount(game.id)}</CARD_TEXT>
+                    <CARD_TEXT sx={{color: isGreenOrRed()}}><b><span style={spanStyle}>Sist oppdatert:</span></b> {sorted_Date}</CARD_TEXT>
                     <CARD_TEXT><b>Relaterte oppgaver:</b> {related}</CARD_TEXT>
                     <CARD_TEXT><b>Antall brukere (totalt):</b> 232</CARD_TEXT>
                 </Box>
