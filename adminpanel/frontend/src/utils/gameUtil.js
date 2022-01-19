@@ -1,20 +1,13 @@
-import { formControlClasses } from "@mui/material";
-import React from "react";
-import { fetchQuestions, fetchWeeks } from "../core/APIfunctions";
+import {useSelector} from 'react-redux';
+import { selectAllQuestions } from '../features/selectors';
 
-
-export async function getCountOfQuestions(game) {
-
-    let tempWeeks = await fetchWeeks(game.id);
-
-    let count = 0;
-    for (let i = 0; i<tempWeeks.length; i++)  {
-        let week = tempWeeks[i];
-        let temp = await fetchQuestions(week.id);
-        count += temp.length;
+export function getCount(idGame) {
+    const questions = useSelector(selectAllQuestions);
+    var count = 0;
+    for (let i = 0; i < questions.length; i++) {
+        if (questions[i].related_game === idGame) {
+            count += 1;
+        }
     }
-
     return count;
 }
-
-

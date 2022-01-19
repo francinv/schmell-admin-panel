@@ -25,16 +25,16 @@ const theme = createTheme({
 });
 
 const actionDispatch = (dispatch) => ({
-  setUser: () => dispatch(logIn()),
+  logIn: (query) => dispatch(logIn(query)),
 });
 
 export default function LogIn() {
   const [values, setValues] = React.useState({
     password: '',
-    email: '',
+    username: '',
     showPassword: false,
   });  
-  const { setUser } = actionDispatch(useAppDispatch());
+  const { logIn } = actionDispatch(useAppDispatch());
     
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -53,8 +53,10 @@ export default function LogIn() {
 
   const HandleSubmit = (event) => {
     event.preventDefault();
-    setUser();
     const data = new FormData(event.currentTarget);
+    data.append('username', values.username);
+    data.append('password', values.password);
+    logIn(data);
   };
 
   return (
@@ -87,7 +89,7 @@ export default function LogIn() {
             onSubmit={HandleSubmit}
             noValidate
         >
-            <img className='img_logo' src="/static/images/assetlogo.png" width={350}/>
+            <img className='img_logo' style={{marginTop:'1rem'}} src="/static/images/assetlogo.png" width={350}/>
             <Typography 
                 component="h1" 
                 variant="h5"
@@ -95,24 +97,25 @@ export default function LogIn() {
                     fontFamily:'Quicksand',
                     fontSize:34,
                     fontWeight:600,
+                    marginTop:'auto',
                 }}
             >Logg inn på panelet</Typography>
             <FormControl sx={{ m: 1, width: '80%', margin: '3rem'}} variant="outlined">
                 <InputLabel 
-                  htmlFor="email-field" 
+                  htmlFor="username-field" 
                   sx={{
                       fontFamily:'Quicksand', 
                       '&.Mui-focused': {
                           color: 'black',
                       },
                     }}>
-                      E-post</InputLabel>
+                      Brukernavn</InputLabel>
                 <OutlinedInput
-                    id="email-field"
-                    type={'email'}
-                    value={values.email}
-                    onChange={handleChange('email')}
-                    label="E-post"
+                    id="username-field"
+                    type={'username'}
+                    value={values.username}
+                    onChange={handleChange('username')}
+                    label="Brukernavn"
                     color='secondary'
                     sx={{
                       fontFamily:'Quicksand',
@@ -191,7 +194,8 @@ export default function LogIn() {
                 fontSize:14,
                 '&:hover': {
                   color:'#fff',
-                }
+                },
+                marginBottom:'auto',
               }}
             >
               Logg inn

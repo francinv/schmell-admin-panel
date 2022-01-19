@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import { Box, FormControl, IconButton, OutlinedInput } from "@mui/material";
-import { setWeeks } from "../../../features/games/gameSlice";
 import { useAppDispatch } from "../../../features/hooks";
-import { fetchWeeks, postWeek } from "../../../core/APIfunctions";
 import { useSelector } from "react-redux";
-import { selectedGame, selectWeeks } from "../../../features/selectors";
+import { selectedGame } from "../../../features/selectors";
+import { postWeek } from "../../../features/weeks/weekSlice";
 
 const actionDispatch = (dispatch) => ({
-    setWeeks: (query) => dispatch(setWeeks(query))
+    addWeek: (query) => dispatch(postWeek(query))
 })
 
 export const CreateWeekCard = () => {
-    const { setWeeks } = actionDispatch(useAppDispatch());
-    const weeks = useSelector(selectWeeks);
+    const { addWeek } = actionDispatch(useAppDispatch());
     const game = useSelector(selectedGame);
     const [values, setValues] = useState({
         week_number: '',
@@ -24,14 +22,9 @@ export const CreateWeekCard = () => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        const initialWeeks = weeks;
-        postWeek(values);
-        setWeeks(await fetchWeeks(game.id));
-        if (weeks === initialWeeks) {
-            setWeeks(await fetchWeeks(game.id));
-        }
+        addWeek(values);
     }
 
     return (

@@ -1,33 +1,35 @@
 import React, { useState } from "react";
 import { Box, Button, FormControl, IconButton, InputBase, MenuItem, Select } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectedGame } from "../../../features/selectors";
+import { selectAccessToken, selectedGame } from "../../../features/selectors";
 import { BODY_BOLD, CARD_TEXT } from "../../styles/Typography";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { styled } from "@mui/system";
-import { fetchGame, fetchGamesFromServer, postImage, putNewDescription, putNewStatus, updateGame } from "../../../core/APIfunctions";
 import { ImageUploadChange, InputTextAreaDescription } from "../../form";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { setGames, setSelectedGame } from "../../../features/games/gameSlice";
 import { useAppDispatch } from "../../../features/hooks";
-import CreateQuestionForm from "../CreateQuestion";
+import { putStatus, updateGame } from '../../../features/games/gameSlice';
 
 const actionDispatch = (dispatch) => ({
-    setGames: (query) => dispatch(setGames(query)),
-    setSelectedGame: (query) => dispatch(setSelectedGame(query)),
+    editStatus: (query) => dispatch(putStatus(query)),
+    updateGame: (query) => dispatch(updateGame(query))
 })
 
 export const HeaderQuestionsComponent = ({handleOpen}) => {
     const game = useSelector(selectedGame);
+    const { editStatus } = actionDispatch(useAppDispatch());
     const [stateChange, setStateChange] = useState(false);
 
     const [status, setStatus] = useState(game.status);
 
     const handleSelectChange = (event) => {
         setStatus(event.target.value);
-        const temp = {"status": event.target.value};
-        putNewStatus(temp, game.id);
+        const temp = {
+                content: event.target.value,
+                id: game.id,
+        }
+        editStatus(temp);
     };
 
     const CustomInput = styled(InputBase)(({ theme }) => ({
@@ -151,8 +153,7 @@ const BeforeChange = ({setStateChange, game}) => {
 }
 
 const ChangeDescLogo = ({setStateChange, game}) => {
-    const { setGames } = actionDispatch(useAppDispatch());
-    const { setSelectedGame } = actionDispatch(useAppDispatch());
+    const { updateGame } = actionDispatch(useAppDispatch());
     const [description, setDescription] = useState(game.description);
     const [fileState, setFileState] = useState('');
 
@@ -168,20 +169,16 @@ const ChangeDescLogo = ({setStateChange, game}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const initialGame = game;
-        putNewDescription({"description": description}, game.id);
         var data = new FormData();
-        data.append("logo", fileState);
-        postImage(game.id, data);
-        const tempGame = await fetchGame(game.name);
-        setSelectedGame(tempGame[0]);
-        if (game === initialGame) {
-            const tempGame = await fetchGame(game.name);
-            setSelectedGame(tempGame[0]); 
-        }
         const today = new Date().toISOString().split('T')[0];
-        updateGame({last_updated: today}, game.id);
-        setGames(await fetchGamesFromServer()); 
+        data.append('description', description);
+        data.append('last_updated', today);
+        data.append("logo", fileState);
+        const temp = {
+            content: data,
+            id: game.id,
+        }
+        updateGame(temp);
         setStateChange(false);
     }
 

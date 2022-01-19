@@ -1,15 +1,12 @@
 import React from "react";
-import { Button, IconButton, Modal, Typography } from "@mui/material";
+import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../styles/Typography";
 import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField, RadioThreeButtons, RadioTwoButtons } from "../form";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { fetchGamesFromServer, postGame, postGames, postImage } from "../../core/APIfunctions";
-import { setGames } from "../../features/games/gameSlice";
+import { postGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
-import { useSelector } from "react-redux";
-import { selectGames } from "../../features/selectors";
 
 const style_container = {
     position: 'absolute',
@@ -28,12 +25,11 @@ const style_container = {
 };
 
 const actionDispatch = (dispatch) => ({
-    setGames: (query) => dispatch(setGames(query)),
+    addGame: (query) => dispatch(postGame(query)),
 })
 
 const CreateGameForm = ({open, handleClose}) => {
-    const { setGames } = actionDispatch(useAppDispatch());
-    const games = useSelector(selectGames);
+    const { addGame } = actionDispatch(useAppDispatch());
 
     const [values, setValues] = React.useState({
         name: '',
@@ -50,15 +46,14 @@ const CreateGameForm = ({open, handleClose}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const initialGames = games;
-        const postedGame = await postGame(values);
         var data = new FormData();
-        data.append("logo", fileState);
-        postImage(postedGame.id, data);
-        setGames(await fetchGamesFromServer());
-        if (initialGames === games) {
-            setGames(await fetchGamesFromServer());
-        }
+        data.append('name', values.name);
+        data.append('related_questions', values.related_questions);
+        data.append('last_updated', values.last_updated);
+        data.append('status', values.status);
+        data.append('logo', fileState);
+        data.append('release_date', values.release_date);
+        addGame(data);
         handleClose();
     }
 

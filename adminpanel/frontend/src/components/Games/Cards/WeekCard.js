@@ -1,25 +1,21 @@
 import React, { useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { H2 } from '../../styles/Typography';
-import { deleteWeek, fetchGame, fetchQuestions, fetchWeek, fetchWeeks } from '../../../core/APIfunctions';
-import { setQuestions, setSelectedWeek, setWeeks } from '../../../features/games/gameSlice';
+import { setQuestions, setWeeks } from '../../../features/games/gameSlice';
 import { useAppDispatch } from '../../../features/hooks';
 import { useSelector } from 'react-redux';
-import { selectedGame, selectWeeks } from '../../../features/selectors';
+import { selectedGame, selectWeeks, selectWeeksStatus } from '../../../features/selectors';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteWeek, setSelectedWeek } from '../../../features/weeks/weekSlice';
 
 const actionDispatch = (dispatch) => ({
-    setSelectedWeek: (query) => dispatch(setSelectedWeek(query)),
-    setQuestions: (query) => dispatch(setQuestions(query)),
-    setWeeks: (query) => dispatch(setWeeks(query)),
+    deleteWeek: (query) => dispatch(deleteWeek(query)),
+    setWeek: (query) => dispatch(setSelectedWeek(query))
 })
 
 const WeekCard = ({week, setStage}) => {
-    const { setSelectedWeek } = actionDispatch(useAppDispatch());
-    const { setQuestions } = actionDispatch(useAppDispatch());
-    const { setWeeks } = actionDispatch(useAppDispatch());
-    const weeks = useSelector(selectWeeks);
-    const game = useSelector(selectedGame);
+    const { deleteWeek } = actionDispatch(useAppDispatch());
+    const { setWeek } = actionDispatch(useAppDispatch());
 
     const [buttonStyle, setButtonStyle] = useState(
         {
@@ -28,19 +24,13 @@ const WeekCard = ({week, setStage}) => {
         }
     );
 
-    const handleClick = async () => {
-        setSelectedWeek(await fetchWeek(week.id));
-        setQuestions(await fetchQuestions(week.id));
+    const handleClick = () => {
+        setWeek(week.id);
         setStage('Q');
     }
 
-    const handleDelete = async () => {
-        const initialWeeks = weeks;
+    const handleDelete = () => {
         deleteWeek(week.id);
-        setWeeks(await fetchWeeks(game.id));
-        if (initialWeeks === weeks) {
-            setWeeks(await fetchWeeks(game.id));
-        }
     }
     
     return (

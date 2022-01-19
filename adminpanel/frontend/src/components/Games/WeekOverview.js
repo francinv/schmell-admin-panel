@@ -1,19 +1,34 @@
-import React, { useState } from "react";
-import { Box, FormControl, FormHelperText, IconButton, OutlinedInput, TextField, Typography, typographyClasses } from "@mui/material";
+import React, { useEffect } from "react";
+import { Box, IconButton} from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectedGame, selectWeeks } from "../../features/selectors";
+import { selectedGame, selectWeeks, selectWeeksStatus } from "../../features/selectors";
 import { HeaderContainer } from "../layout/content_header/header";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { CARD_TEXT } from "../styles/Typography";
 import WeekCard from "./Cards/WeekCard";
 import { CreateWeekCard } from "./CustomComponents/CreateWeekCard";
-import {sortWeek} from "../../utils/weekUtil";
+import { sortWeeks } from "../../utils/sortUtil";
+import { useAppDispatch } from "../../features/hooks";
+import { fetchWeeks, resetWeek } from "../../features/weeks/weekSlice";
 
 
+const actionDispatch = (dispatch) => ({
+    getWeeks: (query) => dispatch(fetchWeeks(query)),
+    resetWeek: () => dispatch(resetWeek())
+})
 
 export const WeekOverview = ({setStage}) => {
-    const weeks = useSelector(selectWeeks);
+    const { getWeeks } = actionDispatch(useAppDispatch());
+    const { resetWeek } = actionDispatch(useAppDispatch());
     const game = useSelector(selectedGame);
+    const weeks = useSelector(selectWeeks);
+    const weeksStatus = useSelector(selectWeeksStatus);
+
+    useEffect(() => {
+        if (weeksStatus === 'idle') {
+            getWeeks(game.id);
+        }
+    }, [weeks, weeksStatus])
 
     const getSubTitle = () => {
         return( <CARD_TEXT sx={{alignSelf:'center'}}><b>Spill:</b> {game.name}</CARD_TEXT>);
@@ -22,21 +37,16 @@ export const WeekOverview = ({setStage}) => {
     const getButton = () => {
         return(
             <IconButton
-                onClick={() => setStage('G')}
+                onClick={() => {
+                    setStage('G');
+                    resetWeek();
+                }}
                 size="large"
                 sx={{color:'#141400'}}
             >
                 <ArrowBackIosNewOutlinedIcon />
             </IconButton>
         )
-    }
-
-    function getSortedWeeks(weeks) {
-        let tempWeeks = weeks.slice();
-        var arr = tempWeeks.sort((a,b) => {
-            return a.week_number - b.week_number;
-        })
-        return arr;
     }
 
     return (
@@ -58,7 +68,7 @@ export const WeekOverview = ({setStage}) => {
                     justifyContent: 'center',
                 }}
             >
-                {(getSortedWeeks(weeks)).map((week) => (
+                {(sortWeeks(weeks)).map((week) => (
                     <WeekCard setStage={setStage} week={week} key={week.id}></WeekCard>
                 ))}
                     <CreateWeekCard />
