@@ -1,6 +1,4 @@
-from django.urls import path
 from rest_framework import routers, urlpatterns
-from rest_framework.authtoken.views import obtain_auth_token
 from .api import LoginViewSet, RefreshViewSet, UserViewSet, GameViewSet, QuestionViewSet, WeekViewSet
 
 router = routers.DefaultRouter()
