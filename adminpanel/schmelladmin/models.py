@@ -49,10 +49,12 @@ class Week(models.Model):
         return self.game.name + " | Week " + self.week_number
     
 class Question(models.Model): 
-    related_week = models.ForeignKey(Week, on_delete=models.CASCADE)
+    related_week = models.ForeignKey(Week, on_delete=models.CASCADE, default=0)
+    related_game = models.ForeignKey(Game, on_delete=models.CASCADE)
     type = models.CharField(max_length=200)
     question_desc = models.CharField(max_length=500)
     hint = models.CharField(max_length=500)
     related_question = models.IntegerField(blank=True)
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)
+
