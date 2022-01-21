@@ -99,3 +99,6 @@ class Task(models.Model):
 
     def __str__(self): 
             return self.title
+
+class Conversation(models.Model):
+    related_task = models.OneToOneField(Task, on_delete=models.CASCADE)
