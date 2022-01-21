@@ -1,5 +1,5 @@
 from rest_framework import routers, urlpatterns
-from .api import ConversationViewSet, IdeaViewSet, LoginViewSet, RefreshViewSet, TaskViewSet, UserViewSet, GameViewSet, QuestionViewSet, WeekViewSet
+from .api import CommentViewSet, ConversationViewSet, IdeaViewSet, LoginViewSet, RefreshViewSet, TaskViewSet, UserViewSet, GameViewSet, QuestionViewSet, WeekViewSet
 
 router = routers.DefaultRouter()
 router.register('game', GameViewSet, 'weekgame')
@@ -11,5 +11,6 @@ router.register('week', WeekViewSet, 'week')
 router.register('idea', IdeaViewSet, 'ideas')
 router.register('task', TaskViewSet, 'tasks')
 router.register('conversation', ConversationViewSet, 'conversation')
+router.register('comment', CommentViewSet, 'comments')
 
 urlpatterns = router.urls
