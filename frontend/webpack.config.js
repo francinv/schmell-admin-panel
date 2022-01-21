@@ -9,6 +9,7 @@ module.exports = {
     filename: "[name].js",
     chunkFilename: "[id]-[chunkhash].js",
   },
+  mode: 'production',
   module: {
     rules: [
       {
@@ -27,7 +28,7 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env": {
         // This has effect on the react lib size
-        NODE_ENV: JSON.stringify("development"),
+        NODE_ENV: JSON.stringify("production"),
       },
     }),
   ],

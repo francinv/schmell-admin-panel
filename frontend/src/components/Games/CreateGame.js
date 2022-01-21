@@ -33,6 +33,7 @@ const CreateGameForm = ({open, handleClose}) => {
 
     const [values, setValues] = React.useState({
         name: '',
+        description: '',
         related_questions: true,
         last_updated: new Date().toISOString().split('T')[0],
         status: 'D',
@@ -48,6 +49,7 @@ const CreateGameForm = ({open, handleClose}) => {
         event.preventDefault();
         var data = new FormData();
         data.append('name', values.name);
+        data.append('description', values.description)
         data.append('related_questions', values.related_questions);
         data.append('last_updated', values.last_updated);
         data.append('status', values.status);
