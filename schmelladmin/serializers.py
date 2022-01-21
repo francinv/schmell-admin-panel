@@ -1,6 +1,6 @@
 import imp
 from rest_framework import serializers
-from schmelladmin.models import Game, Question, User, Week
+from schmelladmin.models import Game, Idea, Question, User, Week
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
@@ -44,3 +44,8 @@ class LoginSerializer(TokenObtainPairSerializer):
             update_last_login(None, self.user)
 
         return data
+
+class IdeaSerializer (serializers.ModelSerializer):
+    class Meta:
+        model = Idea
+        fields = ('id', 'text', 'category', 'createdBy')

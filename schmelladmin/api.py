@@ -1,10 +1,9 @@
-from schmelladmin.models import Game, Question, User, Week
+from schmelladmin.models import Game, Idea, Question, User, Week
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
-from .serializers import GameSerializer, LoginSerializer, QuestionSerializer, UserSerializer, WeekSerializer
+from .serializers import GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, UserSerializer, WeekSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from django.db.models import Count
 
 # Game Viewset
 class GameViewSet(viewsets.ModelViewSet):
@@ -56,7 +55,19 @@ class QuestionViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(related_game=related_game)
         return queryset
     
+class IdeaViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = IdeaSerializer
 
+    def get_queryset(self):
+        queryset = Idea.objects.all()
+        category = self.request.query_params.get('category')
+        createdBy = self.request.query_params.get('user')
+        if category is not None:
+            queryset = queryset.filter(category=category)
+        elif createdBy is not None:
+            queryset = queryset.filter(createdBy = createdBy)
+        return queryset
 
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [
