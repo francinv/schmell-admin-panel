@@ -58,3 +58,13 @@ class Question(models.Model):
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)
 
+class Idea(models.Model):
+    CATEGORIES = (
+        ('G', 'Games'),
+        ('D', 'Development'),
+        ('W', 'Design'),
+        ('E', 'Various')
+    )
+    text = models.CharField(max_length=250)
+    category = models.CharField(max_length=1, choices=CATEGORIES)
+    createdBy = models.ForeignKey(User, on_delete=models.CASCADE)
