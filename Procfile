@@ -1,0 +1,1 @@
+web: gunicorn adminpanel.adminpanel.wsgi --preload --log-file -
