@@ -68,3 +68,34 @@ class Idea(models.Model):
     text = models.CharField(max_length=250)
     category = models.CharField(max_length=1, choices=CATEGORIES)
     createdBy = models.ForeignKey(User, on_delete=models.CASCADE)
+
+class Task(models.Model):
+    STATUS = (
+        ('P', 'Pending'),
+        ('D', 'Doing'),
+        ('F', 'Finished')
+    )
+    CATEGORIES = (
+        ('G', 'Games'),
+        ('D', 'Development'),
+        ('W', 'Design'),
+        ('M', 'Marketing'),
+        ('E', 'Economy')
+    )
+    PRIORITIES = (
+        ( 3, 'Low'),
+        ( 2, 'Medium'),
+        ( 1, 'High')
+    )
+    date = models.DateField(auto_now_add=True)
+    title = models.CharField(max_length=150)
+    description = models.CharField(max_length=500)
+    status = models.CharField(max_length=1, choices=STATUS)
+    deadline = models.DateTimeField()
+    category = models.CharField(max_length=1, choices=CATEGORIES)
+    priority = models.IntegerField(choices=PRIORITIES)
+    responsible = models.ForeignKey(User, on_delete=models.CASCADE)
+    related_game = models.ForeignKey(Game, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self): 
+            return self.title

@@ -1,9 +1,11 @@
-from schmelladmin.models import Game, Idea, Question, User, Week
+from nis import match
+from schmelladmin.models import Game, Idea, Question, Task, User, Week
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
-from .serializers import GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, UserSerializer, WeekSerializer
+from .serializers import GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from django.db.models import Q
 
 # Game Viewset
 class GameViewSet(viewsets.ModelViewSet):
@@ -69,6 +71,47 @@ class IdeaViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(createdBy = createdBy)
         return queryset
 
+class TaskViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = TaskSerializer
+
+    def get_queryset(self):
+        queryset = Task.objects.all()
+        filterMethod = self.request.query_params.get('filterMethod')
+        filterValue = self.request.query_params.get('filterValue')        
+        sort = self.request.query_params.get('sort')
+        if filterMethod is None and sort == 'PUBL_DESC':
+           queryset = queryset.order_by('-date')
+        elif filterMethod is not None and sort is not None and filterValue is not None:
+            if sort == 'PRIORITY_HTL':
+                queryset = queryset.order_by('priority')
+                queryset = switchFilter(queryset, filterMethod, filterValue)                
+            elif sort == 'PRIORITY_LTH':
+                queryset = queryset.order_by('-priority')
+                queryset = switchFilter(queryset, filterMethod, filterValue)
+            elif sort == 'DEADLINE_DESC':
+                queryset = queryset.order_by('-deadline')
+                queryset = switchFilter(queryset, filterMethod, filterValue)
+            elif sort == 'DEADLINE_ASC':
+                queryset = queryset.order_by('deadline')
+                queryset = switchFilter(queryset, filterMethod, filterValue)
+        elif filterMethod is None and sort is not None and filterValue is None:
+            if sort == 'PUBL_DESC':
+                queryset = queryset.order_by('-date')
+            elif sort == 'PRIORITY_HTL':
+                queryset = queryset.order_by('priority')
+            elif sort == 'PRIORITY_LTH':
+                queryset = queryset.order_by('-priority')
+            elif sort == 'DEADLINE_DESC':
+                queryset = queryset.order_by('-deadline')
+            elif sort == 'DEADLINE_ASC':
+                queryset = queryset.order_by('deadline')
+            queryset = queryset.filter(Q(status='P') | Q(status='D'))
+        elif filterMethod is not None and sort == 'PUBL_DESC' and filterValue is not None:
+            queryset = queryset.order_by('-date')
+            queryset = switchFilter(queryset, filterMethod, filterValue)
+        return queryset
+
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated
@@ -109,3 +152,12 @@ class RefreshViewSet(viewsets.ViewSet, TokenRefreshView):
 
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
+
+def switchFilter(queryset, filterMethod, filterValue):
+    if filterMethod == 'PRIORITY':
+        queryset = queryset.filter(Q(status='P') | Q(status='D'), priority = filterValue)
+    elif filterMethod == 'RESPONSIBLE':
+        queryset = queryset.filter(Q(status='P') | Q(status='D'), responsible = filterValue)
+    elif filterMethod == 'STATUS':
+        queryset = queryset.filter(status = filterValue)
+    return queryset
