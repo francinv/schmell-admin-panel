@@ -2,10 +2,12 @@ const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
-  entry: ".adminpanel/frontend/src/index.js",
+  entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "./static/frontend"),
+    publicPath: '/static/',
     filename: "[name].js",
+    chunkFilename: "[id]-[chunkhash].js",
   },
   module: {
     rules: [
