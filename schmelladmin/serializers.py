@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from schmelladmin.models import Game, Idea, Question, Task, User, Week
+from schmelladmin.models import Conversation, Game, Idea, Question, Task, User, Week
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
@@ -56,3 +56,9 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('id', 'date', 'title', 'description', 'status', 'deadline', 'category', 'priority', 'responsible', 'related_game')
+
+#Conversation serializer
+class ConversationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Conversation
+        fields = ('id', 'related_task')

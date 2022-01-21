@@ -1,8 +1,8 @@
 from nis import match
-from schmelladmin.models import Game, Idea, Question, Task, User, Week
+from schmelladmin.models import Conversation, Game, Idea, Question, Task, User, Week
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
-from .serializers import GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer
+from .serializers import ConversationSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from django.db.models import Q
@@ -122,7 +122,16 @@ class UserViewSet(viewsets.ModelViewSet):
         queryset = User.objects.all()
         return queryset
 
+class ConversationViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ConversationSerializer
 
+    def get_queryset(self):
+        queryset = Conversation.objects.all()
+        related_task = self.request.query_params.get('task')
+        if related_task is not None:
+            queryset = queryset.filter(related_task=related_task)
+        return queryset
 class LoginViewSet(viewsets.ModelViewSet, TokenObtainPairView):
     serializer_class = LoginSerializer
     permission_classes = (permissions.AllowAny,)
