@@ -65,17 +65,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            queryset = User.objects.all()
-            return queryset
+        queryset = User.objects.all()
+        return queryset
 
-    def get_object(self):
-        lookup_field_value = self.kwargs[self.lookup_field]
-
-        obj = User.objects.get(lookup_field_value)
-        self.check_object_permissions(self.request, obj)
-
-        return obj
 
 class LoginViewSet(viewsets.ModelViewSet, TokenObtainPairView):
     serializer_class = LoginSerializer
