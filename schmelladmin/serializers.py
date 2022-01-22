@@ -1,3 +1,4 @@
+from dataclasses import fields
 from rest_framework import serializers
 from schmelladmin.models import Game, Idea, Question, Task, User, Week, Comment
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
