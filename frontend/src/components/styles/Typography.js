@@ -31,3 +31,11 @@ export const H3 = styled(Typography)(({theme}) => ({
     fontSize:25,
     fontWeight:500,
 }))
+
+export const BODY_EXTRA_BOLD = styled(Typography)(({theme}) => ({
+    fontFamily: 'Quicksand',
+    fontSize: '14px',
+    fontWeight: 700,
+}))
+
+
