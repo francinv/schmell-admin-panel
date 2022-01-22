@@ -1,3 +1,4 @@
+from dataclasses import fields
 from rest_framework import serializers
 from schmelladmin.models import Conversation, Game, Idea, Question, Task, User, Week, Comment
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -47,9 +48,11 @@ class LoginSerializer(TokenObtainPairSerializer):
 
 #Idea serializer
 class IdeaSerializer (serializers.ModelSerializer):
+    createdBy = UserSerializer(read_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='createdBy', write_only=True)
     class Meta:
         model = Idea
-        fields = ('id', 'text', 'category', 'createdBy')
+        fields = '__all__'
 
 #Task serializer
 class TaskSerializer(serializers.ModelSerializer):

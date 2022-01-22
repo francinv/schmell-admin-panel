@@ -3,6 +3,7 @@ import UserReducer from '../features/user/userSlice';
 import GameReducer from '../features/games/gameSlice';
 import QuestionReducer from '../features/questions/questionSlice';
 import WeekReducer from '../features/weeks/weekSlice';
+import IdeaReducer from '../features/ideas/ideaSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     game: GameReducer,
     question: QuestionReducer,
     week: WeekReducer,
+    idea: IdeaReducer,
   },
 });
 

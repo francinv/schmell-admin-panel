@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
 import LogIn from './LogIn';
-import SideBar from './SideBar';
 import { useSelector } from 'react-redux';
 import { selectUserIsLoggedIn } from '../features/selectors';
 import TasksComp from './Tasks';
 import OverviewComp from './Overview';
-import IdeasComp from './Ideas';
+import IdeasComp from './Ideas/IdeasComp';
 import GamesComp from './Games/GameComponent';
 import SettingsComp from './Settings';
 import StatisticsComp from './Statistics';
