@@ -2,6 +2,7 @@ export const selectActiveUser = (state) => state.user.activeUser;
 export const selectUserIsLoggedIn = (state) => state.user.isLoggedIn;
 export const selectUserStatus = (state) => state.user.status;
 export const selectUserError = (state) => state.user.error;
+export const selectAllUsers = (state) => state.user.allUsers;
 export const selectedGame = (state) => state.game.selectedGame;
 export const selectGames = (state) => state.game.games;
 export const selectGameStatus = (state) => state.game.status;

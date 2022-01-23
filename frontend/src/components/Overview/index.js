@@ -1,23 +1,27 @@
 import React, {useEffect} from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import SideBar from '../SideBar';
 import { HeaderContainer } from '../layout/content_header/header';
 import { useSelector } from 'react-redux';
 import { selectQuestionStatusAll } from '../../features/selectors';
 import { fetchQuestions } from '../../features/questions/questionSlice';
 import { useAppDispatch } from '../../features/hooks';
+import { fetchUsers } from '../../features/user/userSlice';
 
 const actionDispatch = (dispatch) => ({
     fetchQuestions: () => dispatch(fetchQuestions()),
+    fetchUsers: () => dispatch(fetchUsers())
 })
 
 const OverviewComp = ({activeTab, setActiveTab}) => {
     const questionStatus = useSelector(selectQuestionStatusAll);
     const { fetchQuestions } = actionDispatch(useAppDispatch());
-
+    const { fetchUsers } = actionDispatch(useAppDispatch());
+    
     useEffect(() => {
         if (questionStatus === 'idle') {
             fetchQuestions();
+            fetchUsers();
           }
     }, [questionStatus])
 
