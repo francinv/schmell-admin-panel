@@ -1,4 +1,3 @@
-from dataclasses import fields
 from rest_framework import serializers
 from schmelladmin.models import Conversation, Game, Idea, Question, Task, User, Week, Comment
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -56,9 +55,11 @@ class IdeaSerializer (serializers.ModelSerializer):
 
 #Task serializer
 class TaskSerializer(serializers.ModelSerializer):
+    responsible = UserSerializer(read_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='responsible', write_only=True)
     class Meta:
         model = Task
-        fields = ('id', 'date', 'title', 'description', 'status', 'deadline', 'category', 'priority', 'responsible', 'related_game')
+        fields = ('id', 'date', 'title', 'description', 'status', 'deadline', 'category', 'priority', 'responsible', 'related_game', 'user_id')
 
 #Conversation serializer
 class ConversationSerializer(serializers.ModelSerializer):
