@@ -1,10 +1,22 @@
 import React from "react";
 import { Avatar, Box, Button, IconButton } from "@mui/material";
 import { H4 } from "../../../styles/Typography";
-import { selectAllUsers } from "../../../../features/selectors";
 import { useSelector } from 'react-redux';
+import { selectAllUsers } from "../../../../features/user/userSelectors";
+import { resetStatus, setPriorityState, setResponsibleState, setStatusState } from "../../../../features/tasks/taskSlice";
+import { useAppDispatch } from "../../../../features/hooks";
+import { selectResponsibleState } from "../../../../features/tasks/taskSelectors";
 
-const FilterResponsible = ({setResponsible, responsible}) => {
+const actionDispatch = (dispatch) => ({
+    setResponsible: (query) => dispatch(setResponsibleState(query)),
+    resetStatus: () => dispatch(resetStatus())
+})
+
+const FilterResponsible = () => {
+    const { setResponsible } = actionDispatch(useAppDispatch());
+    const { resetStatus } = actionDispatch(useAppDispatch());
+
+    const responsible = useSelector(selectResponsibleState);
     const users = useSelector(selectAllUsers);
 
     function getOpacity(value){
@@ -19,6 +31,7 @@ const FilterResponsible = ({setResponsible, responsible}) => {
     }
 
     const handleClick = (value) => {
+        resetStatus();
         setResponsible(value);
     }
 
@@ -43,6 +56,7 @@ const FilterResponsible = ({setResponsible, responsible}) => {
             >
                 {users.map((user) => (
                     <IconButton
+                        key={user.id}
                         sx={{
                             marginLeft: '0.2rem',
                             marginRight: '0.2rem',

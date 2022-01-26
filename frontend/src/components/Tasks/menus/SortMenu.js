@@ -6,6 +6,15 @@ import { Box } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
 import { CARD_TEXT } from '../../styles/Typography';
 import CheckIcon from '@mui/icons-material/Check';
+import { resetStatus, setSortState } from '../../../features/tasks/taskSlice';
+import { useAppDispatch } from '../../../features/hooks';
+import { useSelector } from 'react-redux';
+import { selectSortState } from '../../../features/tasks/taskSelectors';
+
+const actionDispatch = (dispatch) => ({
+  setSort: (query) => dispatch(setSortState(query)),
+  resetStatus: () => dispatch(resetStatus())
+})
 
 const CustomMenuItemContent = ({value, sort, text}) => {
 
@@ -26,7 +35,10 @@ const CustomMenuItemContent = ({value, sort, text}) => {
   )
 }
 
-const SortMenu = ({sort, setSort}) => {
+const SortMenu = () => {
+  const { setSort } = actionDispatch(useAppDispatch());
+  const { resetStatus } = actionDispatch(useAppDispatch());
+  const sort = useSelector(selectSortState);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -39,6 +51,7 @@ const SortMenu = ({sort, setSort}) => {
   };
 
   const handleClick = (value) => {
+    resetStatus();
     setSort(value);
     handleClose();
   }
@@ -93,16 +106,28 @@ const SortMenu = ({sort, setSort}) => {
           <CustomMenuItemContent value='PRIORITY_HTL' sort={sort} text='Prioritet (høy til lav)'/> 
         </MenuItem>
         <MenuItem 
-          onClick={()=>handleClick('DEADLINE_DESC')}
-          key="DEADLINE_DESC"
-        >
-          <CustomMenuItemContent value='DEADLINE_DESC' sort={sort} text='Frist nyest - eldst'/> 
-        </MenuItem>
-        <MenuItem 
           onClick={()=>handleClick('DEADLINE_ASC')}
           key="DEADLINE_ASC"
         >
-          <CustomMenuItemContent value='DEADLINE_ASC' sort={sort} text='Frist eldst - nyest'/> 
+          <CustomMenuItemContent value='DEADLINE_ASC' sort={sort} text='Frist nyest - eldst'/> 
+        </MenuItem>
+        <MenuItem 
+          onClick={()=>handleClick('DEADLINE_DESC')}
+          key="DEADLINE_DESC"
+        >
+          <CustomMenuItemContent value='DEADLINE_DESC' sort={sort} text='Frist eldst - nyest'/> 
+        </MenuItem>
+        <MenuItem 
+          onClick={()=>handleClick('UPDT_DESC')}
+          key="UPDT_DESC"
+        >
+          <CustomMenuItemContent value='UPDT_DESC' sort={sort} text='Oppdatert nyest - eldst'/> 
+        </MenuItem>
+        <MenuItem 
+          onClick={()=>handleClick('UPDT_ASC')}
+          key="UPDT_ASC"
+        >
+          <CustomMenuItemContent value='UPDT_ASC' sort={sort} text='Oppdatert eldst - nyest'/> 
         </MenuItem>
       </Menu>
     </Box>

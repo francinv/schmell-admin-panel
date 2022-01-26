@@ -1,9 +1,22 @@
 import React from "react";
 import { Box, Button } from "@mui/material";
 import { H4 } from "../../../styles/Typography";
+import { resetStatus, setPriorityState, setResponsibleState, setStatusState } from "../../../../features/tasks/taskSlice";
+import { useAppDispatch } from "../../../../features/hooks";
+import { useSelector } from "react-redux";
+import { selectPriorityState } from "../../../../features/tasks/taskSelectors";
 
-const FilterPriority = ({setPriority, priority}) => {
+const actionDispatch = (dispatch) => ({
+    setPriority: (query) => dispatch(setPriorityState(query)),
+    resetStatus: () => dispatch(resetStatus())
+})
 
+const FilterPriority = () => {
+    const { setPriority } = actionDispatch(useAppDispatch());
+    const { resetStatus } = actionDispatch(useAppDispatch());
+
+    const priority = useSelector(selectPriorityState);
+    
     function getOpacity(value){
         let opacity = '0.5';
         if (priority === value) {
@@ -16,6 +29,7 @@ const FilterPriority = ({setPriority, priority}) => {
     }
 
     const handleClick = (value) => {
+        resetStatus();
         setPriority(value);
     }
 

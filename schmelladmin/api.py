@@ -82,9 +82,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         status = self.request.query_params.get('status')
         priority = self.request.query_params.get('priority')
         responsible = self.request.query_params.get('responsible')
-        if ((status is None) or (priority is None) or (responsible is None)) and (sort == 'PUBL_DESC'):
-           queryset = queryset.order_by('-date')
-        elif (sort is not None and status is not None):
+        if (sort is not None and status is not None):
             queryset = switchSort(queryset, sort)
             queryset = queryset.filter(status = status)
         elif (sort is not None and responsible is not None):
@@ -169,4 +167,10 @@ def switchSort(queryset, sort):
         queryset = queryset.order_by('-deadline')
     elif sort == 'DEADLINE_ASC':
         queryset = queryset.order_by('deadline')
+    elif sort == 'PUBL_DESC':
+        queryset = queryset.order_by('-date')
+    elif sort == 'UPDT_DESC':
+        queryset = queryset.order_by('-updated')
+    elif sort == 'UPDT_ASC': 
+        queryset = queryset.order_by('updated')
     return queryset

@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import FormControl from '@mui/material/FormControl';
-import { InputAdornment, OutlinedInput, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { InputAdornment, MenuItem, OutlinedInput, Select, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { Box, styled } from '@mui/system';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { BODY_BOLD } from '../styles/Typography';
 
-const CustomWidthText = styled(Typography)(({ theme }) => ({
+export const CustomWidthText = styled(Typography)(({ theme }) => ({
     fontFamily: 'Quicksand',
     fontSize: 16,
     fontWeight: 500,
     width: '30%',
+    marginRight: '0.8rem',
 }));
 
-const CustomContainerForm = styled(Box)(({ theme }) => ({
+export const CustomContainerForm = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'row',
     width: '65%',

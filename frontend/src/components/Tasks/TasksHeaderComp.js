@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
 import { Box, Button } from "@mui/material";
 import { H3 } from "../styles/Typography";
 import SortMenu from "./menus/SortMenu";
 import FilterMenu from "./menus/FilterMenu";
+import CreateTaskForm from "./CreateTask";
 
 const TaskHeaderComp = () => {
 
-    const [sort, setSort] = useState('PUBL_DESC');
-    const [status, setStatus] = useState('');
-    const [priority, setPriority] = useState('');
-    const [responsible, setResponsible] = useState('');
-
-    useEffect(() => {
-        console.log(sort);
-        console.log(priority);
-        console.log(status);
-        console.log(responsible);
-    }, [sort, priority, status, responsible]);
-    
-    const handleClick = () => {
-        console.log("TODO");
+    const [open, setOpen] = useState(false);
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
     }
 
     return (
@@ -58,19 +48,13 @@ const TaskHeaderComp = () => {
                             fontSize:'50px',
                         },
                     }}
-                    onClick={handleClick}
+                    onClick={handleShow}
                 >Opprett oppgave</Button>
-                <SortMenu setSort={setSort} sort={sort}/>
-                <FilterMenu 
-                    priority={priority} 
-                    setPriority={setPriority} 
-                    status={status}
-                    setStatus={setStatus}
-                    responsible={responsible}
-                    setResponsible={setResponsible}
-                />
+                <SortMenu />
+                <FilterMenu />
             </Box>
 
+            <CreateTaskForm handleShow={handleShow} open={open}/>
         </Box>
     )
 }

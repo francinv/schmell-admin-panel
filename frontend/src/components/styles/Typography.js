@@ -34,7 +34,7 @@ export const H3 = styled(Typography)(({theme}) => ({
 
 export const H4 = styled(Typography)(({theme}) => ({
     fontFamily:'Quicksand',
-    fontSize:18,
+    fontSize:20,
     fontWeight:500,
 }))
 

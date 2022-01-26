@@ -4,12 +4,38 @@ import { HeaderContainer } from "../layout/content_header/header";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../features/hooks";
 import TaskHeaderComp from "./TasksHeaderComp";
+import { selectP, selectPageSize, selectPriorityState, selectResponsibleState, selectSortState, selectStatusState, selectTasks, selectTaskStatus } from "../../features/tasks/taskSelectors";
+import { fetchTasks } from "../../features/tasks/taskSlice";
+import TaskTable from "./TaskTable";
 
+const actionDispatch = (dispatch) => ({
+    fetchTasks: (query) => dispatch(fetchTasks(query))
+})
 
 export const TasksOverview = () => {
+    const { fetchTasks } = actionDispatch(useAppDispatch());
+    const sort = useSelector(selectSortState);
+    const status = useSelector(selectStatusState);
+    const priority = useSelector(selectPriorityState);
+    const responsible = useSelector(selectResponsibleState);
+    const page_size = useSelector(selectPageSize);
+    const p = useSelector(selectP);
+    const statusOfRedux = useSelector(selectTaskStatus);
+
 
     useEffect(() => {
-    }, [])
+        if (statusOfRedux === 'idle') {
+            const temp = {
+                sort: sort,
+                status: status,
+                priority: priority,
+                responsible: responsible,
+                page_size: page_size,
+                p: p,
+            };
+            fetchTasks(temp);
+        }
+    }, [sort, status, priority, responsible, page_size, p, statusOfRedux])
     
     return (
         <Box
@@ -32,6 +58,7 @@ export const TasksOverview = () => {
                 }}
             >   
                 <TaskHeaderComp />
+                <TaskTable />
             </Box>
         </Box>
     )

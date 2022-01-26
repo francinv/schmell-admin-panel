@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { H2 } from '../../styles/Typography';
-import { setQuestions, setWeeks } from '../../../features/games/gameSlice';
 import { useAppDispatch } from '../../../features/hooks';
-import { useSelector } from 'react-redux';
-import { selectedGame, selectWeeks, selectWeeksStatus } from '../../../features/selectors';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteWeek, setSelectedWeek } from '../../../features/weeks/weekSlice';
 

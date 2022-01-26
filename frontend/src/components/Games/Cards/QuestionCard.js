@@ -6,10 +6,10 @@ import { useAppDispatch } from '../../../features/hooks';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector } from 'react-redux';
-import { selectedGame } from '../../../features/selectors';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { QuestionTextArea, TextInputQuestion } from '../../form';
 import { deleteQuestion, updateQuestion } from '../../../features/questions/questionSlice';
+import { selectedGame } from '../../../features/games/gameSelectors';
 
 const actionDispatch = (dispatch) => ({
     deleteQuestion: (query) => dispatch(deleteQuestion(query)),

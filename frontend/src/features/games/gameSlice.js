@@ -10,7 +10,7 @@ const initialState = {
 }
 
 export const fetchGames = createAsyncThunk('game/fetchGames', async () => {
-    const axe = axiosService.get('game');
+    const axe = axiosService.get('game/');
     const response = await axe.then(res => res.data);
     return response;
 });

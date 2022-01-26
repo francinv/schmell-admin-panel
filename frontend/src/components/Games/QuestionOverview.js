@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectedGame, selectedWeek, selectQuestions, selectQuestionsByWeek, selectQuestionsStatus, selectQuestionStautsByWeek } from "../../features/selectors";
 import { HeaderContainer } from "../layout/content_header/header";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { CARD_TEXT } from "../styles/Typography";
@@ -11,6 +10,9 @@ import QuestionCard from "./Cards/QuestionCard";
 import { fetchQuestionByWeek, resetQuestionByWeek } from "../../features/questions/questionSlice";
 import { sortGames } from "../../utils/sortUtil";
 import { useAppDispatch } from "../../features/hooks";
+import { selectedGame } from "../../features/games/gameSelectors";
+import { selectQuestionsByWeek, selectQuestionStautsByWeek } from '../../features/questions/questionSelectors';
+import { selectedWeek } from "../../features/weeks/weekSelectors";
 
 const actionDispatch = (dispatch) => ({
     getQuestions: (query) => dispatch(fetchQuestionByWeek(query)),

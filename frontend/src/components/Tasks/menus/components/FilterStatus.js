@@ -2,9 +2,22 @@ import React from "react";
 import { Box, Button } from "@mui/material";
 import { H4 } from "../../../styles/Typography";
 import CheckIcon from '@mui/icons-material/Check';
+import { resetStatus, setPriorityState, setResponsibleState, setStatusState } from "../../../../features/tasks/taskSlice";
+import { useAppDispatch } from "../../../../features/hooks";
+import { useSelector } from "react-redux";
+import { selectStatusState } from "../../../../features/tasks/taskSelectors";
 
-const FilterStatus = ({setStatus, status}) => {
+const actionDispatch = (dispatch) => ({
+    setStatus: (query) => dispatch(setStatusState(query)),
+    resetStatus: () => dispatch(resetStatus())
+})
 
+const FilterStatus = () => {
+    const { setStatus } = actionDispatch(useAppDispatch());
+    const { resetStatus } = actionDispatch(useAppDispatch());
+
+    const status = useSelector(selectStatusState);
+    
     function isSelected(value){
         if (status === value) {
             return <CheckIcon sx={{color:'#C5C7CD'}}/>;
@@ -12,6 +25,7 @@ const FilterStatus = ({setStatus, status}) => {
     }
 
     const handleClick = (value) => {
+        resetStatus();
         setStatus(value);
     }
 

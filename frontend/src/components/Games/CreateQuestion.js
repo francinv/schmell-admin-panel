@@ -8,8 +8,8 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { updateGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
 import { useSelector } from "react-redux";
-import { selectedGame, selectedWeek } from "../../features/selectors";
 import { postQuestion } from "../../features/questions/questionSlice";
+import { selectedWeek } from "../../features/weeks/weekSelectors";
 
 const style_container = {
     position: 'absolute',

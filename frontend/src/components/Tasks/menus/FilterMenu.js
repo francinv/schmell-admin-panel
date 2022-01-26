@@ -5,9 +5,22 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import FilterPriority from './components/FilterPriority';
 import FilterStatus from './components/FilterStatus';
 import FilterResponsible from './components/FilterResp';
+import { resetStatus, setPriorityState, setResponsibleState, setStatusState } from '../../../features/tasks/taskSlice';
+import { useAppDispatch } from '../../../features/hooks';
 
-const FilterMenu = (
-    {priority, setPriority, status, setStatus, responsible, setResponsible}) => {
+const actionDispatch = (dispatch) => ({
+  setPriority: (query) => dispatch(setPriorityState(query)),
+  setResponsible: (query) => dispatch(setResponsibleState(query)),
+  setStatus: (query) => dispatch(setStatusState(query)),
+  resetStatus: () => dispatch(resetStatus())
+})
+
+const FilterMenu = () => {
+  const { setPriority } = actionDispatch(useAppDispatch());
+  const { setResponsible } = actionDispatch(useAppDispatch());
+  const { setStatus } = actionDispatch(useAppDispatch());
+  const { resetStatus } = actionDispatch(useAppDispatch());
+
   const [anchorEl, setAnchorEl] = useState(false);
   const open = Boolean(anchorEl);
 
@@ -39,18 +52,9 @@ const FilterMenu = (
         open={open}
         onClose={handleClose}
       >
-        <FilterPriority 
-            priority={priority}
-            setPriority={setPriority}
-        />
-        <FilterStatus 
-            status={status} 
-            setStatus={setStatus}
-        />
-        <FilterResponsible
-            responsible={responsible}
-            setResponsible={setResponsible}
-        />
+        <FilterPriority />
+        <FilterStatus />
+        <FilterResponsible />
         <Button
           sx={{
             bgcolor: '#e0e000',
@@ -65,6 +69,7 @@ const FilterMenu = (
             },
           }}
           onClick={() => {
+            resetStatus();
             setPriority('');
             setResponsible('');
             setStatus('');

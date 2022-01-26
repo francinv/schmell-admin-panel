@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../styles/Typography";
-import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField, RadioThreeButtons, RadioTwoButtons } from "../form";
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import { CustomDateTimePicker, InputTextArea, InputTextField } from "../form";
 import { useAppDispatch } from "../../features/hooks";
+import { postTask, resetStatus } from "../../features/tasks/taskSlice";
+import { useSelector } from "react-redux";
+import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
+import { SelectCategory, SelectRelatedGame, SelectStatus, TogglePerson, TogglePriority } from "../form/Task";
 
 const style_container = {
     position: 'absolute',
@@ -24,21 +27,25 @@ const style_container = {
 };
 
 const actionDispatch = (dispatch) => ({
-    addTask: (query) => dispatch(addTask(query)),
+    addTask: (query) => dispatch(postTask(query)),
+    resetTasks: (query) => dispatch(resetStatus(query))
 })
 
-const CreateTaskForm = ({open, handleClose}) => {
-    const { addGame } = actionDispatch(useAppDispatch());
+const CreateTaskForm = ({open, handleShow}) => {
+    const { addTask } = actionDispatch(useAppDispatch());
+    const { resetTasks } = actionDispatch(useAppDispatch());
+    const [alignment, setAlignment] = useState('');
 
-    const [values, setValues] = React.useState({
-        name: '',
+    const [values, setValues] = useState({
+        title: '',
         description: '',
-        related_questions: true,
-        last_updated: new Date().toISOString().split('T')[0],
-        status: 'D',
-        release_date: '',
+        status: 'P',
+        deadline: '',
+        category: '',
+        priority: '',
+        user_id: '',
+        related_game: '',
     });
-    const [fileState, setFileState] = React.useState('');
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -46,22 +53,16 @@ const CreateTaskForm = ({open, handleClose}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        var data = new FormData();
-        data.append('name', values.name);
-        data.append('description', values.description)
-        data.append('related_questions', values.related_questions);
-        data.append('last_updated', values.last_updated);
-        data.append('status', values.status);
-        data.append('logo', fileState);
-        data.append('release_date', values.release_date);
-        addGame(data);
-        handleClose();
+        values.user_id = alignment;
+        addTask(values);
+        resetTasks();
+        handleShow();
     }
 
     return (
         <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleShow}
         >
             <Box sx={style_container}>
                 <Box 
@@ -73,7 +74,7 @@ const CreateTaskForm = ({open, handleClose}) => {
                     }}
                 >   
                     <IconButton
-                        onClick={handleClose}
+                        onClick={handleShow}
                         sx={{color:'#141400'}}
                     >
                         <CloseIcon style={{fontSize: 30}} />
@@ -87,7 +88,7 @@ const CreateTaskForm = ({open, handleClose}) => {
                         marginRight: 'auto',
                     }}
                 >
-                    <H1>Opprett spill</H1>
+                    <H1>Opprett oppgave</H1>
                 </Box>
                 <Box
                     sx={{
@@ -115,41 +116,51 @@ const CreateTaskForm = ({open, handleClose}) => {
                         onSubmit={handleSubmit}
                     >
                         <InputTextField 
-                            label="Navn" 
-                            placeholder="Skriv inn navn på spill..." 
-                            onChange={handleChange('name')}
-                            value={values.name}
+                            label="Tittel" 
+                            placeholder="Skriv inn tittel.." 
+                            onChange={handleChange('title')}
+                            value={values.title}
                         />
                         <InputTextArea
                             label="Beskrivelse"
-                            placeholder="Beskrivelse om spillet..."
+                            placeholder="Beskriv oppgaven..."
                             value={values.description}
                             onChange={handleChange('description')}
                         />
-                        <RadioTwoButtons 
-                            label="Følgespørsmål?" 
-                            value={values.related_questions} 
-                            onChange={handleChange('related_questions')} 
-                        />
-                        <RadioThreeButtons
+                        <SelectStatus
                             label="Status:"
                             value={values.status}
                             onChange={handleChange('status')}
                         />
-                        <ImageUpload 
-                            label="Last opp logo:"
-                            placeholder="Velg fil:"
-                            fileState={fileState}
-                            setFileState={setFileState}
-                        />
                         <CustomDateTimePicker 
-                            label="Forventet utslippsdato:"
-                            value={values.release_date}
-                            onChange={handleChange('release_date')}
+                            label="Når er fristen?"
+                            value={values.deadline}
+                            onChange={handleChange('deadline')}
                         />  
+                        <SelectCategory 
+                            label="Velg kategori:"
+                            value={values.category}
+                            onChange={handleChange('category')}
+                        />
+                        <TogglePriority
+                            label="Velg prioritet:"
+                            value={values.priority}
+                            onChange={handleChange('priority')}
+                        />
+                        <TogglePerson
+                            label="Hvem er ansvarlig?"
+                            value={alignment}
+                            setValue={setAlignment}
+                        />
+                        <SelectRelatedGame
+                            label="Velg relatert spill:"
+                            value={values.related_game}
+                            onChange={handleChange('related_game')}
+                            category={values.category}
+                        />
                         <Button
                             type="submit"
-                            endIcon={<SportsEsportsIcon />}
+                            endIcon={<AddCircleOutlineOutlined />}
                             sx={{
                                 bgcolor: '#e0e000',
                                 color: '#141400',

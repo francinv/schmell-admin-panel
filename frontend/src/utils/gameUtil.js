@@ -1,5 +1,5 @@
 import {useSelector} from 'react-redux';
-import { selectAllQuestions } from '../features/selectors';
+import { selectAllQuestions } from '../features/questions/questionSelectors';
 
 export function getCount(idGame) {
     const questions = useSelector(selectAllQuestions);

@@ -59,7 +59,7 @@ class TaskSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='responsible', write_only=True)
     class Meta:
         model = Task
-        fields = ('id', 'date', 'title', 'description', 'status', 'deadline', 'category', 'priority', 'responsible', 'related_game', 'user_id')
+        fields = ('id', 'date', 'title', 'description', 'status', 'deadline', 'category', 'priority', 'responsible', 'related_game', 'user_id', 'updated')
 
 #Conversation serializer
 class ConversationSerializer(serializers.ModelSerializer):
@@ -69,6 +69,8 @@ class ConversationSerializer(serializers.ModelSerializer):
 
 #Comment serializer
 class CommentSerializer(serializers.ModelSerializer):
+    written_by = UserSerializer(read_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='written_by', write_only=True)
     class Meta:
         model = Comment
-        fields = ('id', 'date', 'comment', 'written_by', 'related_conversation')
+        fields = ('id', 'date', 'comment', 'written_by', 'related_conversation', 'user_id')

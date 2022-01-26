@@ -96,6 +96,7 @@ class Task(models.Model):
     priority = models.IntegerField(choices=PRIORITIES)
     responsible = models.ForeignKey(User, on_delete=models.CASCADE)
     related_game = models.ForeignKey(Game, on_delete=models.CASCADE, blank=True, null=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self): 
             return self.title

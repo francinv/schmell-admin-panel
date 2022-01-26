@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectActiveUser } from "../../../features/selectors";
+import { selectActiveUser } from "../../../features/user/userSelectors";
 import { H1 } from "../../styles/Typography";
 import { ProfileAvatar } from "./profile";
 
