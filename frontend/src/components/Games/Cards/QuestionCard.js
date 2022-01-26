@@ -12,6 +12,7 @@ import { deleteQuestion, updateQuestion } from '../../../features/questions/ques
 import { selectedGame } from '../../../features/games/gameSelectors';
 import { subCountByGame } from '../../../features/statistics/statisticSlice';
 import DeleteDialog from '../CustomComponents/DeleteDialog';
+import { selectedGame } from '../../../features/games/gameSelectors';
 
 const actionDispatch = (dispatch) => ({
     deleteQuestion: (query) => dispatch(deleteQuestion(query)),
