@@ -10,6 +10,7 @@ import { selectedGame } from '../../../features/selectors';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { QuestionTextArea, TextInputQuestion } from '../../form';
 import { deleteQuestion, updateQuestion } from '../../../features/questions/questionSlice';
+import DeleteDialog from '../CustomComponents/DeleteDialog';
 
 const actionDispatch = (dispatch) => ({
     deleteQuestion: (query) => dispatch(deleteQuestion(query)),
@@ -32,6 +33,12 @@ const QuestionCard = ({question}) => {
 
 const SimpleQuestionDisplay = ({question, setStateChangeQuestion}) => {
     const { deleteQuestion } = actionDispatch(useAppDispatch());
+
+    const [open, setOpen] = useState(false);
+
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
+    }
 
     const handleDelete = () => {
         deleteQuestion(question.id);
@@ -64,7 +71,7 @@ const SimpleQuestionDisplay = ({question, setStateChangeQuestion}) => {
                 <IconButton onClick={() => setStateChangeQuestion(true)} sx={{color:'#141400', marginLeft:'auto'}}>
                     <EditIcon style={{fontSize: 24}} />
                 </IconButton>
-                <IconButton onClick={handleDelete} sx={{color:'#141400'}}>
+                <IconButton onClick={handleShow} sx={{color:'#141400'}}>
                     <DeleteIcon style={{fontSize: 24}} />
                 </IconButton>
             </Box>
@@ -86,6 +93,7 @@ const SimpleQuestionDisplay = ({question, setStateChangeQuestion}) => {
                 <CARD_TEXT><b>Relatert til:  </b>{question.related_question}</CARD_TEXT> 
                 <CARD_TEXT><b>Funksjoner:  </b>{question.function}</CARD_TEXT>   
             </Box>
+            <DeleteDialog open={open} handleDelete={handleDelete} handleShow={handleShow} />
         </Box>
     );
 }

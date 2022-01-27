@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectedGame, selectWeeks, selectWeeksStatus } from '../../../features/selectors';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { deleteWeek, setSelectedWeek } from '../../../features/weeks/weekSlice';
+import DeleteDialog from '../CustomComponents/DeleteDialog';
 
 const actionDispatch = (dispatch) => ({
     deleteWeek: (query) => dispatch(deleteWeek(query)),
@@ -16,6 +17,12 @@ const actionDispatch = (dispatch) => ({
 const WeekCard = ({week, setStage}) => {
     const { deleteWeek } = actionDispatch(useAppDispatch());
     const { setWeek } = actionDispatch(useAppDispatch());
+
+    const [open, setOpen] = useState(false);
+
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
+    }
 
     const [buttonStyle, setButtonStyle] = useState(
         {
@@ -69,13 +76,14 @@ const WeekCard = ({week, setStage}) => {
                 <H2 className="Week_CARD_Title">Uke {week.week_number}</H2>
             </Box>
             <IconButton 
-                onClick={handleDelete} 
+                onClick={handleShow} 
                 sx={{
                     color:'#141400',
                 }} 
                 style={buttonStyle}>
                 <DeleteIcon style={{fontSize: 16}} />
             </IconButton>
+            <DeleteDialog open={open} handleDelete={handleDelete} handleShow={handleShow} />
 
         </Box>
     );
