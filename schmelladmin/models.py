@@ -57,6 +57,7 @@ class Question(models.Model):
     related_question = models.IntegerField(blank=True)
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)
+    punishment = models.CharField(max_length=200, default="2 slurker")
 
 class Idea(models.Model):
     CATEGORIES = (

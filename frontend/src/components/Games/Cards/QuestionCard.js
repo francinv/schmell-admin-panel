@@ -87,6 +87,7 @@ const SimpleQuestionDisplay = ({question, setStateChangeQuestion}) => {
                 <CARD_TEXT><b>Fase:  </b>{question.phase}</CARD_TEXT> 
                 <CARD_TEXT><b>SP:  </b>{question.question_desc}</CARD_TEXT> 
                 <CARD_TEXT><b>Hint:  </b>{question.hint}</CARD_TEXT> 
+                <CARD_TEXT><b>Straff: </b>{question.punishment}</CARD_TEXT>
                 <CARD_TEXT><b>Relatert til:  </b>{question.related_question}</CARD_TEXT> 
                 <CARD_TEXT><b>Funksjoner:  </b>{question.function}</CARD_TEXT>   
             </Box>
@@ -104,7 +105,9 @@ const ChangeQuestionCard = ({question, setStateChangeQuestion}) => {
         question_desc: question.question_desc,
         hint: question.hint,
         phase: question.phase,
-        related_week: question.related_week
+        related_week: question.related_week,
+        related_game: question.related_game,
+        punishment: question.punishment
     });
 
     const handleChange = (prop) => (event) => {
@@ -170,6 +173,7 @@ const ChangeQuestionCard = ({question, setStateChangeQuestion}) => {
                 <TextInputQuestion label={"Fase:"} handleChange={handleChange('phase')} value={values.phase} type={"number"}/>
                 <QuestionTextArea label={"SP:"} handleChange={handleChange('question_desc')} value={values.question_desc} />
                 <QuestionTextArea label={"Hint:"} handleChange={handleChange('hint')} value={values.hint} />
+                <TextInputQuestion label={"Straff:"} handleChange={handleChange('punishment')} value={values.punishment} type={"text"}/>
             </Box>
 
         </Box>
