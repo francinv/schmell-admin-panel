@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, AlertTitle, Box, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
+import { selectedGame, selectedWeek, selectQuestions, selectQuestionsByWeek, selectQuestionsError, selectQuestionsStatus, selectQuestionStautsByWeek } from "../../features/selectors";
 import { HeaderContainer } from "../layout/content_header/header";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { CARD_TEXT } from "../styles/Typography";
@@ -24,6 +25,7 @@ export const QuestionsOverview = ({setStage}) => {
     const questionsStatus = useSelector(selectQuestionStautsByWeek);
     const week = useSelector(selectedWeek);
     const game = useSelector(selectedGame);
+    const error = useSelector(selectQuestionsError);
     const { getQuestions } = actionDispatch(useAppDispatch());
     const { resetQuestions } = actionDispatch(useAppDispatch());
     const [open, setOpen] = useState(false);
