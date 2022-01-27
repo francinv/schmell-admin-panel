@@ -7,6 +7,7 @@ import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField, Radio
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { postGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
+import { resetCreateGame } from "../../utils/gameUtil";
 
 const style_container = {
     position: 'absolute',
@@ -57,6 +58,8 @@ const CreateGameForm = ({open, handleClose}) => {
         data.append('release_date', values.release_date);
         addGame(data);
         handleClose();
+        setValues(resetCreateGame(values));
+        setFileState('');
     }
 
     return (
