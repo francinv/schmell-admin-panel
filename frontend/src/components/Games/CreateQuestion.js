@@ -12,6 +12,7 @@ import { postQuestion } from "../../features/questions/questionSlice";
 import { selectedWeek } from "../../features/weeks/weekSelectors";
 import { selectedGame } from "../../features/games/gameSelectors";
 import { addCountByGame, resetStatistics } from "../../features/statistics/statisticSlice";
+import { resetQuestions } from "../../utils/questionUtil";
 
 const style_container = {
     position: 'absolute',
@@ -49,6 +50,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
         related_question: '',
         phase: '',
         function: '',
+        punishment: '',
         related_week: week.id,
         related_game: game.id
     });
@@ -68,6 +70,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
         updateGame(temp);
         handleClose();
         addCountByGame(game.id);
+        setValues(resetQuestions(values));
     }
 
     return (
@@ -164,6 +167,13 @@ const CreateQuestionForm = ({open, handleClose}) => {
                             placeholder="Skriv inn funksjon..." 
                             onChange={handleChange('function')}
                             value={values.function}
+                            type={"text"}
+                        />
+                        <InputTextField 
+                            label="Straff:" 
+                            placeholder="Skriv inn straff..." 
+                            onChange={handleChange('punishment')}
+                            value={values.punishment}
                             type={"text"}
                         />
                         <Button

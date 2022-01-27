@@ -8,6 +8,7 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { postGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
 import { resetStatistics } from '../../features/statistics/statisticSlice';
+import { resetCreateGame } from "../../utils/gameUtil";
 
 const style_container = {
     position: 'absolute',
@@ -61,6 +62,8 @@ const CreateGameForm = ({open, handleClose}) => {
         addGame(data);
         handleClose();
         resetStatistics();
+        setValues(resetCreateGame(values));
+        setFileState('');
     }
 
     return (

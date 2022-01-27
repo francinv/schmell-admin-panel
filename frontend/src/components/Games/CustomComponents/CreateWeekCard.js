@@ -25,6 +25,7 @@ export const CreateWeekCard = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         addWeek(values);
+        values.week_number = '';
     }
 
     return (
