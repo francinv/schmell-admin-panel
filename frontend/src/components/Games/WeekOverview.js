@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, IconButton} from "@mui/material";
+import { Alert, Box, IconButton} from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectedGame, selectWeeks, selectWeeksStatus } from "../../features/selectors";
 import { HeaderContainer } from "../layout/content_header/header";
@@ -55,6 +55,11 @@ export const WeekOverview = ({setStage}) => {
             sx={{ flexGrow: 1, bgcolor:'#F7F8FC', height:'100%'}}
         >
             <HeaderContainer page_title={"Velg uke"} sub_title={getSubTitle()} button={getButton()}/>
+            {
+                weeksStatus === 'failed'
+                ? <Alert severity="warning">Uke-tallet må være mellom 0-52.</Alert>
+                : null
+            }
             <Box
                 sx={{
                     width:'95%',
