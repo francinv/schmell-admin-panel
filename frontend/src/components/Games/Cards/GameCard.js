@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { selectGames } from '../../../features/selectors';
 import { useSelector } from 'react-redux';
 import { getCount, getCountOfQuestions } from '../../../utils/gameUtil';
+import DeleteDialog from '../CustomComponents/DeleteDialog';
 
 const actionDispatch = (dispatch) => ({
     setSelectedGame: (query) => dispatch(setSelectedGame(query)),
@@ -17,6 +18,12 @@ const actionDispatch = (dispatch) => ({
 const GameCard = ({game, setStage}) => {
     const { setSelectedGame } = actionDispatch(useAppDispatch());
     const { deleteGame } = actionDispatch(useAppDispatch());
+
+    const [open, setOpen] = useState(false);
+
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
+    }
 
     const [buttonStyle, setButtonStyle] = useState(
         {
@@ -85,7 +92,7 @@ const GameCard = ({game, setStage}) => {
                 }}
             >
                 <H2 className="Game_CARD_Title" sx={{marginLeft:'auto', marginRight: 'auto'}}>{game.name}</H2>
-                <IconButton onClick={handleDelete} sx={{color:'#141400'}} style={buttonStyle}>
+                <IconButton onClick={handleShow} sx={{color:'#141400'}} style={buttonStyle}>
                     <DeleteIcon style={{fontSize: 24}} />
                 </IconButton>
             </Box>
@@ -119,7 +126,7 @@ const GameCard = ({game, setStage}) => {
                 </Box>
 
             </Box>
-
+            <DeleteDialog open={open} handleShow={handleShow} handleDelete={handleDelete} />
         </Box>
     );
 }

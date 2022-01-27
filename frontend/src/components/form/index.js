@@ -265,6 +265,7 @@ export const CustomDateTimePicker = ({label, onChange, value}) => {
                 <OutlinedInput
                     value={value}
                     onChange={onChange}
+                    required
                     endAdornment={<InputAdornment position='end'><AccessTimeIcon /></InputAdornment>}
                     type='datetime-local'
                     style={{

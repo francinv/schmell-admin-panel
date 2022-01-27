@@ -11,3 +11,12 @@ export function getCount(idGame) {
     }
     return count;
 }
+
+export function resetCreateGame(values) {
+    values.name = '';
+    values.description = '';
+    values.related_questions= true;
+    values.status= 'D';
+    values.release_date= '';
+    return values;
+}

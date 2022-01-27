@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, IconButton, Modal } from "@mui/material";
+import React, { useState } from "react";
+import { Alert, Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../styles/Typography";
@@ -7,6 +7,10 @@ import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField, Radio
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { postGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
+import { resetCreateGame } from "../../utils/gameUtil";
+import { useSelector } from "react-redux";
+import { selectGameError, selectGameStatus } from "../../features/selectors";
+import FileDialog from "./CustomComponents/FileDialog";
 
 const style_container = {
     position: 'absolute',
@@ -29,7 +33,14 @@ const actionDispatch = (dispatch) => ({
 })
 
 const CreateGameForm = ({open, handleClose}) => {
+    const status = useSelector(selectGameStatus);
+    const error = useSelector(selectGameError);
     const { addGame } = actionDispatch(useAppDispatch());
+    const [dialogOpen, setDialogOpen] = useState(false);
+
+    const handleShow = () => {
+        setDialogOpen((wasOpen) => !wasOpen);
+    }
 
     const [values, setValues] = React.useState({
         name: '',
@@ -45,8 +56,7 @@ const CreateGameForm = ({open, handleClose}) => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    const submitData = (event) => {
         var data = new FormData();
         data.append('name', values.name);
         data.append('description', values.description)
@@ -56,7 +66,21 @@ const CreateGameForm = ({open, handleClose}) => {
         data.append('logo', fileState);
         data.append('release_date', values.release_date);
         addGame(data);
-        handleClose();
+        if (status === 'succeeded') {
+            handleClose();
+            setValues(resetCreateGame(values));
+            setFileState('');
+        }
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (fileState === '') {
+            handleShow();
+        }
+        else {
+            submitData(event);
+        }
     }
 
     return (
@@ -148,6 +172,14 @@ const CreateGameForm = ({open, handleClose}) => {
                             value={values.release_date}
                             onChange={handleChange('release_date')}
                         />  
+                        {
+                            status === 'failed'
+                            ?   <Alert>
+                                    <AlertTitle>Server error</AlertTitle>
+                                    {error}
+                                </Alert>
+                            : null
+                        }
                         <Button
                             type="submit"
                             endIcon={<SportsEsportsIcon />}
@@ -168,6 +200,7 @@ const CreateGameForm = ({open, handleClose}) => {
                     </Box>
                     
                 </Box>
+                <FileDialog open={dialogOpen} handleShow={handleShow} dataSubmit={submitData}/>
             </Box>
         </Modal>
 

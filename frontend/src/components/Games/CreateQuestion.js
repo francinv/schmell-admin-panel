@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../features/hooks";
 import { useSelector } from "react-redux";
 import { selectedGame, selectedWeek } from "../../features/selectors";
 import { postQuestion } from "../../features/questions/questionSlice";
+import { resetQuestions } from "../../utils/questionUtil";
 
 const style_container = {
     position: 'absolute',
@@ -45,6 +46,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
         related_question: '',
         phase: '',
         function: '',
+        punishment: '',
         related_week: week.id,
         related_game: game.id
     });
@@ -63,6 +65,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
         }   
         updateGame(temp);
         handleClose();
+        setValues(resetQuestions(values));
     }
 
     return (
@@ -159,6 +162,13 @@ const CreateQuestionForm = ({open, handleClose}) => {
                             placeholder="Skriv inn funksjon..." 
                             onChange={handleChange('function')}
                             value={values.function}
+                            type={"text"}
+                        />
+                        <InputTextField 
+                            label="Straff:" 
+                            placeholder="Skriv inn straff..." 
+                            onChange={handleChange('punishment')}
+                            value={values.punishment}
                             type={"text"}
                         />
                         <Button
