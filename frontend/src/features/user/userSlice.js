@@ -42,6 +42,10 @@ export const UserSlice = createSlice({
                 state.activeUser = action.payload.user
                 localStorage.setItem('access', action.payload.access)
                 localStorage.setItem('refresh', action.payload.refresh)
+                let temp = localStorage.getItem('refresh');
+                if (temp === undefined) {
+                    alert('Could not set refresh token. Try logging out and in.');
+                }
                 state.isLoggedIn = true
             })
             .addCase(logIn.rejected, (state, action) => {
