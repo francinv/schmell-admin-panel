@@ -26,6 +26,12 @@ const GameCard = ({game, setStage}) => {
         setOpen((wasOpen) => !wasOpen);
     }
 
+    const [open, setOpen] = useState(false);
+
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
+    }
+
     const [buttonStyle, setButtonStyle] = useState(
         {
             display:'none',
