@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import { Box, FormControl, IconButton, OutlinedInput } from "@mui/material";
+import { Alert, Box, FormControl, IconButton, OutlinedInput } from "@mui/material";
 import { useAppDispatch } from "../../../features/hooks";
 import { useSelector } from "react-redux";
 import { postWeek } from "../../../features/weeks/weekSlice";
@@ -62,6 +62,7 @@ export const CreateWeekCard = () => {
                         onChange={handleChange('week_number')}
                         placeholder="Uke 1-52" 
                         required
+                        type="number"
                         style={{
                             fontFamily: 'Quicksand',
                             color: '#000',

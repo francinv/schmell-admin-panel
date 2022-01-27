@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, IconButton } from "@mui/material";
+import { Alert, AlertTitle, Box, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import { HeaderContainer } from "../layout/content_header/header";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
@@ -61,6 +61,13 @@ export const QuestionsOverview = ({setStage}) => {
             sx={{ flexGrow: 1, bgcolor:'#F7F8FC', height:'100%'}}
         >
             <HeaderContainer page_title={"Spørsmål"} sub_title={getSubTitle()} button={getButton()}/>
+            { questionsStatus === 'failed'
+                ?   <Alert severity="warning">
+                        <AlertTitle>Noe gikk galt</AlertTitle>
+                        {error}
+                    </Alert>
+                : null
+            }
             <HeaderQuestionsComponent handleOpen={handleOpen} />
             <Box
                 sx={{
