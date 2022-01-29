@@ -13,6 +13,7 @@ export const UpdateSelectStatus = ({value, onChange}) => {
             sx={{
                 width: '70%',
                 height: '29px',
+                marginLeft: 'auto'
             }}
         >
             <Select
@@ -48,6 +49,7 @@ export const UpdateDateTime = ({onChange, value}) => {
             sx={{
                 width: '70%',
                 height: '29px',
+                marginLeft: 'auto',
             }}
         >
             <OutlinedInput
@@ -79,13 +81,14 @@ export const UpdateSelectGame = ({onChange, value, category, label}) => {
 
     if (category === 'G') {
         return(
-            <Box sx={{display:'flex', width: '90%'}}>
+            <Box sx={{display:'flex', width: '95%', marginTop: '0.8rem', marginBottom: '0.8rem'}}>
                 <BODY_BOLD>{label}</BODY_BOLD>
                 <FormControl 
                     fullWidth 
                     sx={{
                         width: '70%',
                         height: '29px',
+                        marginLeft: 'auto'
                     }}
                 >
                     <Select

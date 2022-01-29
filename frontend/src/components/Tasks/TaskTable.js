@@ -5,7 +5,7 @@ import { Avatar, Box, makeStyles, Table, TableBody, TableCell, TableContainer, T
 import { styled } from '@mui/system';
 import { BODY_BOLD, CARD_TEXT } from '../styles/Typography';
 import { getCategory, getDate, getPriority, getTime, getUpdatedTime } from '../../utils/taskUtil';
-import { resetStatus, setP, setPageSize, setSelected } from '../../features/tasks/taskSlice';
+import { resetStatus, setP, setPageSize } from '../../features/tasks/taskSlice';
 import { useAppDispatch } from '../../features/hooks';
 import TaskDetail from './TaskDetail';
 
@@ -27,18 +27,18 @@ export const DTableCell = styled(TableCell)(({theme}) => ({
 const actionDispatch = (dispatch) => ({
     setP: (query) => dispatch(setP(query)),
     setPageSize: (query) => dispatch(setPageSize(query)),
-    resetStatus: () => dispatch(resetStatus()),
-    setSelected: (query) => dispatch(setSelected(query))
+    resetStatus: () => dispatch(resetStatus())
 })
 const TaskTable = () => {
     const [open, setOpen] = useState(false);
+    const [selectedTask, setSelectedTask] = useState('');
     const handleShow = () => {
         setOpen((wasOpen) => !wasOpen);
+
     }
     const { setP } = actionDispatch(useAppDispatch());
     const { setPageSize } = actionDispatch(useAppDispatch());
     const { resetStatus } = actionDispatch(useAppDispatch());
-    const { setSelected } = actionDispatch(useAppDispatch());
     const tasks = useSelector(selectTasks);
     const count = useSelector(selectTaskCount);
     const page_size = useSelector(selectPageSize);
@@ -56,7 +56,7 @@ const TaskTable = () => {
     };
 
     const handleClick = (task) => {
-        setSelected(task);
+        setSelectedTask(task);
         handleShow();
     }
 
@@ -137,7 +137,7 @@ const TaskTable = () => {
                     </TableFooter>  
                 </Table>
             </TableContainer>
-            <TaskDetail open={open} handleShow={handleShow} />
+            <TaskDetail open={open} handleShow={handleShow} task={selectedTask}/>
         </Box>
     )
 }

@@ -55,6 +55,14 @@ export const postTask = createAsyncThunk('task/postTask', async (data) => {
     return response;
 });
 
+export const updateTask = createAsyncThunk('task/updateTask', async (content) => {
+    const url = `task/${content.id}/`;
+    const axe = axiosService.put(url, content.data);
+    const response = await axe.then(res => res.data);
+    axe.catch(res => console.log(res));
+    return response;
+})
+
 export const TaskSlice = createSlice({
     name: 'task',
     initialState,
@@ -107,6 +115,16 @@ export const TaskSlice = createSlice({
                 state.status = 'succeeded'
             })
             .addCase(postTask.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(updateTask.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(updateTask.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+            })
+            .addCase(updateTask.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })

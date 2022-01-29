@@ -55,8 +55,8 @@ const CreateTaskForm = ({open, handleShow}) => {
         event.preventDefault();
         values.user_id = alignment;
         addTask(values);
-        resetTasks();
         handleShow();
+        resetTasks();
     }
 
     return (

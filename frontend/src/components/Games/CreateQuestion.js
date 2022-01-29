@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../features/hooks";
 import { useSelector } from "react-redux";
 import { postQuestion } from "../../features/questions/questionSlice";
 import { selectedWeek } from "../../features/weeks/weekSelectors";
+import { selectedGame } from "../../features/games/gameSelectors";
 
 const style_container = {
     position: 'absolute',
