@@ -60,7 +60,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('id', 'date', 'title', 'description', 'status', 'deadline', 'category', 'priority', 'responsible', 'related_game', 'user_id', 'updated')
-
+        
 #Comment serializer
 class CommentSerializer(serializers.ModelSerializer):
     written_by = UserSerializer(read_only=True)
