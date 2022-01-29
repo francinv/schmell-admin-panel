@@ -14,6 +14,7 @@ import { selectedGame } from "../../features/games/gameSelectors";
 import { addCountByGame, resetStatistics } from "../../features/statistics/statisticSlice";
 import { resetQuestions } from "../../utils/questionUtil";
 import { selectedWeek } from "../../features/weeks/weekSelectors";
+import { selectedGame } from "../../features/games/gameSelectors";
 
 const style_container = {
     position: 'absolute',
