@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box, Button, FormControl, IconButton, InputBase, MenuItem, Select } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectAccessToken, selectedGame } from "../../../features/selectors";
 import { BODY_BOLD, CARD_TEXT } from "../../styles/Typography";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -10,6 +9,7 @@ import { ImageUploadChange, InputTextAreaDescription } from "../../form";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useAppDispatch } from "../../../features/hooks";
 import { putStatus, updateGame } from '../../../features/games/gameSlice';
+import { selectedGame } from '../../../features/games/gameSelectors';
 
 const actionDispatch = (dispatch) => ({
     editStatus: (query) => dispatch(putStatus(query)),

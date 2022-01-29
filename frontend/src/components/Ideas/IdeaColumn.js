@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Avatar, Box } from "@mui/material";
 import { CARD_TEXT, H2 } from "../styles/Typography";
 import { useSelector } from "react-redux";
-import { selectDesignIdeas, selectDevIdeas, selectGameIdeas, selectVariousIdeas } from "../../features/selectors";
+import { selectGameIdeas, selectDevIdeas, selectDesignIdeas, selectVariousIdeas } from '../../features/ideas/ideaSelectors';
 
 export const IdeaColumnComp = ({categoryTitle, last}) => {
     const gameIdeas = useSelector(selectGameIdeas);

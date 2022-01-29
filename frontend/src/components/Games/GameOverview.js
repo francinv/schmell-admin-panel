@@ -4,10 +4,10 @@ import { HeaderContainer } from "../layout/content_header/header";
 import CreateGameForm from "./CreateGame";
 import GameCard from "./Cards/GameCard";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGames, selectGameStatus } from "../../features/selectors";
 import { CreateGameCard } from "./CustomComponents/CreateGameCard";
 import { sortGames } from "../../utils/sortUtil";
 import { fetchGames } from "../../features/games/gameSlice";
+import { selectGames, selectGameStatus } from "../../features/games/gameSelectors";
 
 export const GameOverview = ({setStage}) => {
     const games = useSelector(selectGames);

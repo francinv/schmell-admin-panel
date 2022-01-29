@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, FormControl, MenuItem, Select, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectActiveUser } from '../../features/selectors';
+import { selectActiveUser } from '../../features/user/userSelectors';
 import { postIdea } from '../../features/ideas/ideaSlice';
 import { useAppDispatch } from "../../features/hooks";
 

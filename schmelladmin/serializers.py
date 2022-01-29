@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from schmelladmin.models import Conversation, Game, Idea, Question, Task, User, Week, Comment
+from schmelladmin.models import Game, Idea, Question, Task, User, Week, Comment
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
@@ -59,16 +59,12 @@ class TaskSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='responsible', write_only=True)
     class Meta:
         model = Task
-        fields = ('id', 'date', 'title', 'description', 'status', 'deadline', 'category', 'priority', 'responsible', 'related_game', 'user_id')
-
-#Conversation serializer
-class ConversationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Conversation
-        fields = ('id', 'related_task')
-
+        fields = ('id', 'date', 'title', 'description', 'status', 'deadline', 'category', 'priority', 'responsible', 'related_game', 'user_id', 'updated')
+        
 #Comment serializer
 class CommentSerializer(serializers.ModelSerializer):
+    written_by = UserSerializer(read_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='written_by', write_only=True)
     class Meta:
         model = Comment
-        fields = ('id', 'date', 'comment', 'written_by', 'related_conversation')
+        fields = ('id', 'date', 'comment', 'written_by', 'related_task', 'user_id')

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, IconButton} from "@mui/material";
 import { useSelector } from "react-redux";
-import { selectedGame, selectWeeks, selectWeeksStatus } from "../../features/selectors";
 import { HeaderContainer } from "../layout/content_header/header";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { CARD_TEXT } from "../styles/Typography";
@@ -10,6 +9,8 @@ import { CreateWeekCard } from "./CustomComponents/CreateWeekCard";
 import { sortWeeks } from "../../utils/sortUtil";
 import { useAppDispatch } from "../../features/hooks";
 import { fetchWeeks, resetWeek } from "../../features/weeks/weekSlice";
+import { selectedGame } from "../../features/games/gameSelectors";
+import { selectWeeks, selectWeeksStatus } from "../../features/weeks/weekSelectors";
 
 
 const actionDispatch = (dispatch) => ({

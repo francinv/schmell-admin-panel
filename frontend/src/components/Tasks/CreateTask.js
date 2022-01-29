@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../styles/Typography";
-import { InputTextArea, InputTextField } from "../form";
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { updateGame } from "../../features/games/gameSlice";
+import { CustomDateTimePicker, InputTextArea, InputTextField } from "../form";
 import { useAppDispatch } from "../../features/hooks";
+import { postTask, resetStatus } from "../../features/tasks/taskSlice";
 import { useSelector } from "react-redux";
-import { postQuestion } from "../../features/questions/questionSlice";
-import { selectedWeek } from "../../features/weeks/weekSelectors";
-import { selectedGame } from "../../features/games/gameSelectors";
+import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
+import { SelectCategory, SelectRelatedGame, SelectStatus, TogglePerson, TogglePriority } from "../form/Task";
 
 const style_container = {
     position: 'absolute',
@@ -29,25 +27,24 @@ const style_container = {
 };
 
 const actionDispatch = (dispatch) => ({
-    postQuestion: (query) => dispatch(postQuestion(query)),
-    updateGame: (query) => dispatch(updateGame(query))
+    addTask: (query) => dispatch(postTask(query)),
+    resetTasks: (query) => dispatch(resetStatus(query))
 })
 
-const CreateQuestionForm = ({open, handleClose}) => {
-    const week = useSelector(selectedWeek);
-    const game = useSelector(selectedGame);
-    const { postQuestion } = actionDispatch(useAppDispatch());
-    const { updateGame } = actionDispatch(useAppDispatch());
+const CreateTaskForm = ({open, handleShow}) => {
+    const { addTask } = actionDispatch(useAppDispatch());
+    const { resetTasks } = actionDispatch(useAppDispatch());
+    const [alignment, setAlignment] = useState('');
 
-    const [values, setValues] = React.useState({
-        type: '',
-        question_desc: '',
-        hint: '',
-        related_question: '',
-        phase: '',
-        function: '',
-        related_week: week.id,
-        related_game: game.id
+    const [values, setValues] = useState({
+        title: '',
+        description: '',
+        status: 'P',
+        deadline: '',
+        category: '',
+        priority: '',
+        user_id: '',
+        related_game: '',
     });
 
     const handleChange = (prop) => (event) => {
@@ -56,20 +53,16 @@ const CreateQuestionForm = ({open, handleClose}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        postQuestion(values);
-        const today = new Date().toISOString().split('T')[0];
-        const temp = {
-            content: today,
-            id: game.id,
-        }   
-        updateGame(temp);
-        handleClose();
+        values.user_id = alignment;
+        addTask(values);
+        handleShow();
+        resetTasks();
     }
 
     return (
         <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleShow}
         >
             <Box sx={style_container}>
                 <Box 
@@ -81,7 +74,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
                     }}
                 >   
                     <IconButton
-                        onClick={handleClose}
+                        onClick={handleShow}
                         sx={{color:'#141400'}}
                     >
                         <CloseIcon style={{fontSize: 30}} />
@@ -95,7 +88,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
                         marginRight: 'auto',
                     }}
                 >
-                    <H1>Opprett spørsmål</H1>
+                    <H1>Opprett oppgave</H1>
                 </Box>
                 <Box
                     sx={{
@@ -123,48 +116,51 @@ const CreateQuestionForm = ({open, handleClose}) => {
                         onSubmit={handleSubmit}
                     >
                         <InputTextField 
-                            label="Type:" 
-                            placeholder="Skriv inn type spørsmål..." 
-                            onChange={handleChange('type')}
-                            value={values.type}
-                            type={"text"}
+                            label="Tittel" 
+                            placeholder="Skriv inn tittel.." 
+                            onChange={handleChange('title')}
+                            value={values.title}
                         />
                         <InputTextArea
-                            label="Spørsmål:"
-                            placeholder="Skriv inn spørsmålet... "
-                            value={values.question_desc}
-                            onChange={handleChange('question_desc')}
+                            label="Beskrivelse"
+                            placeholder="Beskriv oppgaven..."
+                            value={values.description}
+                            onChange={handleChange('description')}
                         />
-                        <InputTextArea
-                            label="Hint:"
-                            placeholder="Skriv inn hint... "
-                            value={values.hint}
-                            onChange={handleChange('hint')}
+                        <SelectStatus
+                            label="Status:"
+                            value={values.status}
+                            onChange={handleChange('status')}
                         />
-                        <InputTextField 
-                            label="Relatert til:" 
-                            placeholder="Skriv inn id på relatert spørsmål..." 
-                            onChange={handleChange('related_question')}
-                            value={values.related_question}
-                            type={"text"}
+                        <CustomDateTimePicker 
+                            label="Når er fristen?"
+                            value={values.deadline}
+                            onChange={handleChange('deadline')}
+                        />  
+                        <SelectCategory 
+                            label="Velg kategori:"
+                            value={values.category}
+                            onChange={handleChange('category')}
                         />
-                        <InputTextField 
-                            label="Fase:" 
-                            placeholder="Skriv inn fase..." 
-                            onChange={handleChange('phase')}
-                            value={values.phase}
-                            type={"number"}
+                        <TogglePriority
+                            label="Velg prioritet:"
+                            value={values.priority}
+                            onChange={handleChange('priority')}
                         />
-                        <InputTextField 
-                            label="Funksjon:" 
-                            placeholder="Skriv inn funksjon..." 
-                            onChange={handleChange('function')}
-                            value={values.function}
-                            type={"text"}
+                        <TogglePerson
+                            label="Hvem er ansvarlig?"
+                            value={alignment}
+                            setValue={setAlignment}
+                        />
+                        <SelectRelatedGame
+                            label="Velg relatert spill:"
+                            value={values.related_game}
+                            onChange={handleChange('related_game')}
+                            category={values.category}
                         />
                         <Button
                             type="submit"
-                            endIcon={<SportsEsportsIcon />}
+                            endIcon={<AddCircleOutlineOutlined />}
                             sx={{
                                 bgcolor: '#e0e000',
                                 color: '#141400',
@@ -180,6 +176,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
                             }}
                         >Submit</Button>
                     </Box>
+                    
                 </Box>
             </Box>
         </Modal>
@@ -187,4 +184,4 @@ const CreateQuestionForm = ({open, handleClose}) => {
     )
 }
 
-export default CreateQuestionForm;
+export default CreateTaskForm;

@@ -5,7 +5,6 @@ import { CARD_TEXT, H2 } from '../../styles/Typography';
 import { deleteGame, setCount, setGames, setSelectedGame, setWeeks } from '../../../features/games/gameSlice';
 import { useAppDispatch } from '../../../features/hooks';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { selectGames } from '../../../features/selectors';
 import { useSelector } from 'react-redux';
 import { getCount, getCountOfQuestions } from '../../../utils/gameUtil';
 

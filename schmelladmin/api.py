@@ -1,7 +1,7 @@
-from schmelladmin.models import Comment, Conversation, Game, Idea, Question, Task, User, Week
+from schmelladmin.models import Comment, Game, Idea, Question, Task, User, Week
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
-from .serializers import CommentSerializer, ConversationSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer
+from .serializers import CommentSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from django.db.models import Q
@@ -82,9 +82,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         status = self.request.query_params.get('status')
         priority = self.request.query_params.get('priority')
         responsible = self.request.query_params.get('responsible')
-        if ((status is None) or (priority is None) or (responsible is None)) and (sort == 'PUBL_DESC'):
-           queryset = queryset.order_by('-date')
-        elif (sort is not None and status is not None):
+        if (sort is not None and status is not None):
             queryset = switchSort(queryset, sort)
             queryset = queryset.filter(status = status)
         elif (sort is not None and responsible is not None):
@@ -107,26 +105,15 @@ class UserViewSet(viewsets.ModelViewSet):
         queryset = User.objects.all()
         return queryset
 
-class ConversationViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = ConversationSerializer
-
-    def get_queryset(self):
-        queryset = Conversation.objects.all()
-        related_task = self.request.query_params.get('task')
-        if related_task is not None:
-            queryset = queryset.filter(related_task=related_task)
-        return queryset
-
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CommentSerializer
 
     def get_queryset(self):
         queryset = Comment.objects.all()
-        related_conversation = self.request.query_params.get('conversation')
-        if related_conversation is not None:
-            queryset = queryset.filter(related_conversation = related_conversation) 
+        related_task = self.request.query_params.get('task')
+        if related_task is not None:
+            queryset = queryset.filter(related_task = related_task) 
             queryset = queryset.order_by('date')
         
         return queryset
@@ -169,4 +156,10 @@ def switchSort(queryset, sort):
         queryset = queryset.order_by('-deadline')
     elif sort == 'DEADLINE_ASC':
         queryset = queryset.order_by('deadline')
+    elif sort == 'PUBL_DESC':
+        queryset = queryset.order_by('-date')
+    elif sort == 'UPDT_DESC':
+        queryset = queryset.order_by('-updated')
+    elif sort == 'UPDT_ASC': 
+        queryset = queryset.order_by('updated')
     return queryset

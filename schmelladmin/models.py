@@ -96,15 +96,13 @@ class Task(models.Model):
     priority = models.IntegerField(choices=PRIORITIES)
     responsible = models.ForeignKey(User, on_delete=models.CASCADE)
     related_game = models.ForeignKey(Game, on_delete=models.CASCADE, blank=True, null=True)
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self): 
             return self.title
-
-class Conversation(models.Model):
-    related_task = models.OneToOneField(Task, on_delete=models.CASCADE)
 
 class Comment(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=500)
     written_by = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    related_conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
+    related_task = models.ForeignKey(Task, on_delete=models.CASCADE)

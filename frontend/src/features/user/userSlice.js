@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 import axiosService from '../../utils/axios';
 
 const initialState = {
     activeUser: {},
+    allUsers: [],
     isLoggedIn: false,
     status: 'idle',
     error: null
@@ -15,6 +15,13 @@ export const logIn = createAsyncThunk('auth/login', async (data) => {
     axe.catch(res => console.log(res));
     return response;
 });
+
+export const fetchUsers = createAsyncThunk('user/', async () => {
+    const axe = axiosService.get('user/');
+    const response = await axe.then(res => res.data);
+    axe.catch(res => console.log(res));
+    return response;
+})
 
 export const UserSlice = createSlice({
     name: 'user',
@@ -45,6 +52,18 @@ export const UserSlice = createSlice({
                 state.isLoggedIn = true
             })
             .addCase(logIn.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(fetchUsers.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchUsers.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.allUsers = action.payload;
+                state.isLoggedIn = true
+            })
+            .addCase(fetchUsers.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })
