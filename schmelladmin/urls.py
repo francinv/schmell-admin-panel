@@ -1,5 +1,6 @@
 from rest_framework import routers, urlpatterns
-from .api import CommentViewSet, IdeaViewSet, LoginViewSet, RefreshViewSet, TaskViewSet, UserViewSet, GameViewSet, QuestionViewSet, WeekViewSet
+from .api import CommentViewSet, IdeaViewSet, LoginViewSet, RefreshViewSet, StaticsViewSet, TaskViewSet, UserViewSet, GameViewSet, QuestionViewSet, WeekViewSet
+from django.urls import path
 
 router = routers.DefaultRouter()
 router.register('game', GameViewSet, 'weekgame')
@@ -12,4 +13,8 @@ router.register('idea', IdeaViewSet, 'ideas')
 router.register('task', TaskViewSet, 'tasks')
 router.register('comment', CommentViewSet, 'comments')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('statistics', StaticsViewSet.as_view(), name='statistics_view')
+]
+
+urlpatterns += router.urls

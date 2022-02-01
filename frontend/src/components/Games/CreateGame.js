@@ -7,6 +7,7 @@ import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField, Radio
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { postGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
+import { resetStatistics } from '../../features/statistics/statisticSlice';
 
 const style_container = {
     position: 'absolute',
@@ -26,10 +27,12 @@ const style_container = {
 
 const actionDispatch = (dispatch) => ({
     addGame: (query) => dispatch(postGame(query)),
+    resetStatistics: () => dispatch(resetStatistics())
 })
 
 const CreateGameForm = ({open, handleClose}) => {
     const { addGame } = actionDispatch(useAppDispatch());
+    const { resetStatistics } = actionDispatch(useAppDispatch());
 
     const [values, setValues] = React.useState({
         name: '',
@@ -57,6 +60,7 @@ const CreateGameForm = ({open, handleClose}) => {
         data.append('release_date', values.release_date);
         addGame(data);
         handleClose();
+        resetStatistics();
     }
 
     return (

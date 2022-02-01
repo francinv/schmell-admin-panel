@@ -5,13 +5,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import { BODY_BOLD, CARD_TEXT, H1, H3, H4 } from "../styles/Typography";
 import { useAppDispatch } from "../../features/hooks";
 import { resetStatus, updateTask } from "../../features/tasks/taskSlice";
-import { getCategory, getFullDate, getPriority } from "../../utils/taskUtil";
+import { getCategory, getPriority } from "../../utils/taskUtil";
 import { UpdateDateTime, UpdateSelectGame, UpdateSelectStatus } from "../form/Task/TaskDetail";
 import { getAllowedDate } from "../../utils/dateUtil";
-import { fetchComments, postComment, resetCommentStatus } from "../../features/comments/commentSlice";
-import { selectComments, selectCommentStatus } from "../../features/comments/commentSelectors";
+import { postComment } from "../../features/comments/commentSlice";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/user/userSelectors";
+import CommentBox from "./CommentBox";
+import { addSolved, resetStatistics } from "../../features/statistics/statisticSlice";
 
 const style_container = {
     position: 'absolute',
@@ -33,8 +34,8 @@ const actionDispatch = (dispatch) => ({
     updateTask: (query) => dispatch(updateTask(query)),
     resetTasks: (query) => dispatch(resetStatus(query)),
     postComment: (query) => dispatch(postComment(query)),
-    fetchComments: (query) => dispatch(fetchComments(query)),
-    resetComments: () => dispatch(resetCommentStatus())
+    resetStatistics: () => dispatch(resetStatistics()),
+    addSolved: () => dispatch(addSolved())
 })
 
 const CustomTextField = styled(TextField)({
@@ -58,11 +59,9 @@ const TaskDetail = ({open, handleShow, task}) => {
     const { updateTask } = actionDispatch(useAppDispatch());
     const { resetTasks } = actionDispatch(useAppDispatch());
     const { postComment } = actionDispatch(useAppDispatch());
-    const { fetchComments } = actionDispatch(useAppDispatch());
-    const { resetComments } = actionDispatch(useAppDispatch());
+    const { resetStatistics } = actionDispatch(useAppDispatch());
+    const { addSolved } = actionDispatch(useAppDispatch());
     const user = useSelector(selectActiveUser);
-    const comments = useSelector(selectComments);
-    const commentStatus = useSelector(selectCommentStatus);
     const [tempComment, setTempComment] = useState('');
 
     const [values, setValues] = useState({
@@ -88,10 +87,6 @@ const TaskDetail = ({open, handleShow, task}) => {
                 user_id: task.responsible.id,
                 related_game: task.related_game
             })
-            if (commentStatus === 'idle') {
-                fetchComments(task.id)
-            }
-
         }
     }, [open, task]);
     
@@ -101,6 +96,9 @@ const TaskDetail = ({open, handleShow, task}) => {
             case 'status':
                 values.status = event.target.value;
                 setValues({ ...values, [prop]: event.target.value });
+                if (event.target.value === 'F') {
+                    addSolved();
+                }
                 break;
             case 'deadline':
                 values.deadline = event.target.value;
@@ -117,6 +115,7 @@ const TaskDetail = ({open, handleShow, task}) => {
         }
         updateTask(temp);
         resetTasks();
+        resetStatistics();
     };
 
     const handleCommentChange = (event) => {
@@ -138,10 +137,7 @@ const TaskDetail = ({open, handleShow, task}) => {
         return (
             <Modal
                 open={open}
-                onClose={() => {
-                    handleShow();
-                    resetComments();
-                }}
+                onClose={handleShow}
             >
                 <Box sx={style_container}>
                     <Box 
@@ -153,10 +149,7 @@ const TaskDetail = ({open, handleShow, task}) => {
                         }}
                     >   
                         <IconButton
-                            onClick={() => {
-                                handleShow();
-                                resetComments();
-                            }}
+                            onClick={handleShow}
                             sx={{color:'#141400'}}
                         >
                             <CloseIcon style={{fontSize: 30}} />
@@ -226,35 +219,7 @@ const TaskDetail = ({open, handleShow, task}) => {
                                             alignItems: 'center',
                                         }}
                                     > 
-                                        {(comments.map((comment)=> (
-                                            <Box
-                                                sx={{
-                                                    width: '90%',
-                                                    marginTop: '0.2rem',
-                                                    marginBottom: '0.2rem'
-                                                }}
-                                                key={comment.id}
-                                            >
-                                                <Typography sx={{fontSize: 8, color: '#808080'}}>{getFullDate(comment.date)}</Typography>
-                                                <Box
-                                                    sx={{
-                                                        width: '100%',
-                                                        display: 'flex',
-                                                        bgcolor: '#fff',
-                                                        borderRadius: '8px',
-                                                        alignItems: 'center',
-                                                        padding: '0.2rem 0.5rem 0.2rem 0.2rem',
-                                                    }}
-                                                >
-                                                    <Avatar 
-                                                        alt={comment.written_by.username}
-                                                        src={comment.written_by.profile_picture}
-                                                        sx={{width: 25, height: 25}}
-                                                    />
-                                                    <Typography sx={{fontSize: 12, marginLeft:'auto'}}>{comment.comment}</Typography>
-                                                </Box>
-                                            </Box>
-                                        )))}
+                                       <CommentBox /> 
                                     </Box>
                                 </Paper>
                                 <Box

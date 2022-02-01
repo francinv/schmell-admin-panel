@@ -6,6 +6,7 @@ import WeekReducer from '../features/weeks/weekSlice';
 import IdeaReducer from '../features/ideas/ideaSlice';
 import TaskReducer from '../features/tasks/taskSlice';
 import CommentReducer from '../features/comments/commentSlice';
+import StatisticReducer from '../features/statistics/statisticSlice';
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     week: WeekReducer,
     idea: IdeaReducer,
     task: TaskReducer,
-    comment: CommentReducer
+    comment: CommentReducer,
+    statistic: StatisticReducer
   },
 });
 

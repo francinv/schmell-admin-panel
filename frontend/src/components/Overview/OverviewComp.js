@@ -6,37 +6,41 @@ import { useSelector } from 'react-redux';
 import { fetchQuestions } from '../../features/questions/questionSlice';
 import { useAppDispatch } from '../../features/hooks';
 import { fetchUsers } from '../../features/user/userSlice';
-import { selectQuestionStatusAll } from '../../features/questions/questionSelectors';
 import { fetchGames } from '../../features/games/gameSlice';
+import HeaderCards from './HeaderCards';
+import { selectStatisticStatus } from '../../features/statistics/statisticSelectors';
+import { fetchStatistics } from '../../features/statistics/statisticSlice';
+import DayStatistics from './DayStatistics';
+import TaskOverviewSection from './TaskOverviewSection';
 
 const actionDispatch = (dispatch) => ({
-    fetchQuestions: () => dispatch(fetchQuestions()),
-    fetchUsers: () => dispatch(fetchUsers()),
-    fetchGames: () => dispatch(fetchGames())
+    fetchGames: () => dispatch(fetchGames()),
+    fetchStatistics: () => dispatch(fetchStatistics())
 })
 
 const OverviewComp = ({activeTab, setActiveTab}) => {
-    const questionStatus = useSelector(selectQuestionStatusAll);
-    const { fetchQuestions } = actionDispatch(useAppDispatch());
-    const { fetchUsers } = actionDispatch(useAppDispatch());
+    const staticsStatus = useSelector(selectStatisticStatus);
+    const { fetchStatistics } = actionDispatch(useAppDispatch());
     const { fetchGames } = actionDispatch(useAppDispatch());
     
     useEffect(() => {
-        if (questionStatus === 'idle') {
-            fetchQuestions();
-            fetchUsers();
+        if (staticsStatus === 'idle') {
             fetchGames();
-          }
-    }, [questionStatus])
+            fetchStatistics();
+        }
+    }, [staticsStatus])
 
     return (
         <Box sx={{display:'flex', height: '100vh'}}>
+            <SideBar activeTab={activeTab} setActiveTab={setActiveTab}/>
             <Box 
                 component="main"
                 sx={{ flexGrow: 1, bgcolor:'#F7F8FC', height:'100%'}}
             >
-                    <SideBar activeTab={activeTab} setActiveTab={setActiveTab}/>
-                    <HeaderContainer page_title={"Oversikt"} sub_title={undefined}/>
+                <HeaderContainer page_title={"Oversikt"} sub_title={undefined}/>
+                <HeaderCards /> 
+                <DayStatistics /> 
+                <TaskOverviewSection setActiveTab={setActiveTab} />
             </Box>
         </Box>
     );

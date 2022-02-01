@@ -10,11 +10,13 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { QuestionTextArea, TextInputQuestion } from '../../form';
 import { deleteQuestion, updateQuestion } from '../../../features/questions/questionSlice';
 import { selectedGame } from '../../../features/games/gameSelectors';
+import { subCountByGame } from '../../../features/statistics/statisticSlice';
 
 const actionDispatch = (dispatch) => ({
     deleteQuestion: (query) => dispatch(deleteQuestion(query)),
     updateQuestion: (query) => dispatch(updateQuestion(query)),
-    updateGame: (query) => dispatch(updateGame(query))
+    updateGame: (query) => dispatch(updateGame(query)),
+    subCountByGame: (query) => dispatch(subCountByGame(query))
 })
 
 const QuestionCard = ({question}) => {
@@ -32,9 +34,12 @@ const QuestionCard = ({question}) => {
 
 const SimpleQuestionDisplay = ({question, setStateChangeQuestion}) => {
     const { deleteQuestion } = actionDispatch(useAppDispatch());
+    const { subCountByGame } = actionDispatch(useAppDispatch());
+    const game = useSelector(selectedGame);
 
     const handleDelete = () => {
         deleteQuestion(question.id);
+        subCountByGame(game.id);
     }
 
     return (

@@ -6,6 +6,7 @@ import { styled } from '@mui/system';
 import { BODY_BOLD, CARD_TEXT } from '../styles/Typography';
 import { getCategory, getDate, getPriority, getTime, getUpdatedTime } from '../../utils/taskUtil';
 import { resetStatus, setP, setPageSize } from '../../features/tasks/taskSlice';
+import { fetchComments } from '../../features/comments/commentSlice';
 import { useAppDispatch } from '../../features/hooks';
 import TaskDetail from './TaskDetail';
 
@@ -27,7 +28,8 @@ export const DTableCell = styled(TableCell)(({theme}) => ({
 const actionDispatch = (dispatch) => ({
     setP: (query) => dispatch(setP(query)),
     setPageSize: (query) => dispatch(setPageSize(query)),
-    resetStatus: () => dispatch(resetStatus())
+    resetStatus: () => dispatch(resetStatus()),
+    fetchComments: (query) => dispatch(fetchComments(query))
 })
 const TaskTable = () => {
     const [open, setOpen] = useState(false);
@@ -39,6 +41,7 @@ const TaskTable = () => {
     const { setP } = actionDispatch(useAppDispatch());
     const { setPageSize } = actionDispatch(useAppDispatch());
     const { resetStatus } = actionDispatch(useAppDispatch());
+    const { fetchComments } = actionDispatch(useAppDispatch());
     const tasks = useSelector(selectTasks);
     const count = useSelector(selectTaskCount);
     const page_size = useSelector(selectPageSize);
@@ -57,6 +60,7 @@ const TaskTable = () => {
 
     const handleClick = (task) => {
         setSelectedTask(task);
+        fetchComments(task.id);
         handleShow();
     }
 

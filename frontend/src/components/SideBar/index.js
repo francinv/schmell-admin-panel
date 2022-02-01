@@ -137,7 +137,7 @@ const SideBar = ({activeTab, setActiveTab}) => {
                 </ListItemIcon>
                 <CustomText>Spill</CustomText>
             </CustomListItem>
-            <CustomListItem 
+            {/* <CustomListItem 
                 button 
                 key="statistics" 
                 sx={getStyling('S')}
@@ -148,7 +148,7 @@ const SideBar = ({activeTab, setActiveTab}) => {
                     <EqualizerIcon htmlColor="#e0e000"/>
                 </ListItemIcon>
                 <CustomText>Statistikk</CustomText>
-            </CustomListItem>
+            </CustomListItem> */}
         </List>
         <Divider />
         <List>

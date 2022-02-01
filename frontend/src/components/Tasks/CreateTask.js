@@ -6,7 +6,7 @@ import { H1 } from "../styles/Typography";
 import { CustomDateTimePicker, InputTextArea, InputTextField } from "../form";
 import { useAppDispatch } from "../../features/hooks";
 import { postTask, resetStatus } from "../../features/tasks/taskSlice";
-import { useSelector } from "react-redux";
+import { resetStatistics } from '../../features/statistics/statisticSlice';
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
 import { SelectCategory, SelectRelatedGame, SelectStatus, TogglePerson, TogglePriority } from "../form/Task";
 
@@ -28,12 +28,14 @@ const style_container = {
 
 const actionDispatch = (dispatch) => ({
     addTask: (query) => dispatch(postTask(query)),
-    resetTasks: (query) => dispatch(resetStatus(query))
+    resetTasks: (query) => dispatch(resetStatus(query)),
+    resetStatistics: () => dispatch(resetStatistics())
 })
 
 const CreateTaskForm = ({open, handleShow}) => {
     const { addTask } = actionDispatch(useAppDispatch());
     const { resetTasks } = actionDispatch(useAppDispatch());
+    const { resetStatistics } = actionDispatch(useAppDispatch());
     const [alignment, setAlignment] = useState('');
 
     const [values, setValues] = useState({
@@ -57,6 +59,7 @@ const CreateTaskForm = ({open, handleShow}) => {
         addTask(values);
         handleShow();
         resetTasks();
+        resetStatistics();
     }
 
     return (
