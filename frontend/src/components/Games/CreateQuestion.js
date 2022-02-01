@@ -15,6 +15,7 @@ import { addCountByGame, resetStatistics } from "../../features/statistics/stati
 import { resetQuestions } from "../../utils/questionUtil";
 import { selectedWeek } from "../../features/weeks/weekSelectors";
 import { selectedGame } from "../../features/games/gameSelectors";
+import { addCountByGame, resetStatistics } from "../../features/statistics/statisticSlice";
 
 const style_container = {
     position: 'absolute',
@@ -73,6 +74,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
         handleClose();
         addCountByGame(game.id);
         setValues(resetQuestions(values));
+        addCountByGame(game.id);
     }
 
     return (

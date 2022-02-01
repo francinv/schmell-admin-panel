@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { getCount, getCountOfQuestions } from '../../../utils/gameUtil';
 import { resetStatistics } from '../../../features/statistics/statisticSlice';
 import DeleteDialog from '../CustomComponents/DeleteDialog';
+import { resetStatistics } from '../../../features/statistics/statisticSlice';
 
 const actionDispatch = (dispatch) => ({
     setSelectedGame: (query) => dispatch(setSelectedGame(query)),

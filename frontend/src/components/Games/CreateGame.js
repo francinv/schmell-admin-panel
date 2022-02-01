@@ -12,6 +12,7 @@ import { resetCreateGame } from "../../utils/gameUtil";
 import { useSelector } from "react-redux";
 import { selectGameError, selectGameStatus } from "../../features/selectors";
 import FileDialog from "./CustomComponents/FileDialog";
+import { resetStatistics } from '../../features/statistics/statisticSlice';
 
 const style_container = {
     position: 'absolute',
@@ -44,6 +45,7 @@ const CreateGameForm = ({open, handleClose}) => {
     const handleShow = () => {
         setDialogOpen((wasOpen) => !wasOpen);
     }
+    const { resetStatistics } = actionDispatch(useAppDispatch());
 
     const [values, setValues] = React.useState({
         name: '',
@@ -88,6 +90,8 @@ const CreateGameForm = ({open, handleClose}) => {
         else {
             submitData(event);
         }
+        handleClose();
+        resetStatistics();
     }
 
     return (
