@@ -7,13 +7,16 @@ import TaskHeaderComp from "./TasksHeaderComp";
 import { selectP, selectPageSize, selectPriorityState, selectResponsibleState, selectSortState, selectStatusState, selectTasks, selectTaskStatus } from "../../features/tasks/taskSelectors";
 import { fetchTasks } from "../../features/tasks/taskSlice";
 import TaskTable from "./TaskTable";
+import { fetchUsers } from "../../features/user/userSlice";
 
 const actionDispatch = (dispatch) => ({
-    fetchTasks: (query) => dispatch(fetchTasks(query))
+    fetchTasks: (query) => dispatch(fetchTasks(query)),
+    fetchUsers: () => dispatch(fetchUsers())
 })
 
 export const TasksOverview = () => {
     const { fetchTasks } = actionDispatch(useAppDispatch());
+    const { fetchUsers } = actionDispatch(useAppDispatch());
     const sort = useSelector(selectSortState);
     const status = useSelector(selectStatusState);
     const priority = useSelector(selectPriorityState);
@@ -34,6 +37,7 @@ export const TasksOverview = () => {
                 p: p,
             };
             fetchTasks(temp);
+            fetchUsers();
         }
     }, [sort, status, priority, responsible, page_size, p, statusOfRedux])
     

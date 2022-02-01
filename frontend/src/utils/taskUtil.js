@@ -16,7 +16,7 @@ export function getUpdatedTime(date) {
     } else if (diff_day < 1.5) {
         let temp = Math.round(diff_day);
         return `Oppdatert ${temp} dag siden`
-    } else if (diff.day >= 1.5) {
+    } else if (diff_day >= 1.5) {
         let temp = Math.round(diff_day);
         return `Oppdatert ${temp} dager siden`
     }

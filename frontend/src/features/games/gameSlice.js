@@ -92,7 +92,7 @@ export const GameSlice = createSlice({
             })
             .addCase(fetchGames.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.games = state.games.concat(action.payload)
+                state.games = action.payload;
             })
             .addCase(fetchGames.rejected, (state, action) => {
                 state.status = 'failed'

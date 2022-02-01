@@ -7,15 +7,18 @@ import { useAppDispatch } from '../../../features/hooks';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector } from 'react-redux';
 import { getCount, getCountOfQuestions } from '../../../utils/gameUtil';
+import { resetStatistics } from '../../../features/statistics/statisticSlice';
 
 const actionDispatch = (dispatch) => ({
     setSelectedGame: (query) => dispatch(setSelectedGame(query)),
-    deleteGame: (query) => dispatch(deleteGame(query))
+    deleteGame: (query) => dispatch(deleteGame(query)),
+    resetStatistics: () => dispatch(resetStatistics())
 })
 
 const GameCard = ({game, setStage}) => {
     const { setSelectedGame } = actionDispatch(useAppDispatch());
     const { deleteGame } = actionDispatch(useAppDispatch());
+    const { resetStatistics } = actionDispatch(useAppDispatch());
 
     const [buttonStyle, setButtonStyle] = useState(
         {
@@ -46,6 +49,7 @@ const GameCard = ({game, setStage}) => {
 
     const handleDelete = () => {
         deleteGame(game.id);
+        resetStatistics();
     }
 
     const spanStyle = {

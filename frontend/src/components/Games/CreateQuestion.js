@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import { postQuestion } from "../../features/questions/questionSlice";
 import { selectedWeek } from "../../features/weeks/weekSelectors";
 import { selectedGame } from "../../features/games/gameSelectors";
+import { addCountByGame, resetStatistics } from "../../features/statistics/statisticSlice";
 
 const style_container = {
     position: 'absolute',
@@ -30,7 +31,8 @@ const style_container = {
 
 const actionDispatch = (dispatch) => ({
     postQuestion: (query) => dispatch(postQuestion(query)),
-    updateGame: (query) => dispatch(updateGame(query))
+    updateGame: (query) => dispatch(updateGame(query)),
+    addCountByGame: (query) => dispatch(addCountByGame(query)),
 })
 
 const CreateQuestionForm = ({open, handleClose}) => {
@@ -38,6 +40,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
     const game = useSelector(selectedGame);
     const { postQuestion } = actionDispatch(useAppDispatch());
     const { updateGame } = actionDispatch(useAppDispatch());
+    const { addCountByGame } = actionDispatch(useAppDispatch());
 
     const [values, setValues] = React.useState({
         type: '',
@@ -64,6 +67,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
         }   
         updateGame(temp);
         handleClose();
+        addCountByGame(game.id);
     }
 
     return (

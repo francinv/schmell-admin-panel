@@ -14,7 +14,7 @@ export const fetchComments = createAsyncThunk('comment/fetchComments', async (ta
     return response;
 });
 
-export const postComment = createAsyncThunk('task/postTask', async (data) => {
+export const postComment = createAsyncThunk('comment/postComment', async (data) => {
     const url = 'comment/';
     const axe = axiosService.post(url, data)
     const response = await axe.then(res => res.data)

@@ -3,7 +3,7 @@ import LogIn from './LogIn';
 import { useSelector } from 'react-redux';
 import { selectUserIsLoggedIn } from '../features/user/userSelectors';
 import TasksComp from './Tasks/TasksComp';
-import OverviewComp from './Overview';
+import OverviewComp from './Overview/OverviewComp';
 import IdeasComp from './Ideas/IdeasComp';
 import GamesComp from './Games/GameComponent';
 import SettingsComp from './Settings';
