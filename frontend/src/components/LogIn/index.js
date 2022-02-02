@@ -5,12 +5,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { styled } from '@mui/system';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { FormControl, IconButton, InputAdornment, InputLabel, Link, OutlinedInput, TextField } from '@mui/material';
+import { Alert, FormControl, IconButton, InputAdornment, InputLabel, Link, OutlinedInput } from '@mui/material';
 import { logIn } from '../../features/user/userSlice';
 import { useAppDispatch } from '../../features/hooks';
+import { useSelector } from 'react-redux';
+import { selectUserError, selectUserStatus } from '../../features/user/userSelectors';
 
 
 const theme = createTheme({
@@ -29,6 +30,8 @@ const actionDispatch = (dispatch) => ({
 });
 
 export default function LogIn() {
+  const status = useSelector(selectUserStatus);
+  const error = useSelector(selectUserError);
   const [values, setValues] = React.useState({
     password: '',
     username: '',
@@ -200,6 +203,11 @@ export default function LogIn() {
             >
               Logg inn
             </Button>
+            {
+              status === 'failed'
+              ? <Alert severity='error' sx={{marginBottom: '0.5rem'}}>Feil brukernavn eller passord.</Alert>
+              : null
+            }
         </Box>
 
       </Container>

@@ -25,6 +25,7 @@ export const CreateWeekCard = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         addWeek(values);
+        values.week_number = '';
     }
 
     return (
@@ -61,6 +62,7 @@ export const CreateWeekCard = () => {
                         onChange={handleChange('week_number')}
                         placeholder="Uke 1-52" 
                         required
+                        type="number"
                         style={{
                             fontFamily: 'Quicksand',
                             color: '#000',

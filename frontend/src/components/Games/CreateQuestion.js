@@ -9,6 +9,7 @@ import { updateGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
 import { useSelector } from "react-redux";
 import { postQuestion } from "../../features/questions/questionSlice";
+import { resetQuestions } from "../../utils/questionUtil";
 import { selectedWeek } from "../../features/weeks/weekSelectors";
 import { selectedGame } from "../../features/games/gameSelectors";
 import { addCountByGame, resetStatistics } from "../../features/statistics/statisticSlice";
@@ -49,6 +50,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
         related_question: '',
         phase: '',
         function: '',
+        punishment: '',
         related_week: week.id,
         related_game: game.id
     });
@@ -60,7 +62,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         postQuestion(values);
-        const today = new Date().toISOString().split('T')[0];
+        const today = {last_updated: new Date().toISOString().split('T')[0]};
         const temp = {
             content: today,
             id: game.id,
@@ -68,12 +70,13 @@ const CreateQuestionForm = ({open, handleClose}) => {
         updateGame(temp);
         handleClose();
         addCountByGame(game.id);
+        setValues(resetQuestions(values));
     }
 
     return (
         <Modal
-        open={open}
-        onClose={handleClose}
+            open={open}
+            onClose={handleClose}
         >
             <Box sx={style_container}>
                 <Box 
@@ -164,6 +167,13 @@ const CreateQuestionForm = ({open, handleClose}) => {
                             placeholder="Skriv inn funksjon..." 
                             onChange={handleChange('function')}
                             value={values.function}
+                            type={"text"}
+                        />
+                        <InputTextField 
+                            label="Straff:" 
+                            placeholder="Skriv inn straff..." 
+                            onChange={handleChange('punishment')}
+                            value={values.punishment}
                             type={"text"}
                         />
                         <Button

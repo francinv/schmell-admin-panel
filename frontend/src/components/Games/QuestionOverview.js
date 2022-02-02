@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, IconButton } from "@mui/material";
+import { Alert, AlertTitle, Box, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import { HeaderContainer } from "../layout/content_header/header";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
@@ -7,28 +7,33 @@ import { CARD_TEXT } from "../styles/Typography";
 import { HeaderQuestionsComponent } from "./CustomComponents/HeaderContainer";
 import CreateQuestionForm from "./CreateQuestion";
 import QuestionCard from "./Cards/QuestionCard";
-import { fetchQuestionByWeek, resetQuestionByWeek } from "../../features/questions/questionSlice";
+import { fetchQuestions, resetQuestions } from "../../features/questions/questionSlice";
 import { sortGames } from "../../utils/sortUtil";
 import { useAppDispatch } from "../../features/hooks";
 import { selectedGame } from "../../features/games/gameSelectors";
-import { selectQuestionsByWeek, selectQuestionStautsByWeek } from '../../features/questions/questionSelectors';
+import { selectQuestions, selectQuestionsError, selectQuestionStatus } from '../../features/questions/questionSelectors';
 import { selectedWeek } from "../../features/weeks/weekSelectors";
 
 const actionDispatch = (dispatch) => ({
-    getQuestions: (query) => dispatch(fetchQuestionByWeek(query)),
-    resetQuestions: () => dispatch(resetQuestionByWeek())
+    getQuestions: (query) => dispatch(fetchQuestions(query)),
+    resetQuestions: () => dispatch(resetQuestions())
 })
 
 export const QuestionsOverview = ({setStage}) => {
-    const questions = useSelector(selectQuestionsByWeek);
-    const questionsStatus = useSelector(selectQuestionStautsByWeek);
+    const questions = useSelector(selectQuestions);
+    const questionsStatus = useSelector(selectQuestionStatus);
     const week = useSelector(selectedWeek);
     const game = useSelector(selectedGame);
+    const error = useSelector(selectQuestionsError);
+    
     const { getQuestions } = actionDispatch(useAppDispatch());
     const { resetQuestions } = actionDispatch(useAppDispatch());
+
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
+    }
 
     useEffect(() => {
         if (questionsStatus === 'idle') {
@@ -61,7 +66,14 @@ export const QuestionsOverview = ({setStage}) => {
             sx={{ flexGrow: 1, bgcolor:'#F7F8FC', height:'100%'}}
         >
             <HeaderContainer page_title={"Spørsmål"} sub_title={getSubTitle()} button={getButton()}/>
-            <HeaderQuestionsComponent handleOpen={handleOpen} />
+            { questionsStatus === 'failed'
+                ?   <Alert severity="warning">
+                        <AlertTitle>Noe gikk galt</AlertTitle>
+                        {error}
+                    </Alert>
+                : null
+            }
+            <HeaderQuestionsComponent handleOpen={handleShow} />
             <Box
                 sx={{
                     width:'95%',
@@ -77,7 +89,7 @@ export const QuestionsOverview = ({setStage}) => {
                 {(sortGames(questions)).map((question) => (
                     <QuestionCard question={question} key={question.id} />
                 ))}
-                <CreateQuestionForm handleClose={handleClose} open={open} />
+                <CreateQuestionForm handleClose={handleShow} open={open} />
             </Box>
         </Box>
     );

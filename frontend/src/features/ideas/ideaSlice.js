@@ -52,18 +52,20 @@ export const IdeaSlice = createSlice({
             })
             .addCase(fetchIdeas.fulfilled, (state, action) => {
                 state.statusByWeek = 'succeeded'
-                switch (action.payload[0].category) {
-                    case 'G':
-                        state.gameIdeas = action.payload;
-                        break
-                    case 'D':
-                        state.devIdeas = action.payload;
-                        break
-                    case 'W':
-                        state.designIdeas = action.payload;
-                        break
-                    case 'E':
-                        state.variousIdeas = action.payload;
+                if (action.payload.length !== 0) {
+                    switch (action.payload[0].category) {
+                        case 'G':
+                            state.gameIdeas = action.payload;
+                            break
+                        case 'D':
+                            state.devIdeas = action.payload;
+                            break
+                        case 'W':
+                            state.designIdeas = action.payload;
+                            break
+                        case 'E':
+                            state.variousIdeas = action.payload;
+                    }
                 }
             })
             .addCase(fetchIdeas.rejected, (state, action) => {

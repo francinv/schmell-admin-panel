@@ -3,22 +3,18 @@ import axiosService from '../../utils/axios';
 import { deleteObject } from '../../utils/filterUtil';
 
 const initialState = {
-    allQuestions: [],
-    questionsByWeek: [],
+    questions: [] ,
     status: 'idle',
-    statusAll: 'idle',
-    statusByWeek: 'idle',
     error: null
 }
 
-export const fetchQuestions = createAsyncThunk('question/fetchQuestions', async () => {
-    const axe = axiosService.get('question/');
-    const response = await axe.then(res => res.data);
-    return response;
-});
-
-export const fetchQuestionByWeek = createAsyncThunk('question/fetchQuestionsByWeek', async (idWeek) => {
-    const url = `question?related_week=${idWeek}`;
+export const fetchQuestions = createAsyncThunk('question/fetchQuestions', async (idWeek) => {
+    let url = '';
+    if (idWeek != undefined || idWeek != '') {
+        url = `question?related_week=${idWeek}`
+    } else {
+        url = 'question/'
+    }
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;
@@ -53,56 +49,18 @@ export const QuestionSlice = createSlice({
     name: 'question',
     initialState,
     reducers: {
-        setQuestions: (state, action) => {
-            state.questions = action.payload;
-        },
-        questionAdded: (state, action) => {
-            state.questions.push(action.payload);
-        },
-        questionDeleted: (state, action) => {
-            state.questions = state.questions.filter((q) => {
-                q.id != action.payload;
-            })
-        },
-        questionUpdated: (state, action) => {
-            const {id, type, question_desc, hint, phase} = action.payload;
-            const existingQuestion = state.questions.find(q => q.id === id);
-            if (existingQuestion) {
-                existingQuestion.type = type;
-                existingQuestion.question_desc = question_desc;
-                existingQuestion.hint = hint;
-                existingQuestion.phase = phase;
-            }
-        },
-        resetAllQuestions: (state) => {
-            state.statusAll = 'idle';
-            state.allQuestions = [];
-        },
-        resetQuestionByWeek: (state) => {
-            state.statusByWeek = 'idle';
-            state.questionsByWeek = [];
+        resetQuestions: (state) => {
+            state.status = 'idle';
         }
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchQuestionByWeek.pending, (state, action) => {
-                state.statusByWeek = 'loading'
-            })
-            .addCase(fetchQuestionByWeek.fulfilled, (state, action) => {
-                state.statusByWeek = 'succeeded'
-                state.questionsByWeek = state.questionsByWeek.concat(action.payload);
-            })
-            .addCase(fetchQuestionByWeek.rejected, (state, action) => {
-                state.statusByWeek = 'failed'
-                state.error = action.error.message
-            })
             .addCase(postQuestion.pending, (state, action) => {
                 state.status = 'loading'
             })
             .addCase(postQuestion.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.questionsByWeek.push(action.payload);
-                state.allQuestions.push(action.payload);
+                state.questions.push(action.payload);
             })
             .addCase(postQuestion.rejected, (state, action) => {
                 state.status = 'failed'
@@ -114,19 +72,12 @@ export const QuestionSlice = createSlice({
             .addCase(updateQuestion.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 const {id, type, question_desc, hint, phase} = action.payload;
-                const existingQuestion = state.allQuestions.find(q => q.id === id);
+                const existingQuestion = state.questions.find(q => q.id === id);
                 if (existingQuestion) {
                     existingQuestion.type = type;
                     existingQuestion.question_desc = question_desc;
                     existingQuestion.hint = hint;
                     existingQuestion.phase = phase;
-                }
-                const existQuestion = state.questionsByWeek.find(q => q.id === id);
-                if (existQuestion) {
-                    existQuestion.type = type;
-                    existQuestion.question_desc = question_desc;
-                    existQuestion.hint = hint;
-                    existQuestion.phase = phase;
                 }
             })
             .addCase(updateQuestion.rejected, (state, action) => {
@@ -138,27 +89,26 @@ export const QuestionSlice = createSlice({
             })
             .addCase(deleteQuestion.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.questionsByWeek = deleteObject(state.questionsByWeek, action.payload)
-                state.allQuestions = deleteObject(state.allQuestions, action.payload)
+                state.questions = deleteObject(state.questions, action.payload)
             })
             .addCase(deleteQuestion.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })
             .addCase(fetchQuestions.pending, (state, action) => {
-                state.statusAll = 'loading'
+                state.status = 'loading'
             })
             .addCase(fetchQuestions.fulfilled, (state, action) => {
-                state.statusAll = 'succeeded'
-                state.allQuestions = state.allQuestions.concat(action.payload);
+                state.status = 'succeeded'
+                state.questions = action.payload;
             })
             .addCase(fetchQuestions.rejected, (state, action) => {
-                state.statusAll = 'failed'
+                state.status = 'failed'
                 state.error = action.error.message
             })
     }
 })
 
-export const {setQuestions, questionAdded, questionDeleted, descLogoUpdated, questionUpdated, resetAllQuestions, resetQuestionByWeek} = QuestionSlice.actions;
+export const { resetQuestions } = QuestionSlice.actions;
 
 export default QuestionSlice.reducer;
