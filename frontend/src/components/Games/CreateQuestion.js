@@ -8,9 +8,11 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { updateGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
 import { useSelector } from "react-redux";
-import { selectedGame, selectedWeek } from "../../features/selectors";
 import { postQuestion } from "../../features/questions/questionSlice";
 import { resetQuestions } from "../../utils/questionUtil";
+import { selectedWeek } from "../../features/weeks/weekSelectors";
+import { selectedGame } from "../../features/games/gameSelectors";
+import { addCountByGame, resetStatistics } from "../../features/statistics/statisticSlice";
 
 const style_container = {
     position: 'absolute',
@@ -30,7 +32,8 @@ const style_container = {
 
 const actionDispatch = (dispatch) => ({
     postQuestion: (query) => dispatch(postQuestion(query)),
-    updateGame: (query) => dispatch(updateGame(query))
+    updateGame: (query) => dispatch(updateGame(query)),
+    addCountByGame: (query) => dispatch(addCountByGame(query)),
 })
 
 const CreateQuestionForm = ({open, handleClose}) => {
@@ -38,6 +41,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
     const game = useSelector(selectedGame);
     const { postQuestion } = actionDispatch(useAppDispatch());
     const { updateGame } = actionDispatch(useAppDispatch());
+    const { addCountByGame } = actionDispatch(useAppDispatch());
 
     const [values, setValues] = React.useState({
         type: '',
@@ -58,20 +62,21 @@ const CreateQuestionForm = ({open, handleClose}) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         postQuestion(values);
-        const today = new Date().toISOString().split('T')[0];
+        const today = {last_updated: new Date().toISOString().split('T')[0]};
         const temp = {
             content: today,
             id: game.id,
         }   
         updateGame(temp);
         handleClose();
+        addCountByGame(game.id);
         setValues(resetQuestions(values));
     }
 
     return (
         <Modal
-        open={open}
-        onClose={handleClose}
+            open={open}
+            onClose={handleClose}
         >
             <Box sx={style_container}>
                 <Box 

@@ -1,15 +1,10 @@
 import {useSelector} from 'react-redux';
-import { selectAllQuestions } from '../features/selectors';
+import { selectCountByGame } from '../features/statistics/statisticSelectors';
+
 
 export function getCount(idGame) {
-    const questions = useSelector(selectAllQuestions);
-    var count = 0;
-    for (let i = 0; i < questions.length; i++) {
-        if (questions[i].related_game === idGame) {
-            count += 1;
-        }
-    }
-    return count;
+    const count_by_game = useSelector(selectCountByGame);
+    return count_by_game['N'+idGame];
 }
 
 export function resetCreateGame(values) {

@@ -1,21 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { HeaderContainer } from "../layout/content_header/header";
 import CreateGameForm from "./CreateGame";
 import GameCard from "./Cards/GameCard";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGames, selectGameStatus } from "../../features/selectors";
 import { CreateGameCard } from "./CustomComponents/CreateGameCard";
 import { sortGames } from "../../utils/sortUtil";
 import { fetchGames } from "../../features/games/gameSlice";
+import { selectGames, selectGameStatus } from "../../features/games/gameSelectors";
 
 export const GameOverview = ({setStage}) => {
     const games = useSelector(selectGames);
     const gameStatus = useSelector(selectGameStatus);
     const dispatch = useDispatch();
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+
+    const [open, setOpen] = useState(false);
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
+    }
 
     useEffect(() => {
         if (gameStatus === 'idle') {
@@ -45,8 +47,8 @@ export const GameOverview = ({setStage}) => {
                 {sortGames(games).map((game) => (
                     <GameCard game={game} key={game.id} setStage={setStage}/>
                 ))}
-                    <CreateGameCard handleOpen={handleOpen}/>
-                    <CreateGameForm open={open} handleOpen={handleOpen} handleClose={handleClose}/>
+                    <CreateGameCard handleOpen={handleShow}/>
+                    <CreateGameForm open={open} handleClose={handleShow}/>
             </Box>
         </Box>
     )

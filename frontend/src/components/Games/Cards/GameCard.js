@@ -1,23 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, ButtonBase, IconButton } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, IconButton } from '@mui/material';
 import { sortDate } from '../../../utils/dateUtil';
 import { CARD_TEXT, H2 } from '../../styles/Typography';
-import { deleteGame, setCount, setGames, setSelectedGame, setWeeks } from '../../../features/games/gameSlice';
+import { deleteGame, setSelectedGame } from '../../../features/games/gameSlice';
 import { useAppDispatch } from '../../../features/hooks';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { selectGames } from '../../../features/selectors';
-import { useSelector } from 'react-redux';
-import { getCount, getCountOfQuestions } from '../../../utils/gameUtil';
+import { getCount } from '../../../utils/gameUtil';
+import { resetStatistics } from '../../../features/statistics/statisticSlice';
 import DeleteDialog from '../CustomComponents/DeleteDialog';
 
 const actionDispatch = (dispatch) => ({
     setSelectedGame: (query) => dispatch(setSelectedGame(query)),
-    deleteGame: (query) => dispatch(deleteGame(query))
+    deleteGame: (query) => dispatch(deleteGame(query)),
+    resetStatistics: () => dispatch(resetStatistics())
 })
 
 const GameCard = ({game, setStage}) => {
     const { setSelectedGame } = actionDispatch(useAppDispatch());
     const { deleteGame } = actionDispatch(useAppDispatch());
+    const { resetStatistics } = actionDispatch(useAppDispatch());
+
+    const [open, setOpen] = useState(false);
+
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
+    }
+
+    const [open, setOpen] = useState(false);
+
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
+    }
 
     const [open, setOpen] = useState(false);
 
@@ -54,6 +67,7 @@ const GameCard = ({game, setStage}) => {
 
     const handleDelete = () => {
         deleteGame(game.id);
+        resetStatistics();
     }
 
     const spanStyle = {
@@ -124,7 +138,6 @@ const GameCard = ({game, setStage}) => {
                 >
                     <img src={game.logo} width={'100%'}></img>
                 </Box>
-
             </Box>
             <DeleteDialog open={open} handleShow={handleShow} handleDelete={handleDelete} />
         </Box>

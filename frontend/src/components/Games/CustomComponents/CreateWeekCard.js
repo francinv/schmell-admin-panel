@@ -3,8 +3,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { Alert, Box, FormControl, IconButton, OutlinedInput } from "@mui/material";
 import { useAppDispatch } from "../../../features/hooks";
 import { useSelector } from "react-redux";
-import { selectedGame } from "../../../features/selectors";
 import { postWeek } from "../../../features/weeks/weekSlice";
+import { selectedGame } from "../../../features/games/gameSelectors";
 
 const actionDispatch = (dispatch) => ({
     addWeek: (query) => dispatch(postWeek(query))

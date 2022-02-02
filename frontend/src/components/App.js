@@ -1,33 +1,44 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
 import LogIn from './LogIn';
-import SideBar from './SideBar';
 import { useSelector } from 'react-redux';
-import { selectUserIsLoggedIn } from '../features/selectors';
-import TasksComp from './Tasks';
-import OverviewComp from './Overview';
-import IdeasComp from './Ideas';
+import { selectUserIsLoggedIn } from '../features/user/userSelectors';
+import TasksComp from './Tasks/TasksComp';
+import OverviewComp from './Overview/OverviewComp';
+import IdeasComp from './Ideas/IdeasComp';
 import GamesComp from './Games/GameComponent';
 import SettingsComp from './Settings';
 import StatisticsComp from './Statistics';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { nbNO } from '@mui/material/locale';
 
 function App() {
+
+    const theme = createTheme({
+        typography: {
+            fontFamily: [
+                'Quicksand',
+                
+            ].join(','),
+            fontSize: 14,
+        },
+        nbNO,
+    });
     const isLoggedIn = useSelector(selectUserIsLoggedIn);
     const [activeTab, setActiveTab] = useState('O');
 
     if (isLoggedIn) {
         if (activeTab === 'O') {
-            return <OverviewComp activeTab={activeTab} setActiveTab={setActiveTab}/>
+            return (<ThemeProvider theme={theme}><OverviewComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         } else if (activeTab === 'T') {
-            return <TasksComp activeTab={activeTab} setActiveTab={setActiveTab}/>
+            return (<ThemeProvider theme={theme}><TasksComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         } else if (activeTab === 'I') {
-            return <IdeasComp activeTab={activeTab} setActiveTab={setActiveTab}/>
+            return (<ThemeProvider theme={theme}><IdeasComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         } else if (activeTab === 'G') {
-            return <GamesComp activeTab={activeTab} setActiveTab={setActiveTab}/>
+            return (<ThemeProvider theme={theme}><GamesComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         } else if (activeTab === 'S') {
-            return <StatisticsComp activeTab={activeTab} setActiveTab={setActiveTab}/>
+            return (<ThemeProvider theme={theme}><StatisticsComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         } else if (activeTab === 'P') {
-            return <SettingsComp activeTab={activeTab} setActiveTab={setActiveTab}/>
+            return (<ThemeProvider theme={theme}><SettingsComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         }
     } else {
         return (
