@@ -91,3 +91,15 @@ export function getFullDate(date) {
     var options = { month: 'long' , day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: "h24"};
     return (temp.toLocaleString("no-NO", options));
 }
+
+export function resetFields(values) {
+    values.title = '';
+    values.description = '';
+    values.status = '';
+    values.deadline = '';
+    values.category = '';
+    values.priority = '';
+    values.user_id = '';
+    values.related_game = '';
+    return values;
+}

@@ -9,9 +9,6 @@ import { updateGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
 import { useSelector } from "react-redux";
 import { postQuestion } from "../../features/questions/questionSlice";
-import { selectedWeek } from "../../features/weeks/weekSelectors";
-import { selectedGame } from "../../features/games/gameSelectors";
-import { addCountByGame, resetStatistics } from "../../features/statistics/statisticSlice";
 import { resetQuestions } from "../../utils/questionUtil";
 import { selectedWeek } from "../../features/weeks/weekSelectors";
 import { selectedGame } from "../../features/games/gameSelectors";
@@ -65,7 +62,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         postQuestion(values);
-        const today = new Date().toISOString().split('T')[0];
+        const today = {last_updated: new Date().toISOString().split('T')[0]};
         const temp = {
             content: today,
             id: game.id,
@@ -74,13 +71,12 @@ const CreateQuestionForm = ({open, handleClose}) => {
         handleClose();
         addCountByGame(game.id);
         setValues(resetQuestions(values));
-        addCountByGame(game.id);
     }
 
     return (
         <Modal
-        open={open}
-        onClose={handleClose}
+            open={open}
+            onClose={handleClose}
         >
             <Box sx={style_container}>
                 <Box 

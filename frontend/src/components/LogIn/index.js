@@ -5,14 +5,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { styled } from '@mui/system';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Alert, FormControl, IconButton, InputAdornment, InputLabel, Link, OutlinedInput, TextField } from '@mui/material';
+import { Alert, FormControl, IconButton, InputAdornment, InputLabel, Link, OutlinedInput } from '@mui/material';
 import { logIn } from '../../features/user/userSlice';
 import { useAppDispatch } from '../../features/hooks';
 import { useSelector } from 'react-redux';
-import { selectUserError, selectUserStatus } from '../../features/selectors';
+import { selectUserError, selectUserStatus } from '../../features/user/userSelectors';
 
 
 const theme = createTheme({

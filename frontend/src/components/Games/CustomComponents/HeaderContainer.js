@@ -5,11 +5,11 @@ import { BODY_BOLD, CARD_TEXT } from "../../styles/Typography";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { styled } from "@mui/system";
-import { ImageUploadChange, InputTextAreaDescription } from "../../form";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useAppDispatch } from "../../../features/hooks";
 import { putStatus, updateGame } from '../../../features/games/gameSlice';
 import { selectedGame } from '../../../features/games/gameSelectors';
+import { ImageUploadChange, InputTextAreaDescription } from "../../form/Question";
 
 const actionDispatch = (dispatch) => ({
     editStatus: (query) => dispatch(putStatus(query)),

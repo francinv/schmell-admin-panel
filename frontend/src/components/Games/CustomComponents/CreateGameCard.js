@@ -3,10 +3,7 @@ import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlin
 import { Box, IconButton } from "@mui/material";
 import { H2 } from "../../styles/Typography";
 
-
-
 export const CreateGameCard = ({handleOpen}) => {
-    
     return(
         <Box
             sx={{

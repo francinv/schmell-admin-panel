@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import { Alert, Box, FormControl, IconButton, OutlinedInput } from "@mui/material";
+import { Box, FormControl, IconButton, OutlinedInput } from "@mui/material";
 import { useAppDispatch } from "../../../features/hooks";
 import { useSelector } from "react-redux";
 import { postWeek } from "../../../features/weeks/weekSlice";

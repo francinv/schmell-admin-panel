@@ -9,6 +9,9 @@ import { postTask, resetStatus } from "../../features/tasks/taskSlice";
 import { resetStatistics } from '../../features/statistics/statisticSlice';
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
 import { SelectCategory, SelectRelatedGame, SelectStatus, TogglePerson, TogglePriority } from "../form/Task";
+import { selectTaskStatus } from "../../features/tasks/taskSelectors";
+import { useSelector } from "react-redux";
+import { resetFields } from "../../utils/taskUtil";
 
 const style_container = {
     position: 'absolute',
@@ -36,6 +39,7 @@ const CreateTaskForm = ({open, handleShow}) => {
     const { addTask } = actionDispatch(useAppDispatch());
     const { resetTasks } = actionDispatch(useAppDispatch());
     const { resetStatistics } = actionDispatch(useAppDispatch());
+    const status = useSelector(selectTaskStatus);
     const [alignment, setAlignment] = useState('');
 
     const [values, setValues] = useState({
@@ -57,9 +61,12 @@ const CreateTaskForm = ({open, handleShow}) => {
         event.preventDefault();
         values.user_id = alignment;
         addTask(values);
-        handleShow();
-        resetTasks();
-        resetStatistics();
+        if (status === 'succeeded') {
+            handleShow();
+            resetStatistics();
+            resetTasks();
+            setValues(resetFields(values))
+        }
     }
 
     return (

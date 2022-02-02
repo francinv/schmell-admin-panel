@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Alert, Button, IconButton, Modal } from "@mui/material";
+import { Alert, AlertTitle, Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../styles/Typography";
-import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField, RadioThreeButtons, RadioTwoButtons } from "../form";
+import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField } from "../form";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { postGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
-import { resetStatistics } from '../../features/statistics/statisticSlice';
-import { resetCreateGame } from "../../utils/gameUtil";
+import { fetchStatistics, resetStatistics } from '../../features/statistics/statisticSlice';
 import { useSelector } from "react-redux";
-import { selectGameError, selectGameStatus } from "../../features/selectors";
 import FileDialog from "./CustomComponents/FileDialog";
-import { resetStatistics } from '../../features/statistics/statisticSlice';
+import { selectGameError, selectGameStatus } from "../../features/games/gameSelectors";
+import { resetCreateGame } from "../../utils/gameUtil";
+import { RadioThreeButtons, RadioTwoButtons } from "../form/Game";
 
 const style_container = {
     position: 'absolute',
@@ -32,7 +32,7 @@ const style_container = {
 
 const actionDispatch = (dispatch) => ({
     addGame: (query) => dispatch(postGame(query)),
-    resetStatistics: () => dispatch(resetStatistics())
+    resetStatistics: () => dispatch(resetStatistics()),
 })
 
 const CreateGameForm = ({open, handleClose}) => {
@@ -45,9 +45,8 @@ const CreateGameForm = ({open, handleClose}) => {
     const handleShow = () => {
         setDialogOpen((wasOpen) => !wasOpen);
     }
-    const { resetStatistics } = actionDispatch(useAppDispatch());
 
-    const [values, setValues] = React.useState({
+    const [values, setValues] = useState({
         name: '',
         description: '',
         related_questions: true,
@@ -55,13 +54,14 @@ const CreateGameForm = ({open, handleClose}) => {
         status: 'D',
         release_date: '',
     });
-    const [fileState, setFileState] = React.useState('');
+    
+    const [fileState, setFileState] = useState('');
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const submitData = (event) => {
+    const submitData = () => {
         var data = new FormData();
         data.append('name', values.name);
         data.append('description', values.description)
@@ -71,14 +71,11 @@ const CreateGameForm = ({open, handleClose}) => {
         data.append('logo', fileState);
         data.append('release_date', values.release_date);
         addGame(data);
-        handleClose();
-        resetStatistics();
-        setValues(resetCreateGame(values));
-        setFileState('');
         if (status === 'succeeded') {
             handleClose();
             setValues(resetCreateGame(values));
             setFileState('');
+            resetStatistics();
         }
     }
 
@@ -88,16 +85,14 @@ const CreateGameForm = ({open, handleClose}) => {
             handleShow();
         }
         else {
-            submitData(event);
+            submitData();
         }
-        handleClose();
-        resetStatistics();
     }
 
     return (
         <Modal
-        open={open}
-        onClose={handleClose}
+            open={open}
+            onClose={handleClose}
         >
             <Box sx={style_container}>
                 <Box 
