@@ -10,11 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import imp
-from pathlib import Path
 import os.path
 from datetime import timedelta
-from django.conf import settings
 import dj_database_url
 import django_heroku
 from decouple import config
@@ -45,7 +42,8 @@ INSTALLED_APPS = [
     'schmelladmin',
     'rest_framework',
     'frontend',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'storages',
 ]
 
 REST_FRAMEWORK = {
@@ -141,21 +139,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STATICFILES_DIRS = [os.path.join(PROJECT_DIR, 'frontend', 'static')]
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static_collected')
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
-
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
-MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'schmelladmin.User'
 
@@ -191,6 +183,16 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_ADDRESSING_STYLE = 'virtual'
+AWS_S3_REGION_NAME = 'eu-north-1' 
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 django_heroku.settings(locals())
