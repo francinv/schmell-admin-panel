@@ -11,7 +11,7 @@ const initialState = {
 export const fetchQuestions = createAsyncThunk('question/fetchQuestions', async (idWeek) => {
     let url = '';
     if (idWeek != undefined || idWeek != '') {
-        url = `question?related_week=${idWeek}`
+        url = `question/?related_week=${idWeek}`
     } else {
         url = 'question/'
     }

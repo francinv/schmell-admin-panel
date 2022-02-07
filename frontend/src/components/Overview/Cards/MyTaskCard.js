@@ -11,7 +11,7 @@ const MyTaskCard = ({setActiveTab}) => {
     const user = useSelector(selectActiveUser);
 
     useEffect(async () => {
-        const url = `task?sort=PUBL_DESC&responsible=${user.id}&filter=ONLY_ACT`;
+        const url = `task/?sort=PUBL_DESC&responsible=${user.id}&filter=ONLY_ACT`;
         const axe = axiosService.get(url)
         const response = await axe.then(res => res.data);
         setTasks(response.results);

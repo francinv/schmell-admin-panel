@@ -7,14 +7,14 @@ const initialState = {
     error: null,
 }
 
-export const fetchComments = createAsyncThunk('comment/fetchComments', async (taskId) => {
-    let url = `comment?task=${taskId}`
+export const fetchComments = createAsyncThunk('comment/fetchComments/', async (taskId) => {
+    let url = `comment/?task=${taskId}`
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;
 });
 
-export const postComment = createAsyncThunk('comment/postComment', async (data) => {
+export const postComment = createAsyncThunk('comment/postComment/', async (data) => {
     const url = 'comment/';
     const axe = axiosService.post(url, data)
     const response = await axe.then(res => res.data)

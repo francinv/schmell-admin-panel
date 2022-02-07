@@ -8,8 +8,6 @@ import { getFullDate } from "../../utils/taskUtil";
 export default function CommentBox() {
     const comments = useSelector(selectComments);
 
-    console.log(comments.length);
-    console.log(comments);
     if (comments.length != 0)  {
         return (
             <>

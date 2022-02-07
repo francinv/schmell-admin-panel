@@ -11,7 +11,7 @@ const initialState = {
 }
 
 export const fetchWeeks = createAsyncThunk('week/fetchWeeks', async (gameID) => {
-    const url = `week?game=${gameID}`;
+    const url = `week/?game=${gameID}`;
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;

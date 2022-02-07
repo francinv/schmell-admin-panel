@@ -13,7 +13,7 @@ const initialState = {
 }
 
 export const fetchIdeas = createAsyncThunk('idea/fetchIdea', async (category) => {
-    const url = `idea?category=${category}`
+    const url = `idea/?category=${category}`
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;
