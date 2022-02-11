@@ -12,6 +12,13 @@ pytz = "*"
 pillow = "*"
 django-cors-headers = "*"
 djangorestframework-simplejwt = "*"
+whitenoise = "*"
+gunicorn = "*"
+dj-database-url = "*"
+python-decouple = "*"
+django-heroku = "*"
+boto3 = "*"
+django-storages = "*"
 
 [dev-packages]
 
