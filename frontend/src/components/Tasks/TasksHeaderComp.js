@@ -5,12 +5,20 @@ import { H3 } from "../styles/Typography";
 import SortMenu from "./menus/SortMenu";
 import FilterMenu from "./menus/FilterMenu";
 import CreateTaskForm from "./CreateTask";
+import { resetStatus } from "../../features/tasks/taskSlice";
+import { useAppDispatch } from "../../features/hooks";
+
+const actionDispatch = (dispatch) => ({
+    resetTasks: (query) => dispatch(resetStatus(query)),
+})
 
 const TaskHeaderComp = () => {
+    const {resetTasks} = actionDispatch(useAppDispatch());
 
     const [open, setOpen] = useState(false);
     const handleShow = () => {
         setOpen((wasOpen) => !wasOpen);
+        resetTasks();
     }
 
     return (
