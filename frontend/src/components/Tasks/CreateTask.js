@@ -37,7 +37,6 @@ const actionDispatch = (dispatch) => ({
 
 const CreateTaskForm = ({open, handleShow}) => {
     const { addTask } = actionDispatch(useAppDispatch());
-    const { resetTasks } = actionDispatch(useAppDispatch());
     const { resetStatistics } = actionDispatch(useAppDispatch());
     const status = useSelector(selectTaskStatus);
     const [alignment, setAlignment] = useState('');
@@ -64,7 +63,6 @@ const CreateTaskForm = ({open, handleShow}) => {
         if (status === 'succeeded') {
             handleShow();
             resetStatistics();
-            resetTasks();
             setValues(resetFields(values))
         }
     }

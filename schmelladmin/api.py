@@ -17,8 +17,11 @@ class GameViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Game.objects.all()
         name = self.request.query_params.get('name')
+        status = self.request.query_params.get('status')
         if name is not None:
             queryset = queryset.filter(name=name)
+        if status is not None:
+            queryset = queryset.filter(status=status)
         return queryset
     
     def post(self, request):

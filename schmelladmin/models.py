@@ -88,7 +88,7 @@ class Task(models.Model):
         ( 2, 'Medium'),
         ( 1, 'High')
     )
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=150)
     description = models.CharField(max_length=500)
     status = models.CharField(max_length=1, choices=STATUS)

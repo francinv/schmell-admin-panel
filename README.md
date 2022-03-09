@@ -10,9 +10,6 @@
 ![redux-badge]
 ![postgresql-badge]
 
-This work is licensed under a
-[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -25,7 +22,7 @@ This work is licensed under a
   <p align="center">
     This is an admin-panel. The panel will be used to administer a mobile application. 
     <br />
-    <a href="https://github.com/francinv/schmell-admin-panel/"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/francinv/schmell-admin-panel/wiki"><strong>Explore the docs »</strong> (the wiki is not complete) </a>
     <br />
     <br />
     <a href="https://www.figma.com/proto/JRefmkvvkehRxD8ErPDeIx/Admin-Web-APP?node-id=4%3A80&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=4%3A80">View Demo</a>
@@ -58,7 +55,7 @@ This work is licensed under a
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#license">License</a></li>
   </ol>
 </details>
 
@@ -74,7 +71,6 @@ This work is licensed under a
 * [React.js](https://reactjs.org/)
 * [Django](https://www.djangoproject.com/)
 * [Material UI](https://mui.com/)
-* [Bootstrap](https://getbootstrap.com)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -83,8 +79,7 @@ This work is licensed under a
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Here you will get information about how you can run the app both locally and remote.
-When the app is deployed you will be able to access the website in question to run the app. 
+Here you will get information about how you can run the app both locally and remote. The app is deployed on heroku now: [https://schmell-staging.herokuapp.com](https://schmell-staging.herokuapp.com). 
 
 ### Prerequisites
 
@@ -99,7 +94,7 @@ This is what you need before you start to install the app.
   ```
 
 
-### Installation and running locally
+### Installation
 
 **Clone the repo**
 * Clone the repo
@@ -111,32 +106,20 @@ This is what you need before you start to install the app.
     ```sh
     cd server
     ```
-2. install requirements
+2. launch shell
+  ```sh
+  pipenv shell
+  ```
+5. install requirements
     ```sh
-    pip install requirements.txt
+    pipenv install
     ```
 3. run server
     ```sh
     python manage.py runserver
     ```
 
-**The server should now be running**
-
-#### Run application
-1. go into frontend directory
-    ```sh
-    cd frontend
-    ```
-2. install requirements
-    ```sh
-    yarn install
-    ```
-3. run application
-    ```sh
-    yarn start
-    ```
-
-**The app will now be running on localhost.**
+**The server should now be running, and the latest compiled version will be displayed when accessing the port.**
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -144,38 +127,33 @@ This is what you need before you start to install the app.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-You will find examples of how you can use the application and some screenshots. I recommend using the figma prototype for better understanding of the app.
-
-<div align="center">
-    <img src="docs/img/1.png" alt="LogIn">
-    <img src="docs/img/2.png" alt="HomePage">
-    <img src="docs/img/3.png" alt="Tasks">
-    <img src="docs/img/4.png" alt="AddTask">
-    <img src="docs/img/5.png" alt="Games">
-    <img src="docs/img/6.png" alt="AddGame">
-    <img src="docs/img/7.png" alt="Weeks">
-    <img src="docs/img/8.png" alt="Questions">
-</div>
+You will find examples of how you can use the application and some screenshots in the wiki. I recommend using the figma prototype for better understanding of the app. I will set-up a demo app in the near future. The app we are using right now is deployed to heroku. 
 
 _I recommend to use Figma to see how the app should work and examples [Prototype](https://www.figma.com/proto/JRefmkvvkehRxD8ErPDeIx/Admin-Web-APP?node-id=4%3A80&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=4%3A80)_
 
+<a href="https://github.com/francinv/schmell-admin-panel/wiki"><strong>Explore the wiki »</strong> (the wiki is not complete) </a>
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
+This section will show the ongoing issues and issues that must be completed for the application to be ready for production (v1.0.1).
 
-- [] Log-In with authentication
-- [] Games
-    - [] See all games and weeks
-    - [] See questions matching weeks and game
-    - [] Add/delete/edit question
+- [ ] API Key Authentication
+- [ ] Background tasks
+- [ ] Settings page
 
-**This roadmap will be updated for every release**
+**I am aiming to release the first version: v1.0.1 soon.** 
 
 See the [open issues](https://github.com/francinv/schmell-admin-panel/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+<!-- LICENSE -->
+## License
+
+This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa]. See `LICENSE` for more information.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- CONTACT -->
 ## Contact
