@@ -23,6 +23,14 @@ export const fetchUsers = createAsyncThunk('user/', async () => {
     return response;
 })
 
+export const updateUser = createAsyncThunk('user/updateUser', async (data) => {
+    const {id, content} = data;
+    const axe = axiosService.put(`user/${id}/`, content);
+    const response = await axe.then(res => res.data);
+    axe.catch(res => console.log(res));
+    return response;
+})
+
 export const UserSlice = createSlice({
     name: 'user',
     initialState,
@@ -41,7 +49,7 @@ export const UserSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(logIn.pending, (state, action) => {
+            .addCase(logIn.pending, state => {
                 state.status = 'loading'
             })
             .addCase(logIn.fulfilled, (state, action) => {
@@ -59,7 +67,7 @@ export const UserSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(fetchUsers.pending, (state, action) => {
+            .addCase(fetchUsers.pending, state => {
                 state.status = 'loading'
             })
             .addCase(fetchUsers.fulfilled, (state, action) => {
@@ -70,6 +78,17 @@ export const UserSlice = createSlice({
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
+            })
+            .addCase(updateUser.pending, state => {
+                state.status = 'loading';
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.activeUser = action.payload;
+            })
+            .addCase(updateUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
             })
     }
 })
