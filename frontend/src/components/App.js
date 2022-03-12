@@ -6,10 +6,10 @@ import TasksComp from './Tasks/TasksComp';
 import OverviewComp from './Overview/OverviewComp';
 import IdeasComp from './Ideas/IdeasComp';
 import GamesComp from './Games/GameComponent';
-import SettingsComp from './Settings';
 import StatisticsComp from './Statistics';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { nbNO } from '@mui/material/locale';
+import SettingsComponent from './Settings/SettingsComp';
 
 function App() {
 
@@ -38,7 +38,7 @@ function App() {
         } else if (activeTab === 'S') {
             return (<ThemeProvider theme={theme}><StatisticsComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         } else if (activeTab === 'P') {
-            return (<ThemeProvider theme={theme}><SettingsComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
+            return (<ThemeProvider theme={theme}><SettingsComponent activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         }
     } else {
         return (

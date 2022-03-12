@@ -163,25 +163,6 @@ export default function LogIn() {
                     }}
                     className="input-sign-in"
                 />
-                <Box
-                  sx={{
-                    display:'flex',
-                    flexDirection: 'row-reverse',
-                  }}
-                >
-                  <Link
-                    sx={{
-                      fontFamily:'Quicksand',
-                      color:'#9FA2B4',
-                      textDecorationColor:'#9FA2B4',
-                      cursor:'pointer',
-                      '&:hover': {
-                        color:'#141400',
-                        textDecorationColor:'#141400',
-                      }
-                    }}
-                  >Glemt passord?</Link>
-                </Box>
             </FormControl>
             <Button 
               variant='contained'
