@@ -1,11 +1,14 @@
 from schmelladmin.models import Comment, Game, Idea, Question, Task, User, Week
 from rest_framework import viewsets, permissions, status, views
 from rest_framework.response import Response
+
+from schmelladmin.tasks import alert_deadline_closing, alert_game_not_updated
 from .serializers import CommentSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from .pagination import CustomPagination
 from datetime import date, datetime
+from schmelladmin.date_util import get_seconds_of_delay
 from django.core.mail import send_mail
 
 # Game Viewset
@@ -24,13 +27,18 @@ class GameViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(status=status)
         return queryset
     
-    def post(self, request):
-        serializer = GameSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
-        else:
-            return Response({"status": "error", "data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        serializer.save()
+        alert_game_not_updated(serializer.data['id'])
+        
+
 
 class WeekViewSet(viewsets.ModelViewSet):
     permission_classes = [
@@ -134,14 +142,17 @@ class TaskViewSet(viewsets.ModelViewSet):
         for user in want_alert:
             to_emails.append(user.email)
         if (len(to_emails) > 0):
-            print(to_emails)
+            print()
             send_mail(
                 subject = 'Ny arbeidsoppgave lagt til: ' + title,
                 message = message,
                 from_email='schmellapp@gmail.com',
                 recipient_list = to_emails
             )
-            
+        id = serializer.data['id']
+        print('Scheduling alert in: ' + str(get_seconds_of_delay(d)) + 'seconds')
+        alert_deadline_closing.apply_async([id], countdown=get_seconds_of_delay(d))
+
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated

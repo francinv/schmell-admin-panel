@@ -19,6 +19,8 @@ python-decouple = "*"
 django-heroku = "*"
 boto3 = "*"
 django-storages = "*"
+celery = "*"
+redis = "*"
 
 [dev-packages]
 

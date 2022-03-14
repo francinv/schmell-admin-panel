@@ -201,4 +201,7 @@ EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
+#CELERY SETTINGS
+CELERY_BROKER_URL = 'redis://localhost:6379'
+
 django_heroku.settings(locals())
