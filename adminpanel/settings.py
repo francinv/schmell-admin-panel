@@ -195,4 +195,10 @@ AWS_S3_REGION_NAME = 'eu-north-1'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = config('SENDGRID_API_KEY')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 django_heroku.settings(locals())

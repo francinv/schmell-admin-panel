@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from .serializers import CommentSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from django.db.models import Q
 from .pagination import CustomPagination
-from datetime import date
+from datetime import date, datetime
+from django.core.mail import send_mail
 
 # Game Viewset
 class GameViewSet(viewsets.ModelViewSet):
@@ -110,6 +110,38 @@ class TaskViewSet(viewsets.ModelViewSet):
             queryset = switchSort(queryset, sort)
         return queryset
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        serializer.save()
+        title = serializer.data['title']
+        description = serializer.data['description']
+        resp_firstname = serializer.data['responsible']['first_name']
+        resp_lastname = serializer.data['responsible']['last_name']
+        priority = str(serializer.data['priority'])
+        nonformatted_deadline = serializer.data['deadline']
+        d = datetime.fromisoformat(nonformatted_deadline [:-1])
+        deadline = d.strftime('%Y-%m-%d %H:%M:%S')
+        message = 'Hei, det har blitt lagt til en ny oppgave. \n\n' + 'Tittel: ' + title + '\n' + 'Beskrivelse: ' + description + '\n' + 'Ansvarlig: ' + resp_firstname + ' ' + resp_lastname + '\n' + 'Prioritet: ' + priority + '\n' + 'Frist: ' + deadline + '\n' + 'Gå til panelet for å fullføre oppgaven: www.schmell-staging.herokuapp.com/ \n\nMvh Schmell :-)' 
+        user_queryset = User.objects.all()
+        want_alert = user_queryset.filter(alerts_task = True)
+        to_emails = []
+        for user in want_alert:
+            to_emails.append(user.email)
+        if (len(to_emails) > 0):
+            print(to_emails)
+            send_mail(
+                subject = 'Ny arbeidsoppgave lagt til: ' + title,
+                message = message,
+                from_email='schmellapp@gmail.com',
+                recipient_list = to_emails
+            )
+            
 class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated
