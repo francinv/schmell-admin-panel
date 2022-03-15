@@ -135,7 +135,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         nonformatted_deadline = serializer.data['deadline']
         d = datetime.fromisoformat(nonformatted_deadline [:-1])
         deadline = d.strftime('%Y-%m-%d %H:%M:%S')
-        message = 'Hei, det har blitt lagt til en ny oppgave. \n\n' + 'Tittel: ' + title + '\n' + 'Beskrivelse: ' + description + '\n' + 'Ansvarlig: ' + resp_firstname + ' ' + resp_lastname + '\n' + 'Prioritet: ' + priority + '\n' + 'Frist: ' + deadline + '\n' + 'Gå til panelet for å fullføre oppgaven: www.schmell-staging.herokuapp.com/ \n\nMvh Schmell :-)' 
+        message = 'Hei, det har blitt lagt til en ny oppgave. \n\n' + 'Tittel: ' + title + '\n' + 'Beskrivelse: ' + description + '\n' + 'Ansvarlig: ' + resp_firstname + ' ' + resp_lastname + '\n' + 'Prioritet: ' + priority + '\n' + 'Frist: ' + deadline + '\n' + 'Gå til panelet for å fullføre oppgaven: https://schmell-staging.herokuapp.com/ \n\nMvh Schmell :-)' 
         user_queryset = User.objects.all()
         want_alert = user_queryset.filter(alerts_task = True)
         to_emails = []
