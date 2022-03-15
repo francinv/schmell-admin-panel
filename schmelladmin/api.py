@@ -1,9 +1,9 @@
 from schmelladmin.models import Comment, Game, Idea, Question, Task, User, Week
-from rest_framework import viewsets, permissions, status, views
+from rest_framework import viewsets, permissions, status, views, generics
 from rest_framework.response import Response
 
 from schmelladmin.tasks import alert_deadline_closing, alert_game_not_updated
-from .serializers import CommentSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer
+from .serializers import CommentSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer, ChangePasswordSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from .pagination import CustomPagination
@@ -256,8 +256,10 @@ class StaticsViewSet(views.APIView):
             }
         )
 
-
-
+class ChangePasswordView(generics.UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ChangePasswordSerializer
 
 def switchSort(queryset, sort):
     if sort == 'PRIORITY_HTL':

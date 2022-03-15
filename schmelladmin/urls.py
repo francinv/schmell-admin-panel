@@ -1,5 +1,5 @@
 from rest_framework import routers, urlpatterns
-from .api import CommentViewSet, IdeaViewSet, LoginViewSet, RefreshViewSet, StaticsViewSet, TaskViewSet, UserViewSet, GameViewSet, QuestionViewSet, WeekViewSet
+from .api import CommentViewSet, IdeaViewSet, LoginViewSet, RefreshViewSet, StaticsViewSet, TaskViewSet, UserViewSet, GameViewSet, QuestionViewSet, WeekViewSet, ChangePasswordView
 from django.urls import path
 
 router = routers.DefaultRouter()
@@ -14,7 +14,8 @@ router.register('task', TaskViewSet, 'tasks')
 router.register('comment', CommentViewSet, 'comments')
 
 urlpatterns = [
-    path('statistics', StaticsViewSet.as_view(), name='statistics_view')
+    path('statistics', StaticsViewSet.as_view(), name='statistics_view'),
+    path('auth/password/<int:pk>/', ChangePasswordView.as_view(), name='updatepassword_view')
 ]
 
 urlpatterns += router.urls

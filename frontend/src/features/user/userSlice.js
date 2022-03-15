@@ -31,6 +31,14 @@ export const updateUser = createAsyncThunk('user/updateUser', async (data) => {
     return response;
 })
 
+export const updatePassword = createAsyncThunk('user/updatePassword', async (data) => {
+    const {id, content} = data;
+    const axe = axiosService.put(`auth/password/${id}/`, {password: content});
+    const response = await axe.then(res => res.status);
+    axe.catch(res => console.log(res));
+    return response;
+})
+
 export const UserSlice = createSlice({
     name: 'user',
     initialState,
@@ -87,6 +95,16 @@ export const UserSlice = createSlice({
                 state.activeUser = action.payload;
             })
             .addCase(updateUser.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+            .addCase(updatePassword.pending, state => {
+                state.status = 'loading';
+            })
+            .addCase(updatePassword.fulfilled, state => {
+                state.status = 'succeeded';
+            })
+            .addCase(updatePassword.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             })
