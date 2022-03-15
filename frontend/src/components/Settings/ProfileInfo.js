@@ -6,20 +6,22 @@ import {H3, H4} from '../styles/Typography';
 import ChangeProfileComp from "./ChangeProfile";
 import { Box } from "@mui/material";
 import ChangeProfilePic from "./ChangeProfilePic";
-import {updateUser} from '../../features/user/userSlice';
+import {updatePassword, updateUser} from '../../features/user/userSlice';
 import { useAppDispatch } from "../../features/hooks";
 
 const actionDispatch = (dispatch) => ({
-    updateUser: (query) => dispatch(updateUser(query))
+    updateUser: (query) => dispatch(updateUser(query)),
+    updatePassword: (query) => dispatch(updatePassword(query))
 })
 
 const ProfileInfo = () => {
     const user = useSelector(selectActiveUser);
     const {updateUser} = actionDispatch(useAppDispatch());
+    const {updatePassword} = actionDispatch(useAppDispatch());
     const [values, setValues] = useState({
         username: user.username,
         email: user.email,
-        password: '**********',
+        password: '',
         mobile_number: user.mobile_number,
         alerts_task: user.alerts_task,
         alerts_deadlines: user.alerts_deadlines
@@ -39,13 +41,19 @@ const ProfileInfo = () => {
         let data = new FormData();
         data.append('username', values.username);
         data.append('email', values.email);
-        data.append('password', values.password);
         data.append('mobile_number', values.mobile_number);
         data.append('profile_picture', fileState);
         const dataToSend = {
             id: user.id,
             content: data
         };
+        if (values.password) {
+            const passwordDataToSend = {
+                id: user.id,
+                content: values.password
+            }
+            updatePassword(passwordDataToSend);
+        }
         updateUser(dataToSend);
     }
 
@@ -69,7 +77,7 @@ const ProfileInfo = () => {
                     label={'Passord:'} 
                     onChange={handleChange('password')} 
                     setChangeStatus={setChangePasswordState}
-                    type={'password'}
+                    type={'text'}
                     value={values.password}
                     handleSubmit={handleSubmit}
                 />
