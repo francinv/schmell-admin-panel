@@ -373,4 +373,6 @@ sketch
 # Support for Project snippet scope
 !.vscode/*.code-snippets
 
+francin_test_code.py
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,django,react,node
