@@ -1,5 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 from celery.schedules import crontab
+from decouple import config
 
 import os
 
@@ -25,7 +26,9 @@ def debug_task(self):
 
 app.conf.beat_schedule = {
     'check-game-every-14-days': {
-        'task': 'alert_game',
+        'task': 'alert_game(id)',
         'schedule': crontab(hour='*/168'),
     }
 }
+
+app.conf.update(BROKER_URL=config('REDIS_URL'))
