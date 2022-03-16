@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'schmelladmin',
     'rest_framework',
+    "rest_framework_api_key",
     'frontend',
     'rest_framework.authtoken',
     'storages',

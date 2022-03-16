@@ -10,13 +10,12 @@ from .pagination import CustomPagination
 from datetime import date, datetime
 from schmelladmin.date_util import get_seconds_of_delay
 from django.core.mail import send_mail
+from rest_framework_api_key.permissions import HasAPIKey
 
 # Game Viewset
 class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
-    permission_classes = [
-        permissions.IsAuthenticated
-    ]
+    permission_classes = [permissions.IsAuthenticated | HasAPIKey]
     def get_queryset(self):
         queryset = Game.objects.all()
         name = self.request.query_params.get('name')
@@ -41,9 +40,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
 
 class WeekViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.IsAuthenticated
-    ]
+    permission_classes = [permissions.IsAuthenticated | HasAPIKey]
     serializer_class = WeekSerializer
 
     def get_queryset(self):
@@ -55,9 +52,7 @@ class WeekViewSet(viewsets.ModelViewSet):
 
 # Question Viewset
 class QuestionViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.IsAuthenticated
-    ]
+    permission_classes = [permissions.IsAuthenticated | HasAPIKey]
     serializer_class = QuestionSerializer
     def get_queryset(self):
         queryset = Question.objects.all()
@@ -154,9 +149,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         alert_deadline_closing.apply_async([id], countdown=get_seconds_of_delay(d))
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [
-        permissions.IsAuthenticated
-    ]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
     def get_queryset(self):
@@ -258,7 +251,7 @@ class StaticsViewSet(views.APIView):
 
 class ChangePasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
-    permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = ChangePasswordSerializer
 
 def switchSort(queryset, sort):

@@ -1,6 +1,6 @@
-from dataclasses import fields
 from rest_framework import serializers
 from schmelladmin.models import Game, Idea, Question, Task, User, Week, Comment
+from rest_framework_api_key.models import APIKey
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
