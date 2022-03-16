@@ -1,9 +1,10 @@
-from dataclasses import fields
 from rest_framework import serializers
 from schmelladmin.models import Game, Idea, Question, Task, User, Week, Comment
+from rest_framework_api_key.models import APIKey
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
 from django.contrib.auth.models import update_last_login
+from django.contrib.auth.password_validation import validate_password
 
 
 # Game serializer
@@ -69,3 +70,21 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'date', 'comment', 'written_by', 'related_task', 'user_id')
+
+class ChangePasswordSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+
+    class Meta:
+        model = User
+        fields = ['password']
+
+    def update(self, instance, validated_data):
+        user = self.context['request'].user
+    
+        if user.pk != instance.pk:
+                raise serializers.ValidationError({"authorize": "You dont have permission for this user."})
+
+        instance.set_password(validated_data['password'])
+        instance.save()
+
+        return instance

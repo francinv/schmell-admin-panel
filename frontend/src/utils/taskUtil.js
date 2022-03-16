@@ -30,7 +30,7 @@ export function getDate(date) {
 
 export function getTime(date) {
     let deadline = new Date(date);
-    var options = {hour: 'numeric', minute: '2-digit'}
+    var options = {hour: 'numeric', minute: '2-digit', timeZone: 'UTC'}
     return (deadline.toLocaleTimeString("no-NO", options))
 }
 
