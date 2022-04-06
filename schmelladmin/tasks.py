@@ -26,7 +26,7 @@ def alert_deadline_closing(self, task_id):
                         + 'Beskrivelse: ' + description + '\n'
                         + 'Prioritet: ' + str(priority) + '\n'
                         + 'Frist: ' + deadline + '\n\n'
-                        + 'Gå til panelet for å fullføre oppgaven: https://schmell-staging.herokuapp.com/ \n\nMvh Schmell :-)',
+                        + 'Gå til panelet for å fullføre oppgaven: https://schmell.herokuapp.com/ \n\nMvh Schmell :-)',
                     from_email='schmellapp@gmail.com',
                     recipient_list = [user.email]
                 )
@@ -56,7 +56,7 @@ def alert_game_not_updated(self, game_id):
                         + 'Beskrivelse: ' + description + '\n'
                         + 'Status: ' + get_game_status(game.status) + '\n'
                         + 'Sist oppdatert: ' +  str(last_updated) + '\n'
-                        + 'Gå til panelet for å oppdatere spillet: https://schmell-staging.herokuapp.com/ \n\nMvh Schmell :-)',
+                        + 'Gå til panelet for å oppdatere spillet: https://schmell.herokuapp.com/ \n\nMvh Schmell :-)',
                         from_email='schmellapp@gmail.com',
                         recipient_list = to_emails
                 )
