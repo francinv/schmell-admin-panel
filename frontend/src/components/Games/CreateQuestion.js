@@ -28,6 +28,8 @@ const style_container = {
     paddingRight: 3,
     paddingBottom: 2,
     borderRadius: 8,
+    height: '80%',
+    overflow: 'auto',
 };
 
 const actionDispatch = (dispatch) => ({
