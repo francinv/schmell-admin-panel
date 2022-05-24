@@ -58,6 +58,7 @@ class Question(models.Model):
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)
     punishment = models.CharField(max_length=200, default="2 slurker")
+    read_out_file = models.FileField(upload_to="read-out-files/", blank=True)
 
 class Idea(models.Model):
     CATEGORIES = (
