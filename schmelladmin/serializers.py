@@ -22,7 +22,7 @@ class WeekSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):  
     class Meta:
         model = Question
-        fields = ('id', 'type','question_desc', 'hint', 'related_question', 'phase', 'function', 'related_game', 'related_week', 'punishment')
+        fields = ('id', 'type','question_desc', 'hint', 'related_question', 'phase', 'function', 'related_game', 'related_week', 'punishment', 'read_out_file',)
 
 #User serializer
 class UserSerializer(serializers.ModelSerializer):
