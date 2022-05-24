@@ -10,6 +10,14 @@ class APIKeyViewSet(APIView):
         data = request.data
         response = Response()
         name = data.get('name', None)
-        api_key, key = APIKey.objects.create_key(name=name)
-        response.data = {"key": key}
+        temp_api_key = APIKey.objects.filter(name=name, revoked=False)
+        if(temp_api_key.exists()):
+            response.data = {'error': 'API Key already exists'}
+            response.status_code = 400
+        else:
+            api_key, key = APIKey.objects.create_key(name=name)
+            response.data = {
+                'key': name,
+                "api_key": key
+            }
         return response
