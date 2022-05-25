@@ -6,7 +6,7 @@ import { updateGame } from "../../../../features/games/gameSlice";
 import { updateQuestion } from "../../../../features/questions/questionSlice";
 import { H3 } from "../../../styles/Typography";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { QuestionTextArea, TextInputQuestion } from "../../../form/Question";
+import { ImageUploadChange, QuestionTextArea, TextInputQuestion } from "../../../form/Question";
 import { useAppDispatch } from "../../../../features/hooks";
 
 const actionDispatch = (dispatch) => ({
@@ -28,15 +28,23 @@ export const EditQuestionCard = ({question, setStateChangeQuestion}) => {
         related_game: question.related_game,
         punishment: question.punishment
     });
+    const [fileState, setFileState] = useState('');
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const data = new FormData();
+        const keys = Object.keys(values);
+        keys.forEach(key => {
+            data.append(key, values[key]);
+        });
+        data.append('read_out_file', fileState);
         const tempQuestion = {
-            content: values,
+            content: data,
             id: question.id,
         }
         const today = {last_updated: new Date().toISOString().split('T')[0]}
@@ -47,6 +55,11 @@ export const EditQuestionCard = ({question, setStateChangeQuestion}) => {
         }
         updateGame(tempGame);
         setStateChangeQuestion(false);
+    }
+
+    const handleFileChange = (event) => {
+        event.preventDefault();
+        setFileState(event.target.files[0]);
     }
 
     return(
@@ -93,6 +106,7 @@ export const EditQuestionCard = ({question, setStateChangeQuestion}) => {
                 <QuestionTextArea label={"SP:"} handleChange={handleChange('question_desc')} value={values.question_desc} />
                 <QuestionTextArea label={"Hint:"} handleChange={handleChange('hint')} value={values.hint} />
                 <TextInputQuestion label={"Straff:"} handleChange={handleChange('punishment')} value={values.punishment} type={"text"}/>
+                <ImageUploadChange fileState={fileState} handleFileChange={handleFileChange} label={"Endre fil:"} placeholder={"Last opp"} flexDirection={'row'}/>
             </Box>
 
         </Box>

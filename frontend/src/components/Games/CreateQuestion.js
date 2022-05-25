@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../styles/Typography";
-import { InputTextArea, InputTextField } from "../form";
+import { ImageUpload, InputTextArea, InputTextField } from "../form";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { updateGame } from "../../features/games/gameSlice";
 import { useAppDispatch } from "../../features/hooks";
@@ -45,7 +45,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
     const { updateGame } = actionDispatch(useAppDispatch());
     const { addCountByGame } = actionDispatch(useAppDispatch());
 
-    const [values, setValues] = React.useState({
+    const [values, setValues] = useState({
         type: '',
         question_desc: '',
         hint: '',
@@ -56,6 +56,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
         related_week: week.id,
         related_game: game.id
     });
+    const [fileState, setFileState] = useState('');
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -63,7 +64,13 @@ const CreateQuestionForm = ({open, handleClose}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        postQuestion(values);
+        var data = new FormData();
+        const keys = Object.keys(values);
+        keys.forEach(key => {
+            data.append(key, values[key]);
+        });
+        data.append('read_out_file', fileState);
+        postQuestion(data);
         const today = {last_updated: new Date().toISOString().split('T')[0]};
         const temp = {
             content: today,
@@ -177,6 +184,12 @@ const CreateQuestionForm = ({open, handleClose}) => {
                             onChange={handleChange('punishment')}
                             value={values.punishment}
                             type={"text"}
+                        />
+                        <ImageUpload 
+                            label="Opplesningsfil:"
+                            fileState={fileState}
+                            setFileState={setFileState}
+                            placeholder="Velg fil"
                         />
                         <Button
                             type="submit"

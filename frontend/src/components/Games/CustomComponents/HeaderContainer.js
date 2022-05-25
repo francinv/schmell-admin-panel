@@ -212,7 +212,7 @@ const ChangeDescLogo = ({setStateChange, game}) => {
                     padding: '0.5rem',
                 }}
             >
-                <ImageUploadChange fileState={fileState} handleFileChange={handleFileChange} label={"Endre logo:"} placeholder={"Last opp"}/>
+                <ImageUploadChange fileState={fileState} handleFileChange={handleFileChange} label={"Endre logo:"} placeholder={"Last opp"} flexDirection='column'/>
             </Box>
             <IconButton
                 type="submit"

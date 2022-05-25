@@ -71,13 +71,14 @@ export const QuestionSlice = createSlice({
             })
             .addCase(updateQuestion.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                const {id, type, question_desc, hint, phase} = action.payload;
+                const {id, type, question_desc, hint, phase, read_out_file} = action.payload;
                 const existingQuestion = state.questions.find(q => q.id === id);
                 if (existingQuestion) {
                     existingQuestion.type = type;
                     existingQuestion.question_desc = question_desc;
                     existingQuestion.hint = hint;
                     existingQuestion.phase = phase;
+                    existingQuestion.read_out_file = read_out_file;
                 }
             })
             .addCase(updateQuestion.rejected, (state, action) => {
