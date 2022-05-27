@@ -43,7 +43,7 @@ export const InputTextAreaDescription = ({label, value, onChange}) => {
     )
 }
 
-export const ImageUploadChange = ({label, placeholder, fileState, handleFileChange}) => {
+export const ImageUploadChange = ({label, placeholder, fileState, handleFileChange, flexDirection}) => {
 
     const [fileSet, setFileSet] = useState(false);
 
@@ -81,7 +81,7 @@ export const ImageUploadChange = ({label, placeholder, fileState, handleFileChan
         <Box
             sx={{
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: {flexDirection},
                 height: '100%',
             }}
         >

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from schmelladmin.models import Game, Idea, Question, Task, User, Week, Comment
+from schmelladmin.models import Game, Idea, Question, ReadOutFile, Task, User, Week, Comment
 from rest_framework_api_key.models import APIKey
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.settings import api_settings
@@ -22,7 +22,7 @@ class WeekSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):  
     class Meta:
         model = Question
-        fields = ('id', 'type','question_desc', 'hint', 'related_question', 'phase', 'function', 'related_game', 'related_week', 'punishment', 'read_out_file',)
+        fields = ('id', 'type','question_desc', 'hint', 'related_question', 'phase', 'function', 'related_game', 'related_week', 'punishment')
 
 #User serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -70,6 +70,13 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'date', 'comment', 'written_by', 'related_task', 'user_id')
+
+class ReadOutFileSerializer(serializers.ModelSerializer):
+    related_question = QuestionSerializer(read_only=True)
+    related_question_id = serializers.PrimaryKeyRelatedField(queryset=Question.objects.all(), source='related_question', write_only=True)
+    class Meta:
+        model = ReadOutFile
+        fields = ('id', 'file', 'related_question', 'gender_voice', 'related_question_id')
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])

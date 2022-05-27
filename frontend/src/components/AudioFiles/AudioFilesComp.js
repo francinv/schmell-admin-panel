@@ -1,16 +1,16 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import SideBar from '../SideBar';
-import TasksOverview from './TasksOverview';
+import AudioFilesOverview from './AudioFilesOverview';
 
 
-const TasksComp = ({activeTab, setActiveTab}) => {
+const AudioFilesComp = ({activeTab, setActiveTab}) => {
     return (
         <Box sx={{display:'flex', height: '100vh'}}>
             <SideBar activeTab={activeTab} setActiveTab={setActiveTab}/>
-            <TasksOverview />
+            <AudioFilesOverview />
         </Box>
     );
 }
 
-export default TasksComp;
+export default AudioFilesComp;

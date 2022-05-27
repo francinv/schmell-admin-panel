@@ -78,7 +78,7 @@ export const DisplayQuestionComp = ({question, setStateChangeQuestion}) => {
                 <CARD_TEXT><b>Hint:  </b>{question.hint}</CARD_TEXT> 
                 <CARD_TEXT><b>Straff: </b>{question.punishment}</CARD_TEXT>
                 <CARD_TEXT><b>Relatert til:  </b>{question.related_question}</CARD_TEXT> 
-                <CARD_TEXT><b>Funksjoner:  </b>{question.function}</CARD_TEXT>   
+                <CARD_TEXT><b>Funksjoner:  </b>{question.function}</CARD_TEXT>
             </Box>
             <DeleteDialog open={open} handleDelete={handleDelete} handleShow={handleShow} />
         </Box>

@@ -10,6 +10,7 @@ import StatisticsComp from './Statistics';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { nbNO } from '@mui/material/locale';
 import SettingsComponent from './Settings/SettingsComp';
+import AudioFilesComp from './AudioFiles/AudioFilesComp';
 
 function App() {
 
@@ -37,6 +38,8 @@ function App() {
             return (<ThemeProvider theme={theme}><GamesComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         } else if (activeTab === 'S') {
             return (<ThemeProvider theme={theme}><StatisticsComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
+        } else if (activeTab === 'F') {
+            return (<ThemeProvider theme={theme}><AudioFilesComp activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         } else if (activeTab === 'P') {
             return (<ThemeProvider theme={theme}><SettingsComponent activeTab={activeTab} setActiveTab={setActiveTab}/></ThemeProvider>)
         }

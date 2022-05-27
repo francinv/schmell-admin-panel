@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,7 +12,7 @@ import { postQuestion } from "../../features/questions/questionSlice";
 import { resetQuestions } from "../../utils/questionUtil";
 import { selectedWeek } from "../../features/weeks/weekSelectors";
 import { selectedGame } from "../../features/games/gameSelectors";
-import { addCountByGame, resetStatistics } from "../../features/statistics/statisticSlice";
+import { addCountByGame } from "../../features/statistics/statisticSlice";
 
 const style_container = {
     position: 'absolute',
@@ -45,7 +45,7 @@ const CreateQuestionForm = ({open, handleClose}) => {
     const { updateGame } = actionDispatch(useAppDispatch());
     const { addCountByGame } = actionDispatch(useAppDispatch());
 
-    const [values, setValues] = React.useState({
+    const [values, setValues] = useState({
         type: '',
         question_desc: '',
         hint: '',

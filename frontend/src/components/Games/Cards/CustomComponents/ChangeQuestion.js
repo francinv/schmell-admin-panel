@@ -32,6 +32,7 @@ export const EditQuestionCard = ({question, setStateChangeQuestion}) => {
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -47,6 +48,11 @@ export const EditQuestionCard = ({question, setStateChangeQuestion}) => {
         }
         updateGame(tempGame);
         setStateChangeQuestion(false);
+    }
+
+    const handleFileChange = (event) => {
+        event.preventDefault();
+        setFileState(event.target.files[0]);
     }
 
     return(
