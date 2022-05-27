@@ -1,9 +1,9 @@
-from schmelladmin.models import Comment, Game, Idea, Question, Task, User, Week
+from schmelladmin.models import Comment, Game, Idea, Question, ReadOutFile, Task, User, Week
 from rest_framework import viewsets, permissions, status, views, generics
 from rest_framework.response import Response
 
 from schmelladmin.tasks import alert_deadline_closing, alert_game_not_updated
-from .serializers import CommentSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, TaskSerializer, UserSerializer, WeekSerializer, ChangePasswordSerializer
+from .serializers import CommentSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, ReadOutFileSerializer, TaskSerializer, UserSerializer, WeekSerializer, ChangePasswordSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from .pagination import CustomPagination
@@ -253,6 +253,24 @@ class ChangePasswordView(generics.UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ChangePasswordSerializer
+
+class ReadOutFileViewset(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ReadOutFileSerializer
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        queryset = ReadOutFile.objects.all()
+        related_question = self.request.query_params.get('questionid')
+        question_desc = self.request.query_params.get('question')
+        if related_question is not None:
+            queryset = queryset.filter(related_question = related_question)
+        if question_desc is not None:
+            question_queryset = Question.objects.all().filter(question_desc__contains = question_desc)
+            if question_queryset.count() > 0:
+                for question in question_queryset:
+                    queryset = queryset.filter(related_question = question.id)
+        return queryset
 
 def switchSort(queryset, sort):
     if sort == 'PRIORITY_HTL':

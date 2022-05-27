@@ -1,0 +1,10 @@
+export const selectAudioFilesCount = (state) => state.audioFile.count;
+export const selectAudioFilesPrevious = (state) => state.audioFile.previous;
+export const selectAudioFilesNext = (state) => state.audioFile.next;
+export const selectAudioFiles = (state) => state.audioFile.files;
+export const selectAudioFileStatus = (state) => state.audioFile.status;
+export const selectAudioFileError = (state) => state.audioFile.error;
+export const selectAudioFilesQuestionId = (state) => state.audioFile.questionid;
+export const selectAudioFilesQuestion = (state) => state.audioFile.question;
+export const selectAudioFilesPageSize = (state) => state.audioFile.page_size;
+export const selectAudioFilesP = (state) => state.audioFile.p;

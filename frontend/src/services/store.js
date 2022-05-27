@@ -7,6 +7,7 @@ import IdeaReducer from '../features/ideas/ideaSlice';
 import TaskReducer from '../features/tasks/taskSlice';
 import CommentReducer from '../features/comments/commentSlice';
 import StatisticReducer from '../features/statistics/statisticSlice';
+import AudioFileReducer from '../features/audiofiles/audioFileSlice';
 
 export const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ export const store = configureStore({
     idea: IdeaReducer,
     task: TaskReducer,
     comment: CommentReducer,
-    statistic: StatisticReducer
+    statistic: StatisticReducer,
+    audioFile: AudioFileReducer
   },
 });
 

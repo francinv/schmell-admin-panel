@@ -58,7 +58,16 @@ class Question(models.Model):
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)
     punishment = models.CharField(max_length=200, default="2 slurker")
-    read_out_file = models.FileField(upload_to="read-out-files/", blank=True)
+    def __str__(self): 
+        return self.id + " " + self.question_desc
+
+class ReadOutFile(models.Model):
+    ALLOWED_GENDERS = (
+        ('M', 'Male'), ('F', 'Female')
+    )
+    related_question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    file = models.FileField(upload_to="readout-files/", blank=True)
+    gender_voice = models.CharField(max_length=1, choices=ALLOWED_GENDERS)
 
 class Idea(models.Model):
     CATEGORIES = (

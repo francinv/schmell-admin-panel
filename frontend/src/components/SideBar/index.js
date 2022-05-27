@@ -15,6 +15,7 @@ import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import SettingsIcon from '@mui/icons-material/Settings';
+import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import { styled } from '@mui/system';
 
 const drawerWidth = 255;
@@ -149,6 +150,19 @@ const SideBar = ({activeTab, setActiveTab}) => {
                 </ListItemIcon>
                 <CustomText>Statistikk</CustomText>
             </CustomListItem> */}
+            <CustomListItem
+                button
+                key="audiofiles"
+                sx={getStyling('F')}
+                onClick={() => {
+                    setActiveTab('F');
+                }}
+            >
+                <ListItemIcon>
+                    <LibraryMusicIcon htmlColor="#e0e000"/>
+                </ListItemIcon>
+                <CustomText>Lydfiler</CustomText>
+            </CustomListItem>
         </List>
         <Divider />
         <List>
