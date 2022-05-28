@@ -2,13 +2,13 @@ import React from 'react';
 import OverviewComp from '../components/Overview/OverviewComp';
 import StatisticsComp from '../components/Statistics';
 import BodyWrapper from '../components/layout/BodyWrapper';
-import AudioFilesOverview from '../components/AudioFiles/AudioFilesOverview';
 import TasksOverview from '../components/Tasks/TasksOverview';
 import IdeasOverview from '../components/Ideas/IdeasOverview';
 import SettingsOverview from '../components/Settings/SettingsOverview';
-import GamesComp from '../components/Games/GameComp';
+import AudioFiles from '../pages/AudioFiles';
+import Games from '../pages/Games';
 
-export const useContent = ({activeTab, setActiveTab}) => {
+const usePage = ({activeTab, setActiveTab}) => {
     content = <OverviewComp setActiveTab={setActiveTab} />;
     switch(activeTab) {
         case 'O': {
@@ -24,7 +24,7 @@ export const useContent = ({activeTab, setActiveTab}) => {
             break;
         }
         case 'G': {
-            content = <GamesComp />
+            content = <Games />
             break;
         }
         case 'S': {
@@ -32,7 +32,7 @@ export const useContent = ({activeTab, setActiveTab}) => {
             break;
         }
         case 'F': {
-            content = <AudioFilesOverview />
+            content = <AudioFiles />
             break;
         }
         case 'P': {
@@ -44,3 +44,5 @@ export const useContent = ({activeTab, setActiveTab}) => {
     }
     return <BodyWrapper activeTab={activeTab} setActiveTab={setActiveTab}>{content}</BodyWrapper>
 }
+
+export default usePage;

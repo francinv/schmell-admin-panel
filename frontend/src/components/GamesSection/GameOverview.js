@@ -9,7 +9,7 @@ import GameCard from "../Cards/DisplayCards/GameCard";
 import CreateGame from "../Cards/CreateCards/CreateGame";
 import GameOverlay from "../Overlays/CreateOverlays/GameOverlay";
 
-export const GameOverview = ({ setStage }) => {
+const GameOverview = ({ setStage }) => {
     const [open, setOpen] = useState(false);
     const games = useSelector(selectGames);
     const gameStatus = useSelector(selectGameStatus);
@@ -35,5 +35,7 @@ export const GameOverview = ({ setStage }) => {
                     <GameOverlay open={open} handleClose={handleShow}/>
             </InnerWrapper>
         </ContentWrapper>
-    )
-}
+    );
+};
+
+export default GameOverview;

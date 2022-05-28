@@ -8,13 +8,14 @@ import { SearchInput } from "../form/AudioFiles";
 import { useSelector } from "react-redux";
 import { selectAudioFilesQuestion } from "../../features/audiofiles/audiofileSelector";
 import UploadAudioFile from "../Overlays/CreateOverlays/UploadAudioFile";
+import BtnAdd from "../Buttons/BtnAdd";
 
 const actionDispatch = (dispatch) => ({
     updateSearchValue: (query) => dispatch(setQuestion(query)),
     resetFiles: () => dispatch(resetStatus())
 })
 
-const AudioFilesHeaderComp = () => {
+const AudioFilesHeader = () => {
     const {updateSearchValue, resetFiles} = actionDispatch(useAppDispatch());
     const searchValue = useSelector(selectAudioFilesQuestion);
 
@@ -43,25 +44,7 @@ const AudioFilesHeaderComp = () => {
                     justifyContent: 'space-between'
                 }}
             >
-                <Button
-                    endIcon={<AddCircleOutlineOutlined />}
-                    sx={{
-                        bgcolor: '#e0e000',
-                        color: '#141400',
-                        fontFamily: 'Quicksand',
-                        fontSize: '14px',
-                        fontWeight: 700,
-                        borderRadius: '8px',
-                        '&:hover':{
-                            bgcolor: '#141400',
-                            color: '#e0e000',
-                        },
-                        '& .MuiButton-endIcon':{
-                            fontSize:'50px',
-                        },
-                    }}
-                    onClick={handleShow}
-                >Last opp fil</Button>
+                <BtnAdd handleClick={handleShow} borderRadius="8px" btnText="Last opp fil" endIcon={<AddCircleOutlineOutlined />}/>
                 <SearchInput 
                     onChange={(event) => {
                         resetFiles();
@@ -77,4 +60,4 @@ const AudioFilesHeaderComp = () => {
     )
 }
 
-export default AudioFilesHeaderComp;
+export default AudioFilesHeader;

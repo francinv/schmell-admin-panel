@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CreateIdeaComp from "./CreateIdea";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+import BtnAdd from "../Buttons/BtnAdd";
 
 const IdeaHeaderComp = () => {
     const [editStatus, setEditStatus] = useState(false);
@@ -30,30 +31,12 @@ const IdeaHeaderComp = () => {
                     borderRadius: '8px',
                 }}
             >
-                <Button
-                    endIcon={editStatus
-                            ? <CancelOutlinedIcon />
-                            : <AddCircleOutlineOutlinedIcon />
-                    }
-                    sx={{
-                        bgcolor: '#e0e000',
-                        color: '#141400',
-                        fontFamily: 'Quicksand',
-                        fontSize: '14px',
-                        fontWeight: 700,
-                        borderRadius: '8px 8px 0px 0px',
-                        '&:hover':{
-                            bgcolor: '#141400',
-                            color: '#e0e000',
-                            borderRadius:'8px 8px 0px 0px'
-                        },
-                        '& .MuiButton-endIcon':{
-                            marginLeft:'auto',
-                            fontSize:'50px',
-                        },
-                    }}
-                    onClick={handleClick}
-                >Jeg har en ny idé!</Button>
+                <BtnAdd
+                    handleClick={handleClick}
+                    borderRadius="8px 8px 0px 0px"
+                    btnText="Jeg har en ny idé!"
+                    endIcon={editStatus ? <CancelOutlinedIcon /> : <AddCircleOutlineOutlinedIcon />}
+                />
                 {
                     editStatus
                     ? <CreateIdeaComp setStateChange={setEditStatus} />

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectUserIsLoggedIn } from '../features/user/userSelectors';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from '../utils/theme';
-import { useContent } from '../hooks/useContent';
+import usePage from '../hooks/usePage';
 
 function App() {
     const isLoggedIn = useSelector(selectUserIsLoggedIn);
@@ -13,7 +13,7 @@ function App() {
     if (isLoggedIn) {
         return (
             <ThemeProvider theme={theme}>
-                {useContent({activeTab, setActiveTab})}
+                {usePage({activeTab, setActiveTab})}
             </ThemeProvider>
         );
     } else {

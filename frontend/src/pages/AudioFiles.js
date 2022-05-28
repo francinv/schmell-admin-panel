@@ -1,25 +1,25 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../features/hooks";
-import AudioFilesHeaderComp from "./AudioFilesHeaderComp";
-import { fetchAudioFiles } from "../../features/audiofiles/audioFileSlice";
-import { selectAudioFilesP, selectAudioFilesPageSize, selectAudioFilesQuestion, selectAudioFilesQuestionId, selectAudioFileStatus } from "../../features/audiofiles/audiofileSelector";
-import AudioFilesTable from "./AudioFilesTable";
-import ContentWrapper from "../layout/ContentWrapper";
-import InnerWrapper from "../layout/InnerWrapper";
+import AudioFilesHeader from "../components/AudioFiles/AudioFilesHeader";
+import AudioFilesTable from "../components/AudioFiles/AudioFilesTable";
+import ContentWrapper from "../components/layout/ContentWrapper";
+import InnerWrapper from "../components/layout/InnerWrapper";
+import { selectAudioFilesP, selectAudioFilesPageSize, selectAudioFilesQuestion, selectAudioFilesQuestionId, selectAudioFileStatus } from "../features/audiofiles/audiofileSelector";
+import { fetchAudioFiles } from "../features/audiofiles/audioFileSlice";
+import { useAppDispatch } from "../features/hooks";
 
 const actionDispatch = (dispatch) => ({
     fetchFiles: (query) => dispatch(fetchAudioFiles(query)),
 })
 
-export const AudioFilesOverview = () => {
+const AudioFiles = () => {
     const { fetchFiles } = actionDispatch(useAppDispatch());
+
     const question = useSelector(selectAudioFilesQuestion)
     const questionid = useSelector(selectAudioFilesQuestionId)
     const page_size = useSelector(selectAudioFilesPageSize);
     const p = useSelector(selectAudioFilesP);
     const statusOfRedux = useSelector(selectAudioFileStatus);
-
 
     useEffect(() => {
         if (statusOfRedux === 'idle') {
@@ -36,11 +36,11 @@ export const AudioFilesOverview = () => {
     return (
         <ContentWrapper pageTitle={"Lydfiler"}>
             <InnerWrapper>   
-                <AudioFilesHeaderComp />
+                <AudioFilesHeader />
                 <AudioFilesTable />
             </InnerWrapper>
         </ContentWrapper>
     )
 }
 
-export default AudioFilesOverview;
+export default AudioFiles;

@@ -1,22 +1,12 @@
 import React from 'react';
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
-import { Box, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { H2 } from "../../styles/Typography";
+import CreateContainer from '../CreateContainer';
 
 const CreateGame = ({handleOpen}) => {
     return(
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '30%',
-                bgcolor:'#F3F3F4',
-                margin: '1rem',
-                borderRadius: 8,
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
+        <CreateContainer width="30%">
             <H2 sx={{color: '#9FA2B4'}}>Opprett nytt spill</H2>
                 <IconButton 
                     sx={{color: '#9FA2B4'}} 
@@ -25,7 +15,7 @@ const CreateGame = ({handleOpen}) => {
                 >
                     <AddCircleOutlineOutlined style={{fontSize: 50}}/>
                 </IconButton>
-        </Box>
+        </CreateContainer>
     );
 };
 

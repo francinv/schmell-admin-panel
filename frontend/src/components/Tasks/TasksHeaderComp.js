@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { H3 } from "../styles/Typography";
 import SortMenu from "./menus/SortMenu";
 import FilterMenu from "./menus/FilterMenu";
 import CreateTaskForm from "./CreateTask";
 import { resetStatus } from "../../features/tasks/taskSlice";
 import { useAppDispatch } from "../../features/hooks";
+import BtnAdd from "../Buttons/BtnAdd";
 
 const actionDispatch = (dispatch) => ({
     resetTasks: (query) => dispatch(resetStatus(query)),
@@ -39,25 +40,12 @@ const TaskHeaderComp = () => {
                     display:'flex',
                 }}
             >
-                <Button
+                <BtnAdd
+                    handleClick={handleShow}
+                    btnText={"Legg til oppgave"}
                     endIcon={<AddCircleOutlineOutlined />}
-                    sx={{
-                        bgcolor: '#e0e000',
-                        color: '#141400',
-                        fontFamily: 'Quicksand',
-                        fontSize: '14px',
-                        fontWeight: 700,
-                        borderRadius: '8px',
-                        '&:hover':{
-                            bgcolor: '#141400',
-                            color: '#e0e000',
-                        },
-                        '& .MuiButton-endIcon':{
-                            fontSize:'50px',
-                        },
-                    }}
-                    onClick={handleShow}
-                >Opprett oppgave</Button>
+                    borderRadius="8px"
+                />
                 <SortMenu />
                 <FilterMenu />
             </Box>

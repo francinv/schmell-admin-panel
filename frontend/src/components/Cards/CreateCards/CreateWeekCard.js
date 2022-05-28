@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import AddIcon from '@mui/icons-material/Add';
-import { Alert, Box, FormControl, IconButton, OutlinedInput } from "@mui/material";
+import { Box, FormControl, IconButton, OutlinedInput } from "@mui/material";
 import { useAppDispatch } from "../../../features/hooks";
 import { useSelector } from "react-redux";
 import { postWeek } from "../../../features/weeks/weekSlice";
 import { selectedGame } from "../../../features/games/gameSelectors";
+import CreateContainer from '../CreateContainer';
 
 const actionDispatch = (dispatch) => ({
     addWeek: (query) => dispatch(postWeek(query))
@@ -29,18 +30,7 @@ const CreateWeekCard = () => {
     }
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '20%',
-                bgcolor:'#F3F3F4',
-                margin: '1rem',
-                borderRadius: '8px',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}
-        >
+        <CreateContainer width="20%">
             <Box 
                 component="form"
                 sx={{
@@ -89,7 +79,7 @@ const CreateWeekCard = () => {
                     <AddIcon/>
                 </IconButton>
             </Box>
-        </Box>
+        </CreateContainer>
     );
 }
 

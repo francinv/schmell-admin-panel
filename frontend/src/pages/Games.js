@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { GameOverview } from './GameOverview';
-import { WeekOverview } from './WeekOverview';
-import QuestionOverview from './QuestionOverview';
+import GameOverview from '../components/GamesSection/GameOverview';
+import QuestionOverview from '../components/GamesSection/QuestionOverview';
+import WeekOverview from '../components/GamesSection/WeekOverview';
 
-const GamesComp = () => {
+const Games = () => {
     const [stage, setStage] = useState('G');
     
     switch(stage) {
@@ -18,4 +18,4 @@ const GamesComp = () => {
     }
 }
 
-export default GamesComp;
+export default Games;

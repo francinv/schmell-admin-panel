@@ -10,13 +10,30 @@ import { useAppDispatch } from "../../features/hooks";
 import { putStatus, updateGame } from '../../features/games/gameSlice';
 import { selectedGame } from '../../features/games/gameSelectors';
 import { ImageUploadChange, InputTextAreaDescription } from "../form/Question";
+import BtnAdd from "../Buttons/BtnAdd";
 
 const actionDispatch = (dispatch) => ({
     editStatus: (query) => dispatch(putStatus(query)),
     updateGame: (query) => dispatch(updateGame(query))
 })
 
-export const HeaderQuestionsComponent = ({handleOpen}) => {
+const ContentWrapper = styled(Box)(({ theme }) => ({
+    display:'flex',
+    flexDirection: 'row',
+    width: '50%',
+    backgroundColor: '#fff',
+    borderRadius: '8px 8px 0px 0px',
+    minHeight: '100px',
+}));
+
+const InnerContainer = styled(Box)(({ theme }) => ({
+    display:'flex',
+    flexDirection: 'column',
+    width: '70%',
+    padding: '0.5rem',
+}));
+
+const QuestionHeader = ({handleOpen}) => {
     const game = useSelector(selectedGame);
     const { editStatus } = actionDispatch(useAppDispatch());
     const [stateChange, setStateChange] = useState(false);
@@ -50,8 +67,8 @@ export const HeaderQuestionsComponent = ({handleOpen}) => {
         >
             {
                 stateChange
-                ? <ChangeDescLogo setStateChange={setStateChange} game={game} />
-                : <BeforeChange setStateChange={setStateChange} game={game} />
+                ? <EditState setStateChange={setStateChange} game={game} />
+                : <DisplayState setStateChange={setStateChange} game={game} />
             }
                 
             <Box
@@ -62,24 +79,14 @@ export const HeaderQuestionsComponent = ({handleOpen}) => {
                     alignSelf: 'flex-end',
                 }}
             >
-                <Button
-                    sx={{
-                        bgcolor: '#e0e000',
-                        fontFamily: 'Quicksand',
-                        fontSize: 14,
-                        fontWeight: 700,
-                        height: '29px',
-                        color: '#141400',
-                        borderRadius: '8px 0px 0px 0px',
-                    }}
+                <BtnAdd
+                    handleClick={handleOpen}
+                    borderRadius="8px 0px 0px 0px"
+                    btnText="Legg til spørsmål"
                     endIcon={<AddCircleOutlineOutlinedIcon />}
-                    onClick={handleOpen}
-                >
-                    Opprett spørsmål
-                </Button>
+                />
                 <FormControl
                     sx={{
-                        height: '29px',
                         '& .MuiInputBase-root': {
                             borderRadius: '0px 8px 0px 0px',
                         },
@@ -92,9 +99,9 @@ export const HeaderQuestionsComponent = ({handleOpen}) => {
                             fontFamily: 'Quicksand',
                             color: '#141400',
                             fontSize: 14,
+                            height: '100%',
                         }}
                         sx={{
-                            height: '29px',
                             color: '#141400',
                             bgcolor: '#E5E5E5',
                         }}
@@ -111,30 +118,14 @@ export const HeaderQuestionsComponent = ({handleOpen}) => {
     );
 }
 
-const BeforeChange = ({setStateChange, game}) => {
+const DisplayState = ({setStateChange, game}) => {
 
     return (
-        <Box
-            sx={{
-                display:'flex',
-                flexDirection: 'row',
-                width: '50%',
-                bgcolor: '#E5E5E5',
-                borderRadius: '8px 8px 0px 0px',
-                minHeight: '100px',
-            }}
-        >
-            <Box
-                sx={{
-                    display:'flex',
-                    flexDirection: 'column',
-                    width: '70%',
-                    padding: '0.5rem',
-                }}
-            >
+        <ContentWrapper>
+            <InnerContainer>
                 <BODY_BOLD>Beskrivelse:</BODY_BOLD>
                 <CARD_TEXT>{game.description}</CARD_TEXT>
-            </Box>
+            </InnerContainer>
             <img src={game.logo} alt="Logo of game" height="100" />
             <IconButton
                 sx=
@@ -148,14 +139,15 @@ const BeforeChange = ({setStateChange, game}) => {
             >
                 <EditOutlinedIcon />
             </IconButton>
-        </Box>
+        </ContentWrapper>
     );
 }
 
-const ChangeDescLogo = ({setStateChange, game}) => {
-    const { updateGame } = actionDispatch(useAppDispatch());
+const EditState = ({setStateChange, game}) => {
     const [description, setDescription] = useState(game.description);
     const [fileState, setFileState] = useState('');
+
+    const { updateGame } = actionDispatch(useAppDispatch());
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -183,28 +175,10 @@ const ChangeDescLogo = ({setStateChange, game}) => {
     }
 
     return (
-        <Box
-            sx={{
-                display:'flex',
-                flexDirection: 'row',
-                width: '50%',
-                bgcolor: '#fff',
-                borderRadius: '8px 8px 0px 0px',
-                minHeight: '100px',
-            }}
-            component="form"
-            onSubmit={handleSubmit}
-        >
-            <Box
-                sx={{
-                    display:'flex',
-                    flexDirection: 'column',
-                    width: '70%',
-                    padding: '0.5rem',
-                }}
-            >
+        <ContentWrapper component="form" onSubmit={handleSubmit}>
+            <InnerContainer>
                 <InputTextAreaDescription onChange={handleChange} label={"Endre beskrivelse:"} value={description}/>
-            </Box>
+            </InnerContainer>
             <Box
                 sx={{
                     display:'flex',
@@ -225,7 +199,8 @@ const ChangeDescLogo = ({setStateChange, game}) => {
             >
                 <CloudUploadIcon />
             </IconButton>
-        </Box>
+        </ContentWrapper>
     );
 }
 
+export default QuestionHeader;

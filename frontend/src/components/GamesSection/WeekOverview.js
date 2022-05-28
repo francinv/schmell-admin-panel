@@ -19,7 +19,7 @@ const actionDispatch = (dispatch) => ({
     resetWeek: () => dispatch(resetWeek())
 })
 
-export const WeekOverview = ({setStage}) => {
+const WeekOverview = ({setStage}) => {
     const game = useSelector(selectedGame);
     const weeks = useSelector(selectWeeks);
     const weeksStatus = useSelector(selectWeeksStatus);
@@ -60,6 +60,7 @@ export const WeekOverview = ({setStage}) => {
                     <CreateWeekCard />
             </InnerWrapper>
         </ContentWrapper>
-    )
+    );
+};
 
-}
+export default WeekOverview;

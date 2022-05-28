@@ -3,7 +3,7 @@ import { Alert, AlertTitle, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { CARD_TEXT } from "../styles/Typography";
-import { HeaderQuestionsComponent } from "./HeaderContainer";
+import QuestionHeader from "./QuestionHeader";
 import { fetchQuestions, resetQuestions } from "../../features/questions/questionSlice";
 import { sortGames } from "../../utils/sortUtil";
 import { useAppDispatch } from "../../features/hooks";
@@ -65,7 +65,7 @@ const QuestionOverview = ({ setStage }) => {
                     </Alert>
                 : null
             }
-            <HeaderQuestionsComponent handleOpen={handleShow} />
+            <QuestionHeader handleOpen={handleShow} />
             <InnerWrapper>
                 {(sortGames(questions)).map((question) => (
                     <QuestionCard question={question} key={question.id} />
