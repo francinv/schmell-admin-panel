@@ -10,7 +10,7 @@ const actionDispatch = (dispatch) => ({
     addWeek: (query) => dispatch(postWeek(query))
 })
 
-export const CreateWeekCard = () => {
+const CreateWeekCard = () => {
     const { addWeek } = actionDispatch(useAppDispatch());
     const game = useSelector(selectedGame);
     const [values, setValues] = useState({
@@ -37,6 +37,8 @@ export const CreateWeekCard = () => {
                 bgcolor:'#F3F3F4',
                 margin: '1rem',
                 borderRadius: '8px',
+                alignItems: 'center',
+                justifyContent: 'center',
             }}
         >
             <Box 
@@ -90,3 +92,5 @@ export const CreateWeekCard = () => {
         </Box>
     );
 }
+
+export default CreateWeekCard;

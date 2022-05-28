@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Alert, AlertTitle, Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
-import { H1 } from "../styles/Typography";
-import { ImageUpload } from "../form";
+import { H1 } from "../../styles/Typography";
+import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField } from "../../form";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { useAppDispatch } from "../../features/hooks";
+import { postGame } from "../../../features/games/gameSlice";
+import { useAppDispatch } from "../../../features/hooks";
+import { fetchStatistics, resetStatistics } from '../../../features/statistics/statisticSlice';
 import { useSelector } from "react-redux";
-import { addAudioFile } from "../../features/audiofiles/audioFileSlice";
-import { selectAudioFileError, selectAudioFileStatus } from "../../features/audiofiles/audiofileSelector";
-import { resetUploadFile } from "../../utils/audioFileUtil";
-import axiosService from "../../utils/axios";
-import { SelectGender, SelectQuestion } from "../form/AudioFiles";
+import FileDialog from "../../Dialog/FileDialog";
+import { selectGameError, selectGameStatus } from "../../../features/games/gameSelectors";
+import { resetCreateGame } from "../../../utils/gameUtil";
+import { RadioThreeButtons, RadioTwoButtons } from "../../form/Game";
 
 const style_container = {
     position: 'absolute',
@@ -30,51 +31,62 @@ const style_container = {
 };
 
 const actionDispatch = (dispatch) => ({
-    addFile: (query) => dispatch(addAudioFile(query))
+    addGame: (query) => dispatch(postGame(query)),
+    resetStatistics: () => dispatch(resetStatistics()),
 })
 
-const UploadAudioFile = ({open, handleClose}) => {
-    const status = useSelector(selectAudioFileStatus);
-    const error = useSelector(selectAudioFileError);
-    const { addFile } = actionDispatch(useAppDispatch());
-    const genderOptions = [
-        { value: 'M', label: 'Mann' },
-        { value: 'F', label: 'Kvinne' },
-    ]
-    const [questionOptions, setQuestionOptions] = useState([]);
+const GameOverlay = ({open, handleClose}) => {
+    const status = useSelector(selectGameStatus);
+    const error = useSelector(selectGameError);
+    const { addGame } = actionDispatch(useAppDispatch());
+    const { resetStatistics } = actionDispatch(useAppDispatch());
+    const [dialogOpen, setDialogOpen] = useState(false);
+
+    const handleShow = () => {
+        setDialogOpen((wasOpen) => !wasOpen);
+    }
 
     const [values, setValues] = useState({
-        related_question_id: '',
-        gender_voice: 'M',
+        name: '',
+        description: '',
+        related_questions: true,
+        last_updated: new Date().toISOString().split('T')[0],
+        status: 'D',
+        release_date: '',
     });
     
     const [fileState, setFileState] = useState('');
 
-    useEffect(() => {
-        fetchAllQuestions();
-    }, [])
-    
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const submitData = () => {
         var data = new FormData();
-        Object.keys(values).forEach(key => data.append(key, values[key]));
-        data.append('file', fileState);
-        addFile(data);
+        data.append('name', values.name);
+        data.append('description', values.description)
+        data.append('related_questions', values.related_questions);
+        data.append('last_updated', values.last_updated);
+        data.append('status', values.status);
+        data.append('logo', fileState);
+        data.append('release_date', values.release_date);
+        addGame(data);
         if (status === 'succeeded') {
             handleClose();
-            setValues(resetUploadFile(values));
+            setValues(resetCreateGame(values));
             setFileState('');
+            resetStatistics();
         }
     }
 
-    const fetchAllQuestions = async () => {
-        axiosService
-            .get('/question/')
-            .then( response => setQuestionOptions(response.data));
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (fileState === '') {
+            handleShow();
+        }
+        else {
+            submitData();
+        }
     }
 
     return (
@@ -106,7 +118,7 @@ const UploadAudioFile = ({open, handleClose}) => {
                         marginRight: 'auto',
                     }}
                 >
-                    <H1>Last opp lydfil</H1>
+                    <H1>Opprett spill</H1>
                 </Box>
                 <Box
                     sx={{
@@ -133,14 +145,39 @@ const UploadAudioFile = ({open, handleClose}) => {
                         component="form"
                         onSubmit={handleSubmit}
                     >
-                        <SelectGender onChange={handleChange('gender_voice')} options={genderOptions} value={values.gender_voice} />
-                        <SelectQuestion onChange={handleChange('related_question_id')} options={questionOptions} value={values.related_question_id} />
+                        <InputTextField 
+                            label="Navn" 
+                            placeholder="Skriv inn navn på spill..." 
+                            onChange={handleChange('name')}
+                            value={values.name}
+                        />
+                        <InputTextArea
+                            label="Beskrivelse"
+                            placeholder="Beskrivelse om spillet..."
+                            value={values.description}
+                            onChange={handleChange('description')}
+                        />
+                        <RadioTwoButtons 
+                            label="Følgespørsmål?" 
+                            value={values.related_questions} 
+                            onChange={handleChange('related_questions')} 
+                        />
+                        <RadioThreeButtons
+                            label="Status:"
+                            value={values.status}
+                            onChange={handleChange('status')}
+                        />
                         <ImageUpload 
-                            label="Last opp lydfil:"
+                            label="Last opp logo:"
                             placeholder="Velg fil:"
                             fileState={fileState}
                             setFileState={setFileState}
                         />
+                        <CustomDateTimePicker 
+                            label="Forventet utslippsdato:"
+                            value={values.release_date}
+                            onChange={handleChange('release_date')}
+                        />  
                         {
                             status === 'failed'
                             ?   <Alert>
@@ -169,10 +206,11 @@ const UploadAudioFile = ({open, handleClose}) => {
                     </Box>
                     
                 </Box>
+                <FileDialog open={dialogOpen} handleShow={handleShow} dataSubmit={submitData}/>
             </Box>
         </Modal>
 
     )
 }
 
-export default UploadAudioFile;
+export default GameOverlay;

@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../features/hooks';
 import { selectAudioFiles, selectAudioFilesCount, selectAudioFilesP, selectAudioFilesPageSize } from '../../features/audiofiles/audiofileSelector';
 import { deleteAudioFile, resetStatus, setP, setPageSize } from '../../features/audiofiles/audioFileSlice';
 import { getGender } from '../../utils/audioFileUtil';
-import DeleteDialog from '../Games/CustomComponents/DeleteDialog';
+import DeleteDialog from '../Dialog/DeleteDialog';
 
 
 export const CTableCell = styled(TableCell)(({theme}) => ({

@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { Box } from "@mui/material";
-import { HeaderContainer } from "../layout/content_header/header";
 import { useSelector } from "react-redux";
 import { fetchIdeas } from "../../features/ideas/ideaSlice";
 import { useAppDispatch } from "../../features/hooks";
 import IdeaHeaderComp from "./IdeaHeaderComponent";
 import { IdeaColumnComp } from "./IdeaColumn";
 import { selectIdeaStatus } from "../../features/ideas/ideaSelectors";
+import ContentWrapper from "../layout/ContentWrapper";
+import InnerWrapper from "../layout/InnerWrapper";
 
 const actionDispatch = (dispatch) => ({
     fetchIdeas: (query) => dispatch(fetchIdeas(query)),
@@ -26,25 +27,8 @@ export const IdeasOverview = () => {
     }, [])
     
     return (
-        <Box
-            component="main"
-            sx={{ flexGrow: 1, bgcolor:'#F7F8FC', height:'100%'}}
-        >
-            <HeaderContainer page_title={"Ideer"} sub_title={undefined}/>
-            <Box
-                sx={{
-                    width:'95%',
-                    display:'flex',
-                    bgcolor:'#fff',
-                    flexWrap:'wrap',
-                    marginTop:'50px',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    borderRadius: '8px',
-                    justifyContent: 'center',
-                    
-                }}
-            >   
+        <ContentWrapper pageTitle="Ideer">
+            <InnerWrapper>   
                 <IdeaHeaderComp />
                 <Box
                     sx={{
@@ -58,8 +42,8 @@ export const IdeasOverview = () => {
                     <IdeaColumnComp categoryTitle={"Design"} last={false} />
                     <IdeaColumnComp categoryTitle={"Diverse"} last={true} />
                 </Box>
-            </Box>
-        </Box>
+            </InnerWrapper>
+        </ContentWrapper>
     )
 }
 

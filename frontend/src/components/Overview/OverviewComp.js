@@ -12,13 +12,14 @@ import { selectStatisticStatus } from '../../features/statistics/statisticSelect
 import { fetchStatistics } from '../../features/statistics/statisticSlice';
 import DayStatistics from './DayStatistics';
 import TaskOverviewSection from './TaskOverviewSection';
+import ContentWrapper from '../layout/ContentWrapper';
 
 const actionDispatch = (dispatch) => ({
     fetchGames: () => dispatch(fetchGames()),
     fetchStatistics: () => dispatch(fetchStatistics())
 })
 
-const OverviewComp = ({activeTab, setActiveTab}) => {
+const OverviewComp = (setActiveTab) => {
     const staticsStatus = useSelector(selectStatisticStatus);
     const { fetchStatistics } = actionDispatch(useAppDispatch());
     const { fetchGames } = actionDispatch(useAppDispatch());
@@ -31,18 +32,11 @@ const OverviewComp = ({activeTab, setActiveTab}) => {
     }, [staticsStatus])
 
     return (
-        <Box sx={{display:'flex', height: '100vh'}}>
-            <SideBar activeTab={activeTab} setActiveTab={setActiveTab}/>
-            <Box 
-                component="main"
-                sx={{ flexGrow: 1, bgcolor:'#F7F8FC', height:'100%'}}
-            >
-                <HeaderContainer page_title={"Oversikt"} sub_title={undefined}/>
-                <HeaderCards /> 
-                <DayStatistics /> 
-                <TaskOverviewSection setActiveTab={setActiveTab} />
-            </Box>
-        </Box>
+        <ContentWrapper pageTitle="Oversikt">
+            <HeaderCards /> 
+            <DayStatistics /> 
+            <TaskOverviewSection setActiveTab={setActiveTab} />
+        </ContentWrapper>
     );
 }
 

@@ -8,6 +8,8 @@ import { selectP, selectPageSize, selectPriorityState, selectResponsibleState, s
 import { fetchTasks } from "../../features/tasks/taskSlice";
 import TaskTable from "./TaskTable";
 import { fetchUsers } from "../../features/user/userSlice";
+import ContentWrapper from "../layout/ContentWrapper";
+import InnerWrapper from "../layout/InnerWrapper";
 
 const actionDispatch = (dispatch) => ({
     fetchTasks: (query) => dispatch(fetchTasks(query)),
@@ -42,29 +44,12 @@ export const TasksOverview = () => {
     }, [sort, status, priority, responsible, page_size, p, statusOfRedux])
     
     return (
-        <Box
-            component="main"
-            sx={{ flexGrow: 1, bgcolor:'#F7F8FC', height:'100%'}}
-        >
-            <HeaderContainer page_title={"Oppgaver"} sub_title={undefined}/>
-            <Box
-                sx={{
-                    width:'95%',
-                    display:'flex',
-                    bgcolor:'#fff',
-                    flexWrap:'wrap',
-                    marginTop:'50px',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    borderRadius: '8px',
-                    justifyContent: 'center',
-                    
-                }}
-            >   
+        <ContentWrapper pageTitle="Oppgaver">
+            <InnerWrapper>  
                 <TaskHeaderComp />
                 <TaskTable />
-            </Box>
-        </Box>
+            </InnerWrapper>
+        </ContentWrapper>
     )
 }
 

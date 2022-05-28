@@ -5,9 +5,10 @@ import { CARD_TEXT, H2 } from '../../styles/Typography';
 import { deleteGame, setSelectedGame } from '../../../features/games/gameSlice';
 import { useAppDispatch } from '../../../features/hooks';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { getCount } from '../../../utils/gameUtil';
+import { getCount, isGreenOrRed, parseRelatedValue } from '../../../utils/gameUtil';
 import { resetStatistics } from '../../../features/statistics/statisticSlice';
-import DeleteDialog from '../CustomComponents/DeleteDialog';
+import DeleteDialog from '../../Dialog/DeleteDialog';
+import CardContainer from '../CardContainer';
 
 const actionDispatch = (dispatch) => ({
     setSelectedGame: (query) => dispatch(setSelectedGame(query)),
@@ -15,37 +16,22 @@ const actionDispatch = (dispatch) => ({
     resetStatistics: () => dispatch(resetStatistics())
 })
 
-const GameCard = ({game, setStage}) => {
-    const { setSelectedGame } = actionDispatch(useAppDispatch());
-    const { deleteGame } = actionDispatch(useAppDispatch());
-    const { resetStatistics } = actionDispatch(useAppDispatch());
-
+const GameCard = ({ game, setStage }) => {
     const [open, setOpen] = useState(false);
-
-    const handleShow = () => {
-        setOpen((wasOpen) => !wasOpen);
-    }
-
     const [buttonStyle, setButtonStyle] = useState(
         {
             display:'none',
             marginLeft:'auto',
         }
     );
+    const spanStyle = {
+        color: 'black',
+    };
 
-    let sorted_Date = sortDate(game.last_updated);
-    let related = game.related_questions ? "Ja" : "Nei";
-
-    function isGreenOrRed() {
-        const actual = new Date(game.last_updated);
-        const limit = new Date(Date.now() - 12096e5);
-        let color = '#fff';
-        if (actual < limit) {
-            color = '#FF0000';
-        } else {
-            color = '#008000';
-        }
-        return color;
+    const { setSelectedGame, deleteGame, resetStatistics } = actionDispatch(useAppDispatch());
+    
+    const handleShow = () => {
+        setOpen((wasOpen) => !wasOpen);
     }
 
     const handleClick = () => {
@@ -58,34 +44,8 @@ const GameCard = ({game, setStage}) => {
         resetStatistics();
     }
 
-    const spanStyle = {
-        color: 'black',
-    };
-
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '30%',
-                bgcolor:'#F3F3F4',
-                margin: '1rem',
-                borderRadius: '8px',
-                transition: 'background-color 400ms linear',
-                '&:hover': {
-                    bgcolor: '#9FA2B4',
-                },
-                '&:hover .Game_CARD_Title': {
-                    color:'#e0e000',
-                }
-            }}
-            onMouseEnter={e => {
-                setButtonStyle({display: 'block'});
-            }}
-            onMouseLeave={e => {
-                setButtonStyle({display: 'none'})
-            }}
-        >
+        <CardContainer width="30%" flexDirection="column" setButtonStyle={setButtonStyle}>
             <Box
                 sx={{
                     display:'flex',
@@ -93,7 +53,7 @@ const GameCard = ({game, setStage}) => {
                     width: '100%',
                 }}
             >
-                <H2 className="Game_CARD_Title" sx={{marginLeft:'auto', marginRight: 'auto'}}>{game.name}</H2>
+                <H2 className="CARD_Title" sx={{marginLeft:'auto', marginRight: 'auto'}}>{game.name}</H2>
                 <IconButton onClick={handleShow} sx={{color:'#141400'}} style={buttonStyle}>
                     <DeleteIcon style={{fontSize: 24}} />
                 </IconButton>
@@ -115,8 +75,8 @@ const GameCard = ({game, setStage}) => {
                     className='container_game_card'
                 >
                     <CARD_TEXT><b>Antall spørsmål:</b> {getCount(game.id)}</CARD_TEXT>
-                    <CARD_TEXT sx={{color: isGreenOrRed()}}><b><span style={spanStyle}>Sist oppdatert:</span></b> {sorted_Date}</CARD_TEXT>
-                    <CARD_TEXT><b>Relaterte oppgaver:</b> {related}</CARD_TEXT>
+                    <CARD_TEXT sx={{color: isGreenOrRed(game.last_updated)}}><b><span style={spanStyle}>Sist oppdatert:</span></b> {sortDate(game.last_updated)}</CARD_TEXT>
+                    <CARD_TEXT><b>Relaterte oppgaver:</b> {parseRelatedValue(game.related_questions)}</CARD_TEXT>
                     <CARD_TEXT><b>Antall brukere (totalt):</b> 232</CARD_TEXT>
                 </Box>
                 <Box
@@ -128,7 +88,7 @@ const GameCard = ({game, setStage}) => {
                 </Box>
             </Box>
             <DeleteDialog open={open} handleShow={handleShow} handleDelete={handleDelete} />
-        </Box>
+        </CardContainer>
     );
 }
 

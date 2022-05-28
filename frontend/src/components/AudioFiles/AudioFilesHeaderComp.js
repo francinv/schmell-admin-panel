@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
 import { Box, Button } from "@mui/material";
 import { H3 } from "../styles/Typography";
-import UploadAudioFile from "./UploadAudioFile";
 import { useAppDispatch } from "../../features/hooks";
 import { resetStatus, setQuestion } from "../../features/audiofiles/audioFileSlice";
 import { SearchInput } from "../form/AudioFiles";
 import { useSelector } from "react-redux";
 import { selectAudioFilesQuestion } from "../../features/audiofiles/audiofileSelector";
+import UploadAudioFile from "../Overlays/CreateOverlays/UploadAudioFile";
 
 const actionDispatch = (dispatch) => ({
     updateSearchValue: (query) => dispatch(setQuestion(query)),

@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
-import { Alert, Box, IconButton} from "@mui/material";
+import { IconButton} from "@mui/material";
 import { useSelector } from "react-redux";
-import { HeaderContainer } from "../layout/content_header/header";
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { CARD_TEXT } from "../styles/Typography";
-import WeekCard from "./Cards/WeekCard";
-import { CreateWeekCard } from "./CustomComponents/CreateWeekCard";
 import { sortWeeks } from "../../utils/sortUtil";
 import { useAppDispatch } from "../../features/hooks";
 import { fetchWeeks, resetWeek } from "../../features/weeks/weekSlice";
 import { selectedGame } from "../../features/games/gameSelectors";
 import { selectWeeks, selectWeeksStatus } from "../../features/weeks/weekSelectors";
+import ContentWrapper from "../layout/ContentWrapper";
+import InnerWrapper from "../layout/InnerWrapper";
+import CreateWeekCard from "../Cards/CreateCards/CreateWeekCard";
+import WeekCard from "../Cards/DisplayCards/WeekCard";
 
 
 const actionDispatch = (dispatch) => ({
@@ -19,11 +20,11 @@ const actionDispatch = (dispatch) => ({
 })
 
 export const WeekOverview = ({setStage}) => {
-    const { getWeeks } = actionDispatch(useAppDispatch());
-    const { resetWeek } = actionDispatch(useAppDispatch());
     const game = useSelector(selectedGame);
     const weeks = useSelector(selectWeeks);
     const weeksStatus = useSelector(selectWeeksStatus);
+    
+    const { getWeeks, resetWeek } = actionDispatch(useAppDispatch());
 
     useEffect(() => {
         if (weeksStatus === 'idle') {
@@ -51,35 +52,14 @@ export const WeekOverview = ({setStage}) => {
     }
 
     return (
-        <Box
-            component="main"
-            sx={{ flexGrow: 1, bgcolor:'#F7F8FC', height:'100%'}}
-        >
-            <HeaderContainer page_title={"Velg uke"} sub_title={getSubTitle()} button={getButton()}/>
-            {
-                weeksStatus === 'failed'
-                ? <Alert severity="warning">Uke-tallet må være mellom 0-52.</Alert>
-                : null
-            }
-            <Box
-                sx={{
-                    width:'95%',
-                    display:'flex',
-                    bgcolor:'#fff',
-                    flexWrap:'wrap',
-                    marginTop:'50px',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    borderRadius: '8px',
-                    justifyContent: 'center',
-                }}
-            >
+        <ContentWrapper pageTitle="Velg uke" subTitle={getSubTitle()} button={getButton()}>
+            <InnerWrapper>
                 {(sortWeeks(weeks)).map((week) => (
                     <WeekCard setStage={setStage} week={week} key={week.id}></WeekCard>
                 ))}
                     <CreateWeekCard />
-            </Box>
-        </Box>
+            </InnerWrapper>
+        </ContentWrapper>
     )
 
 }

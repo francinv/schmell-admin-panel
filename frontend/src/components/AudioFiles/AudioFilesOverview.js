@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { Box } from "@mui/material";
-import { HeaderContainer } from "../layout/content_header/header";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../features/hooks";
 import AudioFilesHeaderComp from "./AudioFilesHeaderComp";
 import { fetchAudioFiles } from "../../features/audiofiles/audioFileSlice";
 import { selectAudioFilesP, selectAudioFilesPageSize, selectAudioFilesQuestion, selectAudioFilesQuestionId, selectAudioFileStatus } from "../../features/audiofiles/audiofileSelector";
 import AudioFilesTable from "./AudioFilesTable";
+import ContentWrapper from "../layout/ContentWrapper";
+import InnerWrapper from "../layout/InnerWrapper";
 
 const actionDispatch = (dispatch) => ({
     fetchFiles: (query) => dispatch(fetchAudioFiles(query)),
@@ -34,29 +34,12 @@ export const AudioFilesOverview = () => {
     }, [questionid, question, page_size, p, statusOfRedux])
     
     return (
-        <Box
-            component="main"
-            sx={{ flexGrow: 1, bgcolor:'#F7F8FC', height:'100%'}}
-        >
-            <HeaderContainer page_title={"Lydfiler"} sub_title={undefined}/>
-            <Box
-                sx={{
-                    width:'95%',
-                    display:'flex',
-                    bgcolor:'#fff',
-                    flexWrap:'wrap',
-                    marginTop:'50px',
-                    marginLeft: 'auto',
-                    marginRight: 'auto',
-                    borderRadius: '8px',
-                    justifyContent: 'center',
-                    
-                }}
-            >   
+        <ContentWrapper pageTitle={"Lydfiler"}>
+            <InnerWrapper>   
                 <AudioFilesHeaderComp />
                 <AudioFilesTable />
-            </Box>
-        </Box>
+            </InnerWrapper>
+        </ContentWrapper>
     )
 }
 

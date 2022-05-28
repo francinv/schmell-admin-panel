@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
-import { H1 } from "../styles/Typography";
-import { InputTextArea, InputTextField } from "../form";
+import { H1 } from "../../styles/Typography";
+import { InputTextArea, InputTextField } from "../../form";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import { updateGame } from "../../features/games/gameSlice";
-import { useAppDispatch } from "../../features/hooks";
+import { updateGame } from "../../../features/games/gameSlice";
+import { useAppDispatch } from "../../../features/hooks";
 import { useSelector } from "react-redux";
-import { postQuestion } from "../../features/questions/questionSlice";
-import { resetQuestions } from "../../utils/questionUtil";
-import { selectedWeek } from "../../features/weeks/weekSelectors";
-import { selectedGame } from "../../features/games/gameSelectors";
-import { addCountByGame } from "../../features/statistics/statisticSlice";
+import { postQuestion } from "../../../features/questions/questionSlice";
+import { resetQuestions } from "../../../utils/questionUtil";
+import { selectedWeek } from "../../../features/weeks/weekSelectors";
+import { selectedGame } from "../../../features/games/gameSelectors";
+import { addCountByGame } from "../../../features/statistics/statisticSlice";
 
 const style_container = {
     position: 'absolute',
@@ -38,7 +38,7 @@ const actionDispatch = (dispatch) => ({
     addCountByGame: (query) => dispatch(addCountByGame(query)),
 })
 
-const CreateQuestionForm = ({open, handleClose}) => {
+const CreateQuestion = ({open, handleClose}) => {
     const week = useSelector(selectedWeek);
     const game = useSelector(selectedGame);
     const { postQuestion } = actionDispatch(useAppDispatch());
@@ -203,4 +203,4 @@ const CreateQuestionForm = ({open, handleClose}) => {
     )
 }
 
-export default CreateQuestionForm;
+export default CreateQuestion;
