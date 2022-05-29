@@ -1,11 +1,10 @@
-import { Avatar, Box, Typography } from "@mui/material";
 import React from "react";
+import { Avatar, Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectComments } from "../../features/comments/commentSelectors";
 import { getFullDate } from "../../utils/taskUtil";
 
-
-export default function CommentBox() {
+const Comments = () => {
     const comments = useSelector(selectComments);
 
     if (comments.length != 0)  {
@@ -47,3 +46,5 @@ export default function CommentBox() {
         return null;
     }
 }
+
+export default Comments;

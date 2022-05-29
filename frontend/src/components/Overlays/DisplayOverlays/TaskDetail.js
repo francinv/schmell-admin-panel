@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Avatar, Button, IconButton, Modal, Paper, TextField, Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
-import { BODY_BOLD, CARD_TEXT, H1, H3, H4 } from "../styles/Typography";
-import { useAppDispatch } from "../../features/hooks";
-import { resetStatus, updateTask } from "../../features/tasks/taskSlice";
-import { getCategory, getPriority } from "../../utils/taskUtil";
-import { UpdateDateTime, UpdateSelectGame, UpdateSelectStatus } from "../form/Task/TaskDetail";
-import { getAllowedDate } from "../../utils/dateUtil";
-import { postComment } from "../../features/comments/commentSlice";
+import { BODY_BOLD, CARD_TEXT, H1, H4 } from "../../styles/Typography";
+import { useAppDispatch } from "../../../features/hooks";
+import { resetStatus, updateTask } from "../../../features/tasks/taskSlice";
+import { getCategory, getPriority } from "../../../utils/taskUtil";
+import { UpdateDateTime, UpdateSelectGame, UpdateSelectStatus } from "../../form/Task/TaskDetail";
+import { getAllowedDate } from "../../../utils/dateUtil";
+import { postComment } from "../../../features/comments/commentSlice";
 import { useSelector } from "react-redux";
-import { selectActiveUser } from "../../features/user/userSelectors";
-import CommentBox from "./CommentBox";
-import { addSolved, resetStatistics } from "../../features/statistics/statisticSlice";
+import { selectActiveUser } from "../../../features/user/userSelectors";
+import { addSolved, resetStatistics } from "../../../features/statistics/statisticSlice";
+import Comments from "../../Tasks/Comments";
 
 const style_container = {
     position: 'absolute',
@@ -133,7 +133,7 @@ const TaskDetail = ({open, handleShow, task}) => {
         setTempComment('');
     }
 
-    if (open === true) {
+    if (open) {
         return (
             <Modal
                 open={open}
@@ -219,7 +219,7 @@ const TaskDetail = ({open, handleShow, task}) => {
                                             alignItems: 'center',
                                         }}
                                     > 
-                                       <CommentBox /> 
+                                       <Comments /> 
                                     </Box>
                                 </Paper>
                                 <Box

@@ -2,21 +2,22 @@ import React, { useState } from "react";
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
 import { Box } from "@mui/material";
 import { H3 } from "../styles/Typography";
-import SortMenu from "./menus/SortMenu";
-import FilterMenu from "./menus/FilterMenu";
-import CreateTaskForm from "./CreateTask";
+import CreateTaskForm from "../Overlays/CreateOverlays/CreateTask";
 import { resetStatus } from "../../features/tasks/taskSlice";
 import { useAppDispatch } from "../../features/hooks";
 import BtnAdd from "../Buttons/BtnAdd";
+import Filter from "./menus/Filter";
+import Sort from "./menus/Sort";
 
 const actionDispatch = (dispatch) => ({
     resetTasks: (query) => dispatch(resetStatus(query)),
 })
 
-const TaskHeaderComp = () => {
+const TasksHeader = () => {
     const {resetTasks} = actionDispatch(useAppDispatch());
 
     const [open, setOpen] = useState(false);
+    
     const handleShow = () => {
         setOpen((wasOpen) => !wasOpen);
         resetTasks();
@@ -46,8 +47,8 @@ const TaskHeaderComp = () => {
                     endIcon={<AddCircleOutlineOutlined />}
                     borderRadius="8px"
                 />
-                <SortMenu />
-                <FilterMenu />
+                <Sort />
+                <Filter />
             </Box>
 
             <CreateTaskForm handleShow={handleShow} open={open}/>
@@ -55,4 +56,4 @@ const TaskHeaderComp = () => {
     )
 }
 
-export default TaskHeaderComp;
+export default TasksHeader;

@@ -1,24 +1,22 @@
 import React, { useEffect } from "react";
-import { Box } from "@mui/material";
-import { HeaderContainer } from "../layout/content_header/header";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../features/hooks";
-import TaskHeaderComp from "./TasksHeaderComp";
-import { selectP, selectPageSize, selectPriorityState, selectResponsibleState, selectSortState, selectStatusState, selectTasks, selectTaskStatus } from "../../features/tasks/taskSelectors";
-import { fetchTasks } from "../../features/tasks/taskSlice";
-import TaskTable from "./TaskTable";
-import { fetchUsers } from "../../features/user/userSlice";
-import ContentWrapper from "../layout/ContentWrapper";
-import InnerWrapper from "../layout/InnerWrapper";
+import ContentWrapper from "../components/layout/ContentWrapper";
+import InnerWrapper from "../components/layout/InnerWrapper";
+import TasksHeader from "../components/Tasks/TasksHeader";
+import TaskTable from "../components/Tasks/TaskTable";
+import { useAppDispatch } from "../features/hooks";
+import { selectP, selectPageSize, selectPriorityState, selectResponsibleState, selectSortState, selectStatusState, selectTaskStatus } from "../features/tasks/taskSelectors";
+import { fetchTasks } from "../features/tasks/taskSlice";
+import { fetchUsers } from "../features/user/userSlice";
 
 const actionDispatch = (dispatch) => ({
     fetchTasks: (query) => dispatch(fetchTasks(query)),
     fetchUsers: () => dispatch(fetchUsers())
 })
 
-export const TasksOverview = () => {
-    const { fetchTasks } = actionDispatch(useAppDispatch());
-    const { fetchUsers } = actionDispatch(useAppDispatch());
+const Tasks = () => {
+    const { fetchTasks, fetchUsers } = actionDispatch(useAppDispatch());
+
     const sort = useSelector(selectSortState);
     const status = useSelector(selectStatusState);
     const priority = useSelector(selectPriorityState);
@@ -26,7 +24,6 @@ export const TasksOverview = () => {
     const page_size = useSelector(selectPageSize);
     const p = useSelector(selectP);
     const statusOfRedux = useSelector(selectTaskStatus);
-
 
     useEffect(() => {
         if (statusOfRedux === 'idle') {
@@ -46,11 +43,11 @@ export const TasksOverview = () => {
     return (
         <ContentWrapper pageTitle="Oppgaver">
             <InnerWrapper>  
-                <TaskHeaderComp />
+                <TasksHeader />
                 <TaskTable />
             </InnerWrapper>
         </ContentWrapper>
     )
 }
 
-export default TasksOverview;
+export default Tasks;

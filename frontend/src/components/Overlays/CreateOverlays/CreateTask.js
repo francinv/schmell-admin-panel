@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
-import { H1 } from "../styles/Typography";
-import { CustomDateTimePicker, InputTextArea, InputTextField } from "../form";
-import { useAppDispatch } from "../../features/hooks";
-import { postTask, resetStatus } from "../../features/tasks/taskSlice";
-import { resetStatistics } from '../../features/statistics/statisticSlice';
+import { H1 } from "../../styles/Typography";
+import { CustomDateTimePicker, InputTextArea, InputTextField } from "../../form";
+import { useAppDispatch } from "../../../features/hooks";
+import { postTask, resetStatus } from "../../../features/tasks/taskSlice";
+import { resetStatistics } from '../../../features/statistics/statisticSlice';
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
-import { SelectCategory, SelectRelatedGame, SelectStatus, TogglePerson, TogglePriority } from "../form/Task";
-import { selectTaskStatus } from "../../features/tasks/taskSelectors";
+import { SelectCategory, SelectRelatedGame, SelectStatus, TogglePerson, TogglePriority } from "../../form/Task";
+import { selectTaskStatus } from "../../../features/tasks/taskSelectors";
 import { useSelector } from "react-redux";
-import { resetFields } from "../../utils/taskUtil";
+import { resetFields } from "../../../utils/taskUtil";
 
 const style_container = {
     position: 'absolute',

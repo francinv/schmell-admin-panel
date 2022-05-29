@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import { Drawer } from '@mui/material';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import FilterPriority from './components/FilterPriority';
-import FilterStatus from './components/FilterStatus';
-import FilterResponsible from './components/FilterResp';
 import { resetStatus, setPriorityState, setResponsibleState, setStatusState } from '../../../features/tasks/taskSlice';
 import { useAppDispatch } from '../../../features/hooks';
+import Priority from './Priority';
+import Responsible from './Responsible';
+import Status from './Status';
 
 const actionDispatch = (dispatch) => ({
   setPriority: (query) => dispatch(setPriorityState(query)),
@@ -15,28 +15,20 @@ const actionDispatch = (dispatch) => ({
   resetStatus: () => dispatch(resetStatus())
 })
 
-const FilterMenu = () => {
-  const { setPriority } = actionDispatch(useAppDispatch());
-  const { setResponsible } = actionDispatch(useAppDispatch());
-  const { setStatus } = actionDispatch(useAppDispatch());
-  const { resetStatus } = actionDispatch(useAppDispatch());
+const Filter = () => {
+  const { setPriority, setResponsible, setStatus, resetStatus } = actionDispatch(useAppDispatch());
 
-  const [anchorEl, setAnchorEl] = useState(false);
-  const open = Boolean(anchorEl);
+  const [isFilterShown, setIsFilterShown] = useState(false);
 
-  const handleShowMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(false);
+  const handleShow = () => {
+    setIsFilterShown((wasOpen) => !wasOpen);
   };
 
   return (
     <React.Fragment>
       <Button
         id="sort-button"
-        onClick={handleShowMenu}
+        onClick={handleShow}
         startIcon={<FilterListIcon sx={{color:'#C5C7CD'}}/>}
         sx={{
           color: '#4B506D',
@@ -49,12 +41,12 @@ const FilterMenu = () => {
       </Button>
       <Drawer
         anchor='right'
-        open={open}
-        onClose={handleClose}
+        open={isFilterShown}
+        onClose={handleShow}
       >
-        <FilterPriority />
-        <FilterStatus />
-        <FilterResponsible />
+        <Priority />
+        <Status />
+        <Responsible />
         <Button
           sx={{
             bgcolor: '#e0e000',
@@ -81,4 +73,4 @@ const FilterMenu = () => {
 }
 
 
-export default FilterMenu;
+export default Filter;

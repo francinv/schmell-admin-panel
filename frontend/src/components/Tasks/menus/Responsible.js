@@ -1,34 +1,24 @@
 import React from "react";
-import { Avatar, Box, Button, IconButton } from "@mui/material";
-import { H4 } from "../../../styles/Typography";
+import { Avatar, Box, IconButton } from "@mui/material";
+import { H4 } from "../../styles/Typography";
 import { useSelector } from 'react-redux';
-import { selectAllUsers } from "../../../../features/user/userSelectors";
-import { resetStatus, setPriorityState, setResponsibleState, setStatusState } from "../../../../features/tasks/taskSlice";
-import { useAppDispatch } from "../../../../features/hooks";
-import { selectResponsibleState } from "../../../../features/tasks/taskSelectors";
+import { selectAllUsers } from "../../../features/user/userSelectors";
+import { resetStatus, setResponsibleState } from "../../../features/tasks/taskSlice";
+import { useAppDispatch } from "../../../features/hooks";
+import { selectResponsibleState } from "../../../features/tasks/taskSelectors";
 
 const actionDispatch = (dispatch) => ({
     setResponsible: (query) => dispatch(setResponsibleState(query)),
     resetStatus: () => dispatch(resetStatus())
 })
 
-const FilterResponsible = () => {
-    const { setResponsible } = actionDispatch(useAppDispatch());
-    const { resetStatus } = actionDispatch(useAppDispatch());
+const Responsible = () => {
+    const { setResponsible, resetStatus } = actionDispatch(useAppDispatch());
 
     const responsible = useSelector(selectResponsibleState);
     const users = useSelector(selectAllUsers);
 
-    function getOpacity(value){
-        let opacity = '0.5';
-        if (responsible === value) {
-            opacity='1';
-        }
-        else {
-            opacity = '0.5';
-        }
-        return opacity;
-    }
+    const getOpacity = value => responsible === value ? 1 : 0.5;
 
     const handleClick = (value) => {
         resetStatus();
@@ -73,12 +63,10 @@ const FilterResponsible = () => {
                             }}
                         />
                     </IconButton>
-                ))
-                    
-                }   
+                ))}   
             </Box>
         </Box>
     )
 }
 
-export default FilterResponsible;
+export default Responsible;
