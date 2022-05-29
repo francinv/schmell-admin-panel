@@ -1,12 +1,10 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
-import InfoCard from './Cards/InfoCard';
 import { selectGameCount, selectQuestionsCount, selectTaskOverdue, selectTaskUnsolved } from '../../features/statistics/statisticSelectors';
+import DayInfoCard from '../Cards/DisplayCards/DayInfoCard';
 
-
-
-const HeaderCards = () => {
+const OverviewHeader = () => {
     const gameCount = useSelector(selectGameCount);
     const questionsCount = useSelector(selectQuestionsCount);
     const unsolvedCount = useSelector(selectTaskUnsolved);
@@ -20,12 +18,12 @@ const HeaderCards = () => {
                 margin: '0 auto 0 auto'
             }}
        >
-           <InfoCard title={"Uløste oppgaver"} content={unsolvedCount} marginLeft={"0"} marginRight={"0.5rem"}/>
-           <InfoCard title={"Oppgaver over frist"} content={overdueCount} marginLeft={"0.5rem"} marginRight={"0.5rem"}/>
-           <InfoCard title={"Antall spill"} content={gameCount} marginLeft={"0.5rem"} marginRight={"0.5rem"}/>
-           <InfoCard title={"Antall spørsmål"} content={questionsCount} marginLeft={"0"} marginRight={"0"}/>
+           <DayInfoCard title="Uløste oppgaver" content={unsolvedCount} positioning="first" />
+           <DayInfoCard title="Oppgaver over frist" content={overdueCount} positioning="none" />
+           <DayInfoCard title="Antall spill" content={gameCount} positioning="none" />
+           <DayInfoCard title="Antall spørsmål" content={questionsCount} positioning="last" />
        </Box> 
     )
 }
 
-export default HeaderCards;
+export default OverviewHeader;

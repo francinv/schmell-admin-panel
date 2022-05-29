@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { CARD_TEXT, H3 } from "../../styles/Typography";
 import axiosService from "../../../utils/axios";
-import { MyTaskContent } from "./CustomComponents/TableContent";
+import { UserTaskContent } from "../../Overview/TableContent";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../../features/user/userSelectors";
+import { myTaskUrl } from "../../../constants/urls";
+import BtnSmall from "../../Buttons/BtnSmall";
 
-const MyTaskCard = ({setActiveTab}) => {
+const TaskByUser = ({ setActiveTab }) => {
     const [tasks, setTasks] = useState([]);
+
     const user = useSelector(selectActiveUser);
 
     useEffect(async () => {
-        const url = `task/?sort=PUBL_DESC&responsible=${user.id}&filter=ONLY_ACT`;
-        const axe = axiosService.get(url)
-        const response = await axe.then(res => res.data);
-        setTasks(response.results);
-    }, []);
-    
-
+        axiosService.get(myTaskUrl(user.id))
+            .then(res => {
+                setTasks(res.data.results);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }, [user]);
 
     return(
         <Box
@@ -42,23 +46,13 @@ const MyTaskCard = ({setActiveTab}) => {
                     <H3>Oppgaver</H3>
                     <CARD_TEXT sx={{color: '#9FA2B4'}}>Dagens</CARD_TEXT>
                 </Box>
-                <Button 
-                    sx={{
-                        color: '#e0e000',
-                        marginLeft: 'auto',
-                        alignSelf: 'center',
-                        '&:hover': {
-                            bgcolor: '#fcfce6'
-                        }
-                    }}
-                    onClick={() => setActiveTab('T')}
-                >Se alle</Button>
+                <BtnSmall btnText="Se mer" onClick={() => setActiveTab('T')}/>
             </Box>
             {tasks.map((task) => (
-                <MyTaskContent task={task} borderBottom={"1px solid #DFE0EB"} key={task.id}/>
+                <UserTaskContent task={task} borderBottom={"1px solid #DFE0EB"} key={task.id}/>
             ))}
         </Box>
     )
 }
 
-export default MyTaskCard;
+export default TaskByUser;

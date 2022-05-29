@@ -10,14 +10,15 @@ const actionDispatch = (dispatch) => ({
 })
 
 const CreateIdeaComp = ({setStateChange}) => {
-    const user = useSelector(selectActiveUser);
-    const { postIdea } = actionDispatch(useAppDispatch());
-
     const [values, setValues] = React.useState({
         text: '',
         category: 'EM',
         user_id: user.id
     });
+
+    const user = useSelector(selectActiveUser);
+
+    const { postIdea } = actionDispatch(useAppDispatch());
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -28,6 +29,7 @@ const CreateIdeaComp = ({setStateChange}) => {
         postIdea(values);
         setStateChange(false);
     }
+    
     return (
         <Box
             component="form"

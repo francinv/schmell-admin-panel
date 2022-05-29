@@ -1,18 +1,19 @@
 import React from 'react';
-import OverviewComp from '../components/Overview/OverviewComp';
 import StatisticsComp from '../components/Statistics';
 import BodyWrapper from '../components/layout/BodyWrapper';
 import TasksOverview from '../components/Tasks/TasksOverview';
-import IdeasOverview from '../components/Ideas/IdeasOverview';
 import SettingsOverview from '../components/Settings/SettingsOverview';
 import AudioFiles from '../pages/AudioFiles';
 import Games from '../pages/Games';
+import Ideas from '../pages/Ideas';
+import Overview from '../pages/Overview';
+import Settings from '../pages/Settings';
 
-const usePage = ({activeTab, setActiveTab}) => {
-    content = <OverviewComp setActiveTab={setActiveTab} />;
+const usePage = ({ activeTab, setActiveTab }) => {
+    content = <Overview setActiveTab={setActiveTab} />;
     switch(activeTab) {
         case 'O': {
-            content = <OverviewComp setActiveTab={setActiveTab}/>
+            content = <Overview setActiveTab={setActiveTab} />
             break;
         }
         case 'T': {
@@ -20,7 +21,7 @@ const usePage = ({activeTab, setActiveTab}) => {
             break;
         }
         case 'I': {
-            content = <IdeasOverview />
+            content = <Ideas />
             break;
         }
         case 'G': {
@@ -36,11 +37,11 @@ const usePage = ({activeTab, setActiveTab}) => {
             break;
         }
         case 'P': {
-            content = <SettingsOverview />
+            content = <Settings />
             break;
         }
         default:
-            content = <OverviewComp setActiveTab={setActiveTab}/>
+            content = <Overview setActiveTab={setActiveTab}/>
     }
     return <BodyWrapper activeTab={activeTab} setActiveTab={setActiveTab}>{content}</BodyWrapper>
 }

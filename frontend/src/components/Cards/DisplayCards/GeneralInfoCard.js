@@ -1,16 +1,15 @@
 import { Box } from "@mui/material";
 import React from "react";
+import { isFirst, isLast } from "../../../utils/overviewUtil";
 import { BODY_BOLD, H3 } from "../../styles/Typography";
 
-const AdditionalInfoCard = (
-    {borderBottom, title, content, borderBottomRight, borderTopRight}) => {
-
+const GeneralInfoCard = ({ title, content, positioning }) => {
+    
     return (
         <Box
             sx={{
-                borderBottom: borderBottom,
-                borderBottomRightRadius: borderBottomRight,
-                borderTopRightRadius: borderTopRight,
+                borderBottom: isLast ? 'none' : '1px solid #DFE0EB',
+                borderRadius: isFirst ? '0px 8px 0px 0px' : isLast ? '0px 0px 8px 0px' : 0,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -24,4 +23,4 @@ const AdditionalInfoCard = (
     )
 }
 
-export default AdditionalInfoCard;
+export default GeneralInfoCard;

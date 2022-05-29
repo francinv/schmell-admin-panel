@@ -5,7 +5,7 @@ import CreateIdeaComp from "./CreateIdea";
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import BtnAdd from "../Buttons/BtnAdd";
 
-const IdeaHeaderComp = () => {
+const IdeasHeader = () => {
     const [editStatus, setEditStatus] = useState(false);
 
     const handleClick = () => {
@@ -47,4 +47,4 @@ const IdeaHeaderComp = () => {
     )   
 }
 
-export default IdeaHeaderComp;
+export default IdeasHeader;

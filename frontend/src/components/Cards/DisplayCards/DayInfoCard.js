@@ -1,8 +1,9 @@
-import { Box } from "@mui/material";
 import React from "react";
+import { Box } from "@mui/material";
 import { H1, H3 } from "../../styles/Typography";
+import { isFirst, isLast } from "../../../utils/overviewUtil";
 
-const InfoCard = ({title, content, marginLeft, marginRight}) => {
+const DayInfoCard = ({ title, content, positioning }) => {
 
     return (
         <Box
@@ -16,10 +17,7 @@ const InfoCard = ({title, content, marginLeft, marginRight}) => {
                 borderRadius: '8px',
                 backgroundColor: '#fff',
                 border: '1px solid #DFE0EB',
-                marginTop: '0.5rem',
-                marginBottom: '0.5rem',
-                marginLeft: marginLeft,
-                marginRight: marginRight,
+                margin: isFirst(positioning) ? '0.5rem 0.5rem 0.5rem 0' : isLast(positioning) ? '0.5rem 0 0.5rem 0' : '0.5rem 0.5rem 0.5rem 0.5rem',
                 '&:hover':{
                     color: '#e0e000'
                 }
@@ -31,4 +29,4 @@ const InfoCard = ({title, content, marginLeft, marginRight}) => {
     )
 }
 
-export default InfoCard;
+export default DayInfoCard;

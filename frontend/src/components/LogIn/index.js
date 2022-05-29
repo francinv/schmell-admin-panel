@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -30,13 +30,14 @@ const actionDispatch = (dispatch) => ({
 });
 
 export default function LogIn() {
-  const status = useSelector(selectUserStatus);
-  const error = useSelector(selectUserError);
-  const [values, setValues] = React.useState({
+  const [values, setValues] = useState({
     password: '',
     username: '',
     showPassword: false,
   });  
+
+  const status = useSelector(selectUserStatus);
+  
   const { logIn } = actionDispatch(useAppDispatch());
     
   const handleChange = (prop) => (event) => {
@@ -54,7 +55,7 @@ export default function LogIn() {
     event.preventDefault();
   };    
 
-  const HandleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     data.append('username', values.username);
@@ -89,7 +90,7 @@ export default function LogIn() {
                 alignItems:'center',
             }}
             component="form"
-            onSubmit={HandleSubmit}
+            onSubmit={handleSubmit}
             noValidate
         >
             <img className='img_logo' style={{marginTop:'1rem'}} src="/static/images/assetlogo.png" width={350}/>

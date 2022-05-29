@@ -1,11 +1,12 @@
 import React from "react";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { CARD_TEXT, H3 } from "../../styles/Typography";
-import { ContentCategory } from "./CustomComponents/TableContent";
+import { CategoryContent } from "../../Overview/TableContent";
 import { useSelector } from "react-redux";
 import { selectTaskDesign, selectTaskDevelopment, selectTaskEconomy, selectTaskGame, selectTaskMarketing } from "../../../features/statistics/statisticSelectors";
+import BtnSmall from "../../Buttons/BtnSmall";
 
-const TaskCategoryCard = ({setActiveTab}) => {
+const TaskByCategory = ({setActiveTab}) => {
     const task_development = useSelector(selectTaskDevelopment);
     const task_game = useSelector(selectTaskGame);
     const task_design = useSelector(selectTaskDesign);
@@ -35,25 +36,15 @@ const TaskCategoryCard = ({setActiveTab}) => {
                     <H3>Oppgaver per kategori</H3>
                     <CARD_TEXT sx={{color: '#9FA2B4'}}>Gruppe: <b>Schmell</b></CARD_TEXT>
                 </Box>
-                <Button 
-                    sx={{
-                        color: '#e0e000',
-                        marginLeft: 'auto',
-                        alignSelf: 'center',
-                        '&:hover': {
-                            bgcolor: '#fcfce6'
-                        }
-                    }}
-                    onClick={() => setActiveTab('T')}
-                >Se mer</Button>
+                <BtnSmall btnText="Se mer" onClick={() => setActiveTab('T')}/>
             </Box>
-            <ContentCategory title={"Utvikling"} content={task_development} borderBottom={"1px solid #DFE0EB"}/>
-            <ContentCategory title={"Spill"} content={task_game} borderBottom={"1px solid #DFE0EB"}/>
-            <ContentCategory title={"Design"} content={task_design} borderBottom={"1px solid #DFE0EB"}/>
-            <ContentCategory title={"Markedsføring"} content={task_marketing} borderBottom={"1px solid #DFE0EB"}/>
-            <ContentCategory title={"Økonomi"} content={task_economy} borderBottom={"0px"}/>
+            <CategoryContent title="Utvikling" content={task_development} borderBottom="1px solid #DFE0EB" />
+            <CategoryContent title="Spill" content={task_game} borderBottom="1px solid #DFE0EB" />
+            <CategoryContent title="Design" content={task_design} borderBottom="1px solid #DFE0EB"/>
+            <CategoryContent title="Markedsføring" content={task_marketing} borderBottom="1px solid #DFE0EB" />
+            <CategoryContent title="Økonomi" content={task_economy} borderBottom="0px" />
         </Box>
     )
 }
 
-export default TaskCategoryCard;
+export default TaskByCategory;
