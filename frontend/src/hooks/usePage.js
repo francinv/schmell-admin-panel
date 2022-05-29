@@ -1,5 +1,4 @@
 import React from 'react';
-import StatisticsComp from '../components/Statistics';
 import BodyWrapper from '../components/layout/BodyWrapper';
 import TasksOverview from '../components/Tasks/TasksOverview';
 import AudioFiles from '../pages/AudioFiles';
@@ -7,6 +6,7 @@ import Games from '../pages/Games';
 import Ideas from '../pages/Ideas';
 import Overview from '../pages/Overview';
 import Settings from '../pages/Settings';
+import Statistics from '../pages/Statistics';
 
 const usePage = ({ activeTab, setActiveTab }) => {
     content = <Overview setActiveTab={setActiveTab} />;
@@ -28,7 +28,7 @@ const usePage = ({ activeTab, setActiveTab }) => {
             break;
         }
         case 'S': {
-            content = <StatisticsComp activeTab={activeTab} setActiveTab={setActiveTab}/>
+            content = <Statistics />
             break;
         }
         case 'F': {
