@@ -10,13 +10,13 @@ const actionDispatch = (dispatch) => ({
 })
 
 const CreateIdeaComp = ({setStateChange}) => {
+    const user = useSelector(selectActiveUser);
+
     const [values, setValues] = React.useState({
         text: '',
         category: 'EM',
         user_id: user.id
     });
-
-    const user = useSelector(selectActiveUser);
 
     const { postIdea } = actionDispatch(useAppDispatch());
 

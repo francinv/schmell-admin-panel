@@ -1,20 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, Box } from "@mui/material";
 import { CARD_TEXT, H2 } from "../styles/Typography";
 import { useSelector } from "react-redux";
 import { selectGameIdeas, selectDevIdeas, selectDesignIdeas, selectVariousIdeas } from '../../features/ideas/ideaSelectors';
-import { getBorderRight, getColor, getList } from "../../utils/ideaUtil";
+import { getBorderRight, getColor } from "../../utils/ideaUtil";
 
 const IdeaColumn = ({ categoryTitle, last }) => {
-
+    const [ideas, setIdeas] = useState([]);
     const gameIdeas = useSelector(selectGameIdeas);
     const devIdeas = useSelector(selectDevIdeas);
     const designIdeas = useSelector(selectDesignIdeas);
     const variousIdeas = useSelector(selectVariousIdeas);
 
     useEffect(() => {
-      getThisList();
-    }, []);
+        switch(categoryTitle) {
+            case 'Spill': setIdeas(gameIdeas); break;
+            case 'Utvikling': setIdeas(devIdeas); break;
+            case 'Design': setIdeas(designIdeas); break;
+            case 'Diverse': setIdeas(variousIdeas); break;
+        }
+    }, [gameIdeas, devIdeas, designIdeas, variousIdeas]);
 
     return (
         <Box
@@ -36,13 +41,12 @@ const IdeaColumn = ({ categoryTitle, last }) => {
                     marginLeft:'auto',
                     marginRight: 'auto',
                     justifyContent: 'center',
-                    backgroundColor: getColor(),
+                    backgroundColor: getColor(categoryTitle),
                 }}
             >
                 <H2>{categoryTitle}</H2>
             </Box>
-            {getList(categoryTitle, gameIdeas, devIdeas, designIdeas, variousIdeas)
-                .map((idea) => (
+            {ideas.map(idea => (
                     <Box
                         sx={{
                             width: '60%',

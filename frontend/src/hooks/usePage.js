@@ -2,7 +2,6 @@ import React from 'react';
 import StatisticsComp from '../components/Statistics';
 import BodyWrapper from '../components/layout/BodyWrapper';
 import TasksOverview from '../components/Tasks/TasksOverview';
-import SettingsOverview from '../components/Settings/SettingsOverview';
 import AudioFiles from '../pages/AudioFiles';
 import Games from '../pages/Games';
 import Ideas from '../pages/Ideas';

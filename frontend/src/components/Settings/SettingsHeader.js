@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/user/userSelectors";
-import { CARD_TEXT, H2, H3 } from "../styles/Typography";
+import { CARD_TEXT, H2 } from "../styles/Typography";
 
 const SettingsHeader = () => {
     const user = useSelector(selectActiveUser);
@@ -17,7 +17,7 @@ const SettingsHeader = () => {
             }}
         >
             <H2 sx={{textAlign:'left'}}>Hei, {user.first_name} {user.last_name}</H2>
-            <CARD_TEXT>Her har du mulighet for å endre dine innstillinger/profil</CARD_TEXT>
+            <CARD_TEXT>Her har du mulighet for å endre dine innstillinger og informasjon</CARD_TEXT>
         </Box>
     )
 }

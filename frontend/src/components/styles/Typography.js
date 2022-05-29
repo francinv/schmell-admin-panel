@@ -44,4 +44,9 @@ export const BODY_EXTRA_BOLD = styled(Typography)(({theme}) => ({
     fontWeight: 700,
 }))
 
+export const BODY_MEDIUM = styled(Typography)(({theme}) => ({
+    fontFamily: 'Quicksand',
+    fontSize: '16px',
+    fontWeight: 500,
+}))
 

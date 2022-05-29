@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/material";
-import SmallContainer from "./Layout/SmallContainer";
-import {H3} from '../styles/Typography';
+import { H3 } from '../styles/Typography';
 import { ToggleAlertGroup } from "../form/Settings";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../features/user/userSelectors";
 import { updateUser } from "../../features/user/userSlice";
 import { useAppDispatch } from "../../features/hooks";
+import SmallContainer from "../layout/containers/SmallContainer";
 
 const actionDispatch = (dispatch) => ({
     updateUser: (query) => dispatch(updateUser(query)),
 });
 
-const AlertComp = () => {
+const AlertsSection = () => {
     const {updateUser} = actionDispatch(useAppDispatch());
     const user = useSelector(selectActiveUser);
     const [n, setN] = useState(0);
@@ -41,11 +41,11 @@ const AlertComp = () => {
         <SmallContainer>
             <Box sx={{width: '85%'}}>
                 <H3 sx={{marginBottom: '2rem'}}>Varslinger</H3>
-                <ToggleAlertGroup label={"Ønsker varslinger om oppgaver:"} onChange={handleChange('alerts_task')} value={values.alerts_task} />
-                <ToggleAlertGroup label={"Ønsker varslinger om frister:"} onChange={handleChange('alerts_deadlines')} value={values.alerts_deadlines} />
+                <ToggleAlertGroup label="Ønsker varslinger om oppgaver:" onChange={handleChange('alerts_task')} value={values.alerts_task} />
+                <ToggleAlertGroup label="Ønsker varslinger om frister:" onChange={handleChange('alerts_deadlines')} value={values.alerts_deadlines} />
             </Box>
         </SmallContainer>
     );
 }
 
-export default AlertComp;
+export default AlertsSection;

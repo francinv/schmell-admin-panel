@@ -2,9 +2,9 @@ import React from "react";
 import { Box } from "@mui/material";
 import ContentWrapper from "../components/layout/ContentWrapper";
 import InnerWrapper from "../components/layout/InnerWrapper";
-import SettingsHeader from "../components/Settings/SettingsHeaderComp";
-import ProfileInfo from "../components/Settings/ProfileInfo";
-import AlertComp from "../components/Settings/AlertComp";
+import SettingsHeader from "../components/Settings/SettingsHeader";
+import UserInfoSection from "../components/Settings/UserInfoSection";
+import AlertsSection from "../components/Settings/AlertsSection";
 
 const Settings = () => {
     
@@ -13,8 +13,8 @@ const Settings = () => {
             <InnerWrapper>
                 <SettingsHeader />
                 <Box sx={{width: '90%'}}>
-                    <ProfileInfo />
-                    <AlertComp />
+                    <UserInfoSection />
+                    <AlertsSection />
                 </Box>
             </InnerWrapper>
         </ContentWrapper>

@@ -21,11 +21,11 @@ const FormContainer = styled(Box)(({ theme }) => ({
     alignItems: 'center',
 }));
 
-export const ProfileInput = ({label, value, onChange, type, handleSubmit, setChangeStatus}) => {
+export const ProfileInput = ({label, value, onChange, type, handleSubmit, onStateChange}) => {
 
     const handleCompSubmit = (event) => {
         event.preventDefault();
-        setChangeStatus(false);
+        onStateChange(false);
         handleSubmit();
     }
     return(
@@ -66,12 +66,11 @@ export const ProfileInput = ({label, value, onChange, type, handleSubmit, setCha
     )
 }
 
-export const ProfileImageChange = ({setFileState, handleSubmit}) => {
+export const ProfileImageChange = ({ setFileState, handleSubmit, onStateChange}) => {
 
     const handleChange = (event) => {
         event.preventDefault();
         setFileState(event.target.files[0]);
-        // handleSubmit();
     }
 
     const inputButtonStyle = {
@@ -115,7 +114,10 @@ export const ProfileImageChange = ({setFileState, handleSubmit}) => {
                     color: '#000',
                     width: '100%',
                 }}
-                onClick={handleSubmit}
+                onClick={(event) => {
+                    handleSubmit();
+                    onStateChange(false);
+                }}
             > LAST OPP</Button>
         </Box>
     )
