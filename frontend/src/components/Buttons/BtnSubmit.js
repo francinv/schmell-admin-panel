@@ -12,7 +12,7 @@ const BtnSubmit = ({ endIcon, btnText, width }) => {
                 fontFamily: 'Quicksand',
                 fontSize: '14px',
                 fontWeight: 700,
-                width: width,
+                width: width || '40%',
                 marginTop: '1.5rem',
                 '&:hover':{
                     bgcolor: '#141400',

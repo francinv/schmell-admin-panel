@@ -3,13 +3,14 @@ import { useSelector } from 'react-redux';
 import { selectP, selectPageSize, selectTaskCount, selectTasks } from '../../features/tasks/taskSelectors';
 import { Avatar, Box, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { BODY_BOLD, CARD_TEXT } from '../styles/Typography';
-import { getCategory, getDate, getPriority, getTime, getUpdatedTime } from '../../utils/taskUtil';
+import { getCategory, getPriority, getUpdatedTime } from '../../utils/taskUtil';
 import { resetStatus, setP, setPageSize } from '../../features/tasks/taskSlice';
 import { fetchComments } from '../../features/comments/commentSlice';
 import { useAppDispatch } from '../../features/hooks';
 import TaskDetail from '../Overlays/DisplayOverlays/TaskDetail';
 import { TASK_TABLE_HEADER } from '../../constants/taskConstants';
 import { CTableCell, CustomFooter, DTableCell, TableHeader } from '../table/TableComponents';
+import { getDateFromDate, getTimeFromDate } from '../../utils/dateUtil';
 
 const actionDispatch = (dispatch) => ({
     setP: (query) => dispatch(setP(query)),
@@ -75,8 +76,8 @@ const TaskTable = () => {
                                 <DTableCell>{getCategory(task.category)}</DTableCell>
                                 <TableCell>
                                     <Box sx={{display:'flex', flexDirection:'column'}}>
-                                        <BODY_BOLD>{getDate(task.deadline)}</BODY_BOLD>
-                                        <CARD_TEXT>{getTime(task.deadline)}</CARD_TEXT>
+                                        <BODY_BOLD>{getDateFromDate(task.deadline)}</BODY_BOLD>
+                                        <CARD_TEXT>{getTimeFromDate(task.deadline)}</CARD_TEXT>
                                     </Box>
                                 </TableCell>
                                 <TableCell>{getPriority(task.priority)}</TableCell>

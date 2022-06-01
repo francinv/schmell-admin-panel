@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, Box, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { selectComments } from "../../features/comments/commentSelectors";
-import { getFullDate } from "../../utils/taskUtil";
+import { getFullDate } from "../../utils/dateUtil";
 
 const Comments = () => {
     const comments = useSelector(selectComments);

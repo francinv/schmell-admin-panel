@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { shouldBeAddedToState } from '../../utils/audioFileUtil';
-import axiosService from '../../utils/axios';
+import axiosService from '../../services/axiosService';
 
 const initialState = {
     count: 0,

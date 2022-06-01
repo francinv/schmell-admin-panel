@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosService from '../../utils/axios';
+import axiosService from '../../services/axiosService';
 import { deleteObject, replaceObject } from '../../utils/filterUtil';
 
 const initialState = {

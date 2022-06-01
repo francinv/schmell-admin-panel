@@ -7,7 +7,7 @@ import ContentWrapper from "../layout/ContentWrapper";
 import InnerWrapper from "../layout/InnerWrapper";
 import GameCard from "../Cards/DisplayCards/GameCard";
 import CreateGame from "../Cards/CreateCards/CreateGame";
-import GameOverlay from "../Overlays/CreateOverlays/GameOverlay";
+import AddGame from "../Overlays/CreateOverlays/CreateGame";
 
 const GameOverview = ({ setStage }) => {
     const [open, setOpen] = useState(false);
@@ -31,8 +31,8 @@ const GameOverview = ({ setStage }) => {
                 {sortGames(games).map((game) => (
                     <GameCard game={game} key={game.id} setStage={setStage} />
                 ))}
-                    <CreateGame handleOpen={handleShow}/>
-                    <GameOverlay open={open} handleClose={handleShow}/>
+                    <CreateGame handleOpen={handleShow} />
+                    <AddGame open={open} handleClose={handleShow} />
             </InnerWrapper>
         </ContentWrapper>
     );

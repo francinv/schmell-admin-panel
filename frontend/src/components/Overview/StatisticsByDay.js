@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { selectSolved } from '../../features/statistics/statisticSelectors';
-import { getParsedDate } from '../../utils/overviewUtil';
+import { getParsedDate } from '../../utils/dateUtil';
 import { CARD_TEXT, H3 } from '../styles/Typography';
 import GeneralInfoCard from '../Cards/DisplayCards/GeneralInfoCard';
 import GameStatisticsTable from './StatisticsByGame';

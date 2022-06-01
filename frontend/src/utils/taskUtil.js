@@ -1,5 +1,5 @@
-import { Box } from "@mui/material";
 import React from "react";
+import { Box } from "@mui/material";
 import { BODY_BOLD } from "../components/styles/Typography";
 
 export const getUpdatedTime = date => {
@@ -22,19 +22,7 @@ export const getUpdatedTime = date => {
     }
 }
 
-export function getDate(date) {
-    let deadline = new Date(date);
-    var options = { month: 'long' , day: 'numeric', year: 'numeric' };
-    return (deadline.toLocaleString("no-NO", options));
-}
-
-export function getTime(date) {
-    let deadline = new Date(date);
-    var options = {hour: 'numeric', minute: '2-digit', timeZone: 'UTC'}
-    return (deadline.toLocaleTimeString("no-NO", options))
-}
-
-export function getPriority(priority) {
+export const getPriority = priority => {
     let color;
     let text;
 
@@ -64,7 +52,7 @@ export function getPriority(priority) {
     )
 }
 
-export function getCategory(category) {
+export const getCategory = category => {
     let category_text;
 
     switch (category) {
@@ -86,23 +74,7 @@ export function getCategory(category) {
     return category_text;
 }
 
-export function getFullDate(date) {
-    let temp = new Date(date);
-    var options = { month: 'long' , day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: "h24"};
-    return (temp.toLocaleString("no-NO", options));
-}
-
-export function resetFields(values) {
-    values.title = '';
-    values.description = '';
-    values.status = '';
-    values.deadline = '';
-    values.category = '';
-    values.priority = '';
-    values.user_id = '';
-    values.related_game = '';
-    return values;
-}
+export const resetFields = values => Object.keys(values).forEach(key => values[key] = '');
 
 export const parseGamesToOptions = games => {
     const parsedGames = games

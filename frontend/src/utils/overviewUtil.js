@@ -1,9 +1,3 @@
-export const getParsedDate = () => {
-    let today = new Date();
-    var options = { month: 'short' , day: 'numeric', year: 'numeric' };
-    return (today.toLocaleString("no-NO", options));
-}
-
 export const getPriorityColor = priority => {
     let color = '';
 

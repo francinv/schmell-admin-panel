@@ -7,11 +7,12 @@ import { useSelector } from "react-redux";
 import { selectPriorityState } from "../../../features/tasks/taskSelectors";
 import { styled } from "@mui/system";
 import { PRIORITY_OPTIONS } from "../../../constants/taskConstants";
+import { InnerContainer, OuterContainer } from "./StyledComponents";
 
 const actionDispatch = (dispatch) => ({
     setPriority: (query) => dispatch(setPriorityState(query)),
     resetStatus: () => dispatch(resetStatus())
-})
+});
 
 const PriorityBtn = styled(Button)(({theme}) => ({
     borderRadius: '100px',
@@ -33,34 +34,19 @@ const Priority = () => {
     const handleClick = (value) => {
         resetStatus();
         setPriority(value);
-    }
+    };
 
     return (
-        <Box 
-            sx={{
-                marginTop: '1rem',
-                display:'flex',
-                flexDirection: 'column',
-                borderBottom: '1px solid #C5C7CD',
-                paddingLeft: '0.8rem',
-                paddingTop: '0.8rem'
-            }}
-            >
+        <OuterContainer>
             <H4>Prioritet</H4>
-            <Box
-                sx={{
-                    display: 'flex',
-                    marginTop: '1rem',
-                    marginBottom: '1rem',
-                }}
-            >
+            <InnerContainer>
                 {PRIORITY_OPTIONS.map(priority => (
-                    <PriorityBtn sx={{opacity: getOpacity(priority.value), backgroundColor: priority.color}} onClick={() => handleClick(priority.value)}>
+                    <PriorityBtn sx={{opacity: getOpacity(priority.value), backgroundColor: priority.color}} onClick={() => handleClick(priority.value)} key={priority.value}>
                         {priority.text}
                     </PriorityBtn>
                 ))}
-            </Box>
-        </Box>
+            </InnerContainer>
+        </OuterContainer>
     );
 };
 

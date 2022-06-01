@@ -6,11 +6,12 @@ import { selectAllUsers } from "../../../features/user/userSelectors";
 import { resetStatus, setResponsibleState } from "../../../features/tasks/taskSlice";
 import { useAppDispatch } from "../../../features/hooks";
 import { selectResponsibleState } from "../../../features/tasks/taskSelectors";
+import { InnerContainer, OuterContainer } from "./StyledComponents";
 
 const actionDispatch = (dispatch) => ({
     setResponsible: (query) => dispatch(setResponsibleState(query)),
     resetStatus: () => dispatch(resetStatus())
-})
+});
 
 const Responsible = () => {
     const { setResponsible, resetStatus } = actionDispatch(useAppDispatch());
@@ -23,27 +24,12 @@ const Responsible = () => {
     const handleClick = (value) => {
         resetStatus();
         setResponsible(value);
-    }
+    };
 
     return (
-        <Box 
-            sx={{
-                marginTop: '1rem',
-                display:'flex',
-                flexDirection: 'column',
-                borderBottom: '1px solid #C5C7CD',
-                paddingLeft: '0.8rem',
-                paddingTop: '0.8rem'
-            }}
-            >
+        <OuterContainer>
             <H4>Ansvarlig</H4>
-            <Box
-                sx={{
-                    display: 'flex',
-                    marginTop: '1rem',
-                    marginBottom: '1rem',
-                }}
-            >
+            <InnerContainer>
                 {users.map((user) => (
                     <IconButton
                         key={user.id}
@@ -64,9 +50,9 @@ const Responsible = () => {
                         />
                     </IconButton>
                 ))}   
-            </Box>
-        </Box>
-    )
-}
+            </InnerContainer>
+        </OuterContainer>
+    );
+};
 
 export default Responsible;

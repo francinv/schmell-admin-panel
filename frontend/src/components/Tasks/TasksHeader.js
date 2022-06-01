@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../features/hooks";
 import BtnAdd from "../Buttons/BtnAdd";
 import Filter from "./menus/Filter";
 import Sort from "./menus/Sort";
+import { StyledOuterContainer } from "../styles/Containers";
 
 const actionDispatch = (dispatch) => ({
     resetTasks: (query) => dispatch(resetStatus(query)),
@@ -24,14 +25,7 @@ const TasksHeader = () => {
     }
 
     return (
-        <Box
-            sx={{
-                width: '95%',
-                display:'flex',
-                flexDirection:'column',
-                justifyContent: 'center',
-            }}
-        >
+        <StyledOuterContainer>
             <H3>Alle oppgaver</H3>
             <Box
                 sx={{
@@ -50,9 +44,8 @@ const TasksHeader = () => {
                 <Sort />
                 <Filter />
             </Box>
-
             <CreateTaskForm handleShow={handleShow} open={open}/>
-        </Box>
+        </StyledOuterContainer>
     )
 }
 

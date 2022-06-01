@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import { CARD_TEXT, H3 } from "../../styles/Typography";
-import axiosService from "../../../utils/axios";
+import axiosService from "../../../services/axiosService";
 import { UserTaskContent } from "../../Overview/TableContent";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../../features/user/userSelectors";

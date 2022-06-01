@@ -19,7 +19,7 @@ const styleContainer = {
     borderRadius: 8,
 };
 
-const ModalWrapper = ({ children, open, handleClose, modalTitle, handleSubmit }) => {
+const ModalWrapper = ({ children, open, handleClose, modalTitle }) => {
     return (
         <Modal 
             open={open}
@@ -51,34 +51,7 @@ const ModalWrapper = ({ children, open, handleClose, modalTitle, handleSubmit })
                 >
                     <H1>{modalTitle}</H1>
                 </Box>
-                <Box
-                    sx={{
-                        width: '85%',
-                        bgcolor: '#fff',
-                        flexDirection: 'row',
-                        borderRadius: 8,
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                    }}
-                >
-                    <Box
-                        sx={{
-                            width:'80%',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            display: 'flex',
-                            alignItems: 'center',
-                            flexDirection: 'column',
-                            marginTop: 2,
-                            paddingTop: 2,
-                            paddingBottom: 2,
-                        }}
-                        component="form"
-                        onSubmit={handleSubmit}
-                    >
-                        {children}
-                    </Box>
-                </Box>
+                {children}
             </Box>
         </Modal>
     );

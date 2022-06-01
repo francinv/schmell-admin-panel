@@ -13,7 +13,7 @@ const actionDispatch = (dispatch) => ({
 });
 
 const AlertsSection = () => {
-    const {updateUser} = actionDispatch(useAppDispatch());
+    const { updateUser } = actionDispatch(useAppDispatch());
     const user = useSelector(selectActiveUser);
     const [n, setN] = useState(0);
     const [values, setValues] = useState({

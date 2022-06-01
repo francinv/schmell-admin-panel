@@ -9,6 +9,7 @@ import { selectAudioFilesQuestion } from "../../features/audiofiles/audiofileSel
 import UploadAudioFile from "../Overlays/CreateOverlays/UploadAudioFile";
 import BtnAdd from "../Buttons/BtnAdd";
 import InputField from "../form/input/InputField";
+import { StyledOuterContainer } from "../styles/Containers";
 
 const actionDispatch = (dispatch) => ({
     updateSearchValue: (query) => dispatch(setQuestion(query)),
@@ -32,14 +33,7 @@ const AudioFilesHeader = () => {
     };
 
     return (
-        <Box
-            sx={{
-                width: '95%',
-                display:'flex',
-                flexDirection:'column',
-                justifyContent: 'center',
-            }}
-        >
+        <StyledOuterContainer>
             <H3>Alle filer</H3>
             <Box
                 sx={{
@@ -55,7 +49,7 @@ const AudioFilesHeader = () => {
                     type="text" height="36px" fontSize="18px" />
             </Box>
             <UploadAudioFile handleClose={handleShow} open={open}/>
-        </Box>
+        </StyledOuterContainer>
     )
 }
 
