@@ -74,7 +74,10 @@ export const getCategory = category => {
     return category_text;
 }
 
-export const resetFields = values => Object.keys(values).forEach(key => values[key] = '');
+export const resetFields = values => {
+    Object.keys(values).forEach(key => values[key] = '');
+    return values;
+};
 
 export const parseGamesToOptions = games => {
     const parsedGames = games

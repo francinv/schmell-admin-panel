@@ -45,14 +45,14 @@ export const UserSlice = createSlice({
     reducers: {
         setLogIn: (state, action) => {
             state.isLoggedIn = true;
-            state.activeUser = action.payload.user;
-            state.access = action.payload.access
+            state.activeUser = action.payload;
         },
         setLogOut: (state) => {
             state.isLoggedIn = false;
             state.activeUser = {};
-            state.access = '';
-            localStorage.removeItem('refresh')
+            localStorage.removeItem('refresh');
+            localStorage.removeItem('access');
+            localStorage.removeItem('user');
         },
     },
     extraReducers(builder) {
@@ -65,6 +65,7 @@ export const UserSlice = createSlice({
                 state.activeUser = action.payload.user
                 localStorage.setItem('access', action.payload.access)
                 localStorage.setItem('refresh', action.payload.refresh)
+                localStorage.setItem('user', action.payload.user.id)
                 let temp = localStorage.getItem('refresh');
                 if (temp === undefined) {
                     alert('Could not set refresh token. Try logging out and in.');

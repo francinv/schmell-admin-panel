@@ -1,1 +1,4 @@
-export const resetQuestions = values => Object.keys(values).forEach(key => values[key] = '');
+export const resetQuestions = values => {
+    Object.keys(values).forEach(key => values[key] = '');
+    return values;
+};

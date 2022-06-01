@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from schmelladmin.tasks import alert_deadline_closing, alert_game_not_updated
 from .serializers import CommentSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, ReadOutFileSerializer, TaskSerializer, UserSerializer, WeekSerializer, ChangePasswordSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from .pagination import CustomPagination
 from datetime import date, datetime
@@ -198,6 +198,19 @@ class RefreshViewSet(viewsets.ViewSet, TokenRefreshView):
 
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
+class TokenActiveViewSet(viewsets.ViewSet, TokenVerifyView):
+    permission_classes = (permissions.AllowAny,)
+    http_method_names = ['post']
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+
+        try:
+            serializer.is_valid(raise_exception=True)
+        except TokenError as e:
+            raise InvalidToken(e.args[0])
+
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 class StaticsViewSet(views.APIView):
     permission_classes = [permissions.AllowAny]
     
@@ -268,8 +281,7 @@ class ReadOutFileViewset(viewsets.ModelViewSet):
         if question_desc is not None:
             question_queryset = Question.objects.all().filter(question_desc__contains = question_desc)
             if question_queryset.count() > 0:
-                for question in question_queryset:
-                    queryset = queryset.filter(related_question = question.id)
+                queryset = queryset.filter(related_question__in = question_queryset)
         return queryset
 
 def switchSort(queryset, sort):

@@ -9,7 +9,7 @@ import Statistics from '../pages/Statistics';
 import Tasks from '../pages/Tasks';
 
 const usePage = ({ activeTab, setActiveTab }) => {
-    content = <Overview setActiveTab={setActiveTab} />;
+    let content = <Overview setActiveTab={setActiveTab} />;
     switch(activeTab) {
         case 'O': {
             content = <Overview setActiveTab={setActiveTab} />

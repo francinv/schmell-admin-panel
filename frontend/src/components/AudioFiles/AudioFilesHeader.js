@@ -17,7 +17,7 @@ const actionDispatch = (dispatch) => ({
 })
 
 const AudioFilesHeader = () => {
-    const {updateSearchValue, resetFiles} = actionDispatch(useAppDispatch());
+    const { updateSearchValue, resetFiles } = actionDispatch(useAppDispatch());
     const searchValue = useSelector(selectAudioFilesQuestion);
 
     const [open, setOpen] = useState(false);
@@ -46,7 +46,7 @@ const AudioFilesHeader = () => {
             >
                 <BtnAdd handleClick={handleShow} borderRadius="8px" btnText="Last opp fil" endIcon={<AddCircleOutlineOutlined />}/>
                 <InputField value={searchValue} onChange={handleChange} placeholder="Søk etter spesifikt spørsmål, for å finne korresponderende fil" 
-                    type="text" height="36px" fontSize="18px" />
+                    type="text" height="36px" fontSize="18px" backgroundColor="#E5E5E5" width='70%' />
             </Box>
             <UploadAudioFile handleClose={handleShow} open={open}/>
         </StyledOuterContainer>

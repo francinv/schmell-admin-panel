@@ -17,8 +17,7 @@ const initialState = {
 export const fetchAudioFiles = createAsyncThunk('audioFiles/fetchAudioFiles', async content => {
     const { questionid, question, page_size, p } = content;
     let url = `readoutfiles?`;
-    if (questionid !== '') url += `questionid=${questionid}`;
-    if (question !== '') url += `&question=${question}`;
+    if (question !== '') url += `question=${question}`;
     if (page_size !== 10) url += `&page_size=${page_size}`;
     if (p !== 1) url += `&p=${p}`;
 
