@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Box, IconButton, Link, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material';
-import { styled } from '@mui/system';
+import { Box, IconButton, Link, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch } from '../../features/hooks';
@@ -9,21 +8,8 @@ import { selectAudioFiles, selectAudioFilesCount, selectAudioFilesP, selectAudio
 import { deleteAudioFile, resetStatus, setP, setPageSize } from '../../features/audiofiles/audioFileSlice';
 import { getGender } from '../../utils/audioFileUtil';
 import DeleteDialog from '../Dialog/DeleteDialog';
-
-
-export const CTableCell = styled(TableCell)(({theme}) => ({
-    fontFamily:'Quicksand',
-    fontSize:14,
-    fontWeight:500,
-    color: '#9FA2B4',
-}))
-
-export const DTableCell = styled(TableCell)(({theme}) => ({
-    fontFamily:'Quicksand',
-    fontSize:14,
-    fontWeight:500,
-    color: '#141400',
-}))
+import { CTableCell, CustomFooter, DTableCell, TableHeader } from '../table/TableComponents';
+import { AUDIO_TABLE_HEADERS } from '../../constants/audioFileConstants';
 
 const actionDispatch = (dispatch) => ({
     setP: (query) => dispatch(setP(query)),
@@ -34,8 +20,10 @@ const actionDispatch = (dispatch) => ({
 
 const AudioFilesTable = () => {
     const { setP, setPageSize, deleteFile, resetStatus } = actionDispatch(useAppDispatch());
+
     const [dialogOpen, setDialogOpen] = useState(false);
     const [idOfDeleted, setIdOfDeleted] = useState(null);
+
     const files = useSelector(selectAudioFiles);
     const count = useSelector(selectAudioFilesCount);
     const page_size = useSelector(selectAudioFilesPageSize);
@@ -65,14 +53,7 @@ const AudioFilesTable = () => {
         <Box sx={{width: '100%'}}>
             <TableContainer>
                 <Table sx={{width: '100%'}}>
-                    <TableHead>
-                        <TableRow>
-                            <CTableCell>Tilhørende spørsmål</CTableCell>
-                            <CTableCell>Kjønn</CTableCell>
-                            <CTableCell>Fil</CTableCell>
-                            <CTableCell>Handlinger</CTableCell>
-                        </TableRow>
-                    </TableHead>
+                    <TableHeader>{AUDIO_TABLE_HEADERS.map(header=>(<CTableCell key={header}>{header}</CTableCell>))}</TableHeader>
                     <TableBody>
                         {files.map(file => (
                             <TableRow
@@ -109,39 +90,7 @@ const AudioFilesTable = () => {
                             </TableRow>
                         ))}
                     </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[10, 25, 50]}
-                                count={count}
-                                rowsPerPage={page_size}
-                                page={p-1}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                                sx={{
-                                    '& .MuiTablePagination-selectLabel':{
-                                        fontFamily: 'Quicksand',
-                                        fontSize: 14,
-                                        color: '#9FA2B4'
-                                    },
-                                    '& .MuiTablePagination-select': {
-                                        fontFamily: 'Quicksand',
-                                        color: '#4B506D',
-                                        fontSize: 14,
-                                        fontWeight: 500,
-                                    },
-                                    '& .MuiTablePagination-selectIcon': {
-                                        color: '#9FA2B4'
-                                    },
-                                    '& .MuiTablePagination-displayedRows': {
-                                        fontFamily: 'Quicksand',
-                                        fontSize: 14,
-                                        color: '#9FA2B4'
-                                    }
-                                }}
-                            />
-                        </TableRow>
-                    </TableFooter>  
+                    <CustomFooter count={count} handleChangePage={handleChangePage} handleChangeRowsPerPage={handleChangeRowsPerPage} p={p} page_size={page_size} />
                 </Table>
             </TableContainer>
             <DeleteDialog open={dialogOpen} handleShow={handleShow} handleDelete={handleDelete} />

@@ -2,7 +2,7 @@ import React from "react";
 import { Switch } from "@mui/material";
 import { styled } from "@mui/system";
 
-export const IOSSwitch = styled((props) => (
+const CustomSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
   ))(({ theme }) => ({
     width: 42,
@@ -49,3 +49,5 @@ export const IOSSwitch = styled((props) => (
       }),
     },
   }));
+
+  export default CustomSwitch;

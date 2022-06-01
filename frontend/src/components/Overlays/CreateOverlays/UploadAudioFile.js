@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Alert, AlertTitle } from "@mui/material";
-import { ImageUpload } from "../../form";
+import { FileContainer, SelectContainerSmall } from "../../form";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { useAppDispatch } from "../../../features/hooks";
 import { useSelector } from "react-redux";
 import { addAudioFile } from "../../../features/audiofiles/audioFileSlice";
 import { selectAudioFileError, selectAudioFileStatus } from "../../../features/audiofiles/audiofileSelector";
-import { resetUploadFile } from "../../../utils/audioFileUtil";
+import { resetUploadFile, parseQuestionsToOptions } from "../../../utils/audioFileUtil";
 import axiosService from "../../../utils/axios";
-import { SelectGender, SelectQuestion } from "../../form/AudioFiles";
 import { genderOptions } from "../../../constants/audioFileConstants";
 import ModalWrapper from "../../layout/ModalWrapper";
 import BtnSubmit from "../../Buttons/BtnSubmit";
@@ -41,9 +40,11 @@ const UploadAudioFile = ({open, handleClose}) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         var data = new FormData();
+
         Object.keys(values).forEach(key => data.append(key, values[key]));
         data.append('file', fileState);
         addFile(data);
+
         if (status === 'succeeded') {
             handleClose();
             setValues(resetUploadFile(values));
@@ -54,21 +55,18 @@ const UploadAudioFile = ({open, handleClose}) => {
     const fetchAllQuestions = async () => {
         axiosService
             .get('/question/')
-            .then( response => setQuestionOptions(response.data));
+            .then( response => {
+                setQuestionOptions(parseQuestionsToOptions(response.data));
+            });
     }
 
     return (
         <ModalWrapper handleClose={handleClose} modalTitle="Last opp lydfil" open={open} handleSubmit={handleSubmit}>
-            <SelectGender onChange={handleChange('gender_voice')} options={genderOptions} value={values.gender_voice} />
-            <SelectQuestion onChange={handleChange('related_question_id')} options={questionOptions} value={values.related_question_id} />
-            <ImageUpload 
-                label="Last opp lydfil:"
-                placeholder="Velg fil:"
-                fileState={fileState}
-                setFileState={setFileState}
-            />
+            <SelectContainerSmall label="Velg kjønn:" onChange={handleChange('gender_voice')} options={genderOptions} value={values.gender_voice} width='65%' />
+            <SelectContainerSmall label="Velg tilhørende spørsmål:" onChange={handleChange('related_question_id')} options={questionOptions} value={values.related_question_id} width='65%' />
+            <FileContainer label="Last opp lydfil:" placeholder="Velg fil:" fileState={fileState} setFileState={setFileState}/>
             { status === 'failed' ? <Alert><AlertTitle>Server error</AlertTitle>{error}</Alert> : null}
-            <BtnSubmit btnText="Submit" endIcon={<SportsEsportsIcon />} />
+            <BtnSubmit btnText="Submit" endIcon={<SportsEsportsIcon />} width='40%'/>
         </ModalWrapper>
     )
 }

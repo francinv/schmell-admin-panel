@@ -56,7 +56,7 @@ const Status = () => {
                 }}
             >
                 {STATUS_OPTIONS.map(status => (
-                    <StyledBtnStatus fullWidth onClick={() => handleClick(status.type)} endIcon={isSelected(status.type)}>
+                    <StyledBtnStatus fullWidth onClick={() => handleClick(status.value)} endIcon={isSelected(status.value)} key={status.value}>
                         {status.text}
                     </StyledBtnStatus>
                 ))}

@@ -3,7 +3,7 @@ import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../../styles/Typography";
-import { InputTextArea, InputTextField } from "../../form";
+import { Input, InputContainer, InputTextArea, InputTextField, TextAreaContainer } from "../../form";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { updateGame } from "../../../features/games/gameSlice";
 import { useAppDispatch } from "../../../features/hooks";
@@ -131,52 +131,52 @@ const CreateQuestion = ({open, handleClose}) => {
                         component="form"
                         onSubmit={handleSubmit}
                     >
-                        <InputTextField 
+                        <InputContainer 
                             label="Type:" 
                             placeholder="Skriv inn type spørsmål..." 
                             onChange={handleChange('type')}
                             value={values.type}
-                            type={"text"}
+                            type="text"
                         />
-                        <InputTextArea
+                        <TextAreaContainer
                             label="Spørsmål:"
                             placeholder="Skriv inn spørsmålet... "
                             value={values.question_desc}
                             onChange={handleChange('question_desc')}
                         />
-                        <InputTextArea
+                        <TextAreaContainer
                             label="Hint:"
                             placeholder="Skriv inn hint... "
                             value={values.hint}
                             onChange={handleChange('hint')}
                         />
-                        <InputTextField 
+                        <InputContainer 
                             label="Relatert til:" 
                             placeholder="Skriv inn id på relatert spørsmål..." 
                             onChange={handleChange('related_question')}
                             value={values.related_question}
-                            type={"text"}
+                            type="text"
                         />
-                        <InputTextField 
+                        <InputContainer 
                             label="Fase:" 
                             placeholder="Skriv inn fase..." 
                             onChange={handleChange('phase')}
                             value={values.phase}
-                            type={"number"}
+                            type="number"
                         />
-                        <InputTextField 
+                        <InputContainer 
                             label="Funksjon:" 
                             placeholder="Skriv inn funksjon..." 
                             onChange={handleChange('function')}
                             value={values.function}
-                            type={"text"}
+                            type="text"
                         />
-                        <InputTextField 
+                        <InputContainer 
                             label="Straff:" 
                             placeholder="Skriv inn straff..." 
                             onChange={handleChange('punishment')}
                             value={values.punishment}
-                            type={"text"}
+                            type="text"
                         />
                         <Button
                             type="submit"

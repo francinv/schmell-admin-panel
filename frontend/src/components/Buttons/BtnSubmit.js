@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React from "react";
 
-const BtnSubmit = ({ endIcon, btnText }) => {
+const BtnSubmit = ({ endIcon, btnText, width }) => {
     return (
         <Button
             type="submit"
@@ -12,7 +12,7 @@ const BtnSubmit = ({ endIcon, btnText }) => {
                 fontFamily: 'Quicksand',
                 fontSize: '14px',
                 fontWeight: 700,
-                width: '40%',
+                width: width,
                 marginTop: '1.5rem',
                 '&:hover':{
                     bgcolor: '#141400',

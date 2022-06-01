@@ -31,15 +31,15 @@ export const SORT_OPTIONS = [
 
 export const STATUS_OPTIONS = [
     {
-        type: 'P',
+        value: 'P',
         text: 'Ikke startet'
     },
     {
-        type: 'D',
+        value: 'D',
         text: 'Doing'
     },
     {
-        type: 'F',
+        value: 'F',
         text: 'Fullført'
     }
 ];
@@ -48,17 +48,20 @@ export const PRIORITY_OPTIONS = [
     {
         value: 3,
         text: 'LAV',
-        color: '#FEC400'
+        color: '#FEC400',
+        textColor: '#FFF',
     },
     {
         value: 2,
         text: 'MEDIUM',
-        color: '#29CC97'
+        color: '#29CC97',
+        textColor: '#FFF',
     },
     {
         value: 1,
         text: 'HØY',
-        color: '#F12B2C'
+        color: '#F12B2C',
+        textColor: '#FFF',
     }
 ];
 
@@ -67,4 +70,27 @@ export const TASK_TABLE_HEADER = [
     "Kategori",
     "Frist",
     "Prioritet",
+];
+
+export const CATEGORY_OPTIONS = [
+    {
+        value: 'G',
+        text: 'Spill'
+    },
+    {
+        value: 'D',
+        text: 'Utvikling'
+    },
+    {
+        value: 'W',
+        text: 'Design'
+    },
+    {
+        value: 'M',
+        text: 'Markedsføring'
+    },
+    {
+        value: 'E',
+        text: 'Økonomi'
+    }
 ];

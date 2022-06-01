@@ -9,8 +9,8 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useAppDispatch } from "../../features/hooks";
 import { putStatus, updateGame } from '../../features/games/gameSlice';
 import { selectedGame } from '../../features/games/gameSelectors';
-import { ImageUploadChange, InputTextAreaDescription } from "../form/Question";
 import BtnAdd from "../Buttons/BtnAdd";
+import { ColTextAreaContainer, FileColContainer } from "../form";
 
 const actionDispatch = (dispatch) => ({
     editStatus: (query) => dispatch(putStatus(query)),
@@ -177,7 +177,7 @@ const EditState = ({setStateChange, game}) => {
     return (
         <ContentWrapper component="form" onSubmit={handleSubmit}>
             <InnerContainer>
-                <InputTextAreaDescription onChange={handleChange} label={"Endre beskrivelse:"} value={description}/>
+                <ColTextAreaContainer onChange={handleChange} label={"Endre beskrivelse:"} value={description} />
             </InnerContainer>
             <Box
                 sx={{
@@ -186,7 +186,7 @@ const EditState = ({setStateChange, game}) => {
                     padding: '0.5rem',
                 }}
             >
-                <ImageUploadChange fileState={fileState} handleFileChange={handleFileChange} label={"Endre logo:"} placeholder={"Last opp"} flexDirection='column'/>
+                <FileColContainer fileState={fileState} handleFileChange={handleFileChange} label="Endre logo:" placeholder="Last opp" />
             </Box>
             <IconButton
                 type="submit"

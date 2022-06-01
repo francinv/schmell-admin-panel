@@ -3,16 +3,16 @@ import { Alert, AlertTitle, Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../../styles/Typography";
-import { CustomDateTimePicker, ImageUpload, InputTextArea, InputTextField } from "../../form";
+import { FileContainer, InputContainer, RadioContainer, TextAreaContainer } from "../../form";
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { postGame } from "../../../features/games/gameSlice";
 import { useAppDispatch } from "../../../features/hooks";
-import { fetchStatistics, resetStatistics } from '../../../features/statistics/statisticSlice';
+import { resetStatistics } from '../../../features/statistics/statisticSlice';
 import { useSelector } from "react-redux";
 import FileDialog from "../../Dialog/FileDialog";
 import { selectGameError, selectGameStatus } from "../../../features/games/gameSelectors";
 import { resetCreateGame } from "../../../utils/gameUtil";
-import { RadioThreeButtons, RadioTwoButtons } from "../../form/Game";
+import { FOLLOW_OPTIONS, STATUS_OPTIONS } from "../../../constants/gameConstants";
 
 const style_container = {
     position: 'absolute',
@@ -36,16 +36,7 @@ const actionDispatch = (dispatch) => ({
 })
 
 const GameOverlay = ({open, handleClose}) => {
-    const status = useSelector(selectGameStatus);
-    const error = useSelector(selectGameError);
-    const { addGame } = actionDispatch(useAppDispatch());
-    const { resetStatistics } = actionDispatch(useAppDispatch());
     const [dialogOpen, setDialogOpen] = useState(false);
-
-    const handleShow = () => {
-        setDialogOpen((wasOpen) => !wasOpen);
-    }
-
     const [values, setValues] = useState({
         name: '',
         description: '',
@@ -54,8 +45,16 @@ const GameOverlay = ({open, handleClose}) => {
         status: 'D',
         release_date: '',
     });
-    
     const [fileState, setFileState] = useState('');
+
+    const status = useSelector(selectGameStatus);
+    const error = useSelector(selectGameError);
+
+    const { addGame, resetStatistics } = actionDispatch(useAppDispatch());
+
+    const handleShow = () => {
+        setDialogOpen((wasOpen) => !wasOpen);
+    }
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -63,14 +62,10 @@ const GameOverlay = ({open, handleClose}) => {
 
     const submitData = () => {
         var data = new FormData();
-        data.append('name', values.name);
-        data.append('description', values.description)
-        data.append('related_questions', values.related_questions);
-        data.append('last_updated', values.last_updated);
-        data.append('status', values.status);
+        Object.keys(values).forEach(key => data.append(key, values[key]));
         data.append('logo', fileState);
-        data.append('release_date', values.release_date);
         addGame(data);
+        
         if (status === 'succeeded') {
             handleClose();
             setValues(resetCreateGame(values));
@@ -145,39 +140,12 @@ const GameOverlay = ({open, handleClose}) => {
                         component="form"
                         onSubmit={handleSubmit}
                     >
-                        <InputTextField 
-                            label="Navn" 
-                            placeholder="Skriv inn navn på spill..." 
-                            onChange={handleChange('name')}
-                            value={values.name}
-                        />
-                        <InputTextArea
-                            label="Beskrivelse"
-                            placeholder="Beskrivelse om spillet..."
-                            value={values.description}
-                            onChange={handleChange('description')}
-                        />
-                        <RadioTwoButtons 
-                            label="Følgespørsmål?" 
-                            value={values.related_questions} 
-                            onChange={handleChange('related_questions')} 
-                        />
-                        <RadioThreeButtons
-                            label="Status:"
-                            value={values.status}
-                            onChange={handleChange('status')}
-                        />
-                        <ImageUpload 
-                            label="Last opp logo:"
-                            placeholder="Velg fil:"
-                            fileState={fileState}
-                            setFileState={setFileState}
-                        />
-                        <CustomDateTimePicker 
-                            label="Forventet utslippsdato:"
-                            value={values.release_date}
-                            onChange={handleChange('release_date')}
-                        />  
+                        <InputContainer label="Navn" placeholder="Skriv inn navn på spill..." onChange={handleChange('name')} value={values.name} type="text" />
+                        <TextAreaContainer label="Beskrivelse" placeholder="Beskrivelse om spillet..." value={values.description} onChange={handleChange('description')} />
+                        <RadioContainer label="Følgespørsmål?" value={values.related_questions} onChange={handleChange('related_questions')} options={FOLLOW_OPTIONS} />
+                        <RadioContainer label="Status:" value={values.status} onChange={handleChange('status')} options={STATUS_OPTIONS} />
+                        <FileContainer label="Last opp logo:" placeholder="Velg fil:" fileState={fileState} setFileState={setFileState} />
+                        <InputContainer label="Forventet utslippsdato:" value={values.release_date} onChange={handleChange('release_date')} type="datetime-local" />  
                         {
                             status === 'failed'
                             ?   <Alert>

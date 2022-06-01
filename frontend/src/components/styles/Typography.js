@@ -1,6 +1,9 @@
 import { Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
+export const CustomText = styled(Typography)(({ theme }) => ({
+    fontFamily: 'Quicksand',
+}));
 
 export const H1 = styled(Typography)(({theme}) => ({
     fontFamily:'Quicksand',

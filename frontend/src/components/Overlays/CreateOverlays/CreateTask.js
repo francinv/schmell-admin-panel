@@ -3,15 +3,17 @@ import { Button, IconButton, Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import CloseIcon from '@mui/icons-material/Close';
 import { H1 } from "../../styles/Typography";
-import { CustomDateTimePicker, InputTextArea, InputTextField } from "../../form";
+import { InputContainer, InputTextArea, InputTextField, PersonRadioContainer, RadioContainer, SelectContainerSmall, TextAreaContainer } from "../../form";
 import { useAppDispatch } from "../../../features/hooks";
 import { postTask, resetStatus } from "../../../features/tasks/taskSlice";
 import { resetStatistics } from '../../../features/statistics/statisticSlice';
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
-import { SelectCategory, SelectRelatedGame, SelectStatus, TogglePerson, TogglePriority } from "../../form/Task";
 import { selectTaskStatus } from "../../../features/tasks/taskSelectors";
 import { useSelector } from "react-redux";
-import { resetFields } from "../../../utils/taskUtil";
+import { parseGamesToOptions, resetFields } from "../../../utils/taskUtil";
+import { CATEGORY_OPTIONS, PRIORITY_OPTIONS, STATUS_OPTIONS } from "../../../constants/taskConstants";
+import { selectGames } from "../../../features/games/gameSelectors";
+import { selectActiveUser } from "../../../features/user/userSelectors";
 
 const style_container = {
     position: 'absolute',
@@ -35,14 +37,10 @@ const actionDispatch = (dispatch) => ({
     addTask: (query) => dispatch(postTask(query)),
     resetTasks: (query) => dispatch(resetStatus(query)),
     resetStatistics: () => dispatch(resetStatistics())
-})
+});
 
 const CreateTaskForm = ({open, handleShow}) => {
-    const { addTask } = actionDispatch(useAppDispatch());
-    const { resetStatistics } = actionDispatch(useAppDispatch());
-    const status = useSelector(selectTaskStatus);
-    const [alignment, setAlignment] = useState('');
-
+    const activeUser = useSelector(selectActiveUser);
     const [values, setValues] = useState({
         title: '',
         description: '',
@@ -54,20 +52,26 @@ const CreateTaskForm = ({open, handleShow}) => {
         related_game: '',
     });
 
+    const { addTask, resetStatistics } = actionDispatch(useAppDispatch());
+
+    const status = useSelector(selectTaskStatus);
+    const games = useSelector(selectGames);
+
+    const isGameCategory = values.category === 'G';
+
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        values.user_id = alignment;
         addTask(values);
         if (status === 'succeeded') {
             handleShow();
             resetStatistics();
             setValues(resetFields(values))
         }
-    }
+    };
 
     return (
         <Modal
@@ -125,49 +129,17 @@ const CreateTaskForm = ({open, handleShow}) => {
                         component="form"
                         onSubmit={handleSubmit}
                     >
-                        <InputTextField 
-                            label="Tittel" 
-                            placeholder="Skriv inn tittel.." 
-                            onChange={handleChange('title')}
-                            value={values.title}
-                        />
-                        <InputTextArea
-                            label="Beskrivelse"
-                            placeholder="Beskriv oppgaven..."
-                            value={values.description}
-                            onChange={handleChange('description')}
-                        />
-                        <SelectStatus
-                            label="Status:"
-                            value={values.status}
-                            onChange={handleChange('status')}
-                        />
-                        <CustomDateTimePicker 
-                            label="Når er fristen?"
-                            value={values.deadline}
-                            onChange={handleChange('deadline')}
-                        />  
-                        <SelectCategory 
-                            label="Velg kategori:"
-                            value={values.category}
-                            onChange={handleChange('category')}
-                        />
-                        <TogglePriority
-                            label="Velg prioritet:"
-                            value={values.priority}
-                            onChange={handleChange('priority')}
-                        />
-                        <TogglePerson
-                            label="Hvem er ansvarlig?"
-                            value={alignment}
-                            setValue={setAlignment}
-                        />
-                        <SelectRelatedGame
-                            label="Velg relatert spill:"
-                            value={values.related_game}
-                            onChange={handleChange('related_game')}
-                            category={values.category}
-                        />
+                        <InputContainer label="Tittel" placeholder="Skriv inn tittel.." onChange={handleChange('title')} value={values.title} type="text" />
+                        <TextAreaContainer label="Beskrivelse" placeholder="Beskriv oppgaven..." value={values.description} onChange={handleChange('description')} />
+                        <SelectContainerSmall label="Status:" value={values.status} onChange={handleChange('status')} options={STATUS_OPTIONS} width='65%' />
+                        <InputContainer label="Når er fristen?" value={values.deadline} onChange={handleChange('deadline')} type="datetime-local" />  
+                        <SelectContainerSmall label="Velg kategori:" value={values.category} onChange={handleChange('category')} options={CATEGORY_OPTIONS} width='65%'/>
+                        <RadioContainer label="Velg prioritet:" value={values.priority} onChange={handleChange('priority')} options={PRIORITY_OPTIONS} />
+                        <PersonRadioContainer label="Hvem er ansvarlig?" onChange={handleChange('user_id')} />
+                        { isGameCategory
+                            ? <SelectContainerSmall label="Velg relatert spill:" value={values.related_game} onChange={handleChange('related_game')} options={parseGamesToOptions(games)} width='65%'/>
+                            : null
+                        }
                         <Button
                             type="submit"
                             endIcon={<AddCircleOutlineOutlined />}

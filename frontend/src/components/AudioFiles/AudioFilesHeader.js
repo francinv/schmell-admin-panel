@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 import { H3 } from "../styles/Typography";
 import { useAppDispatch } from "../../features/hooks";
 import { resetStatus, setQuestion } from "../../features/audiofiles/audioFileSlice";
-import { SearchInput } from "../form/AudioFiles";
 import { useSelector } from "react-redux";
 import { selectAudioFilesQuestion } from "../../features/audiofiles/audiofileSelector";
 import UploadAudioFile from "../Overlays/CreateOverlays/UploadAudioFile";
 import BtnAdd from "../Buttons/BtnAdd";
+import InputField from "../form/input/InputField";
 
 const actionDispatch = (dispatch) => ({
     updateSearchValue: (query) => dispatch(setQuestion(query)),
@@ -24,6 +24,12 @@ const AudioFilesHeader = () => {
     const handleShow = () => {
         setOpen((wasOpen) => !wasOpen);
     }
+
+    const handleChange = (event) => {
+        event.preventDefault();
+        resetFiles();
+        updateSearchValue(event.target.value);
+    };
 
     return (
         <Box
@@ -45,16 +51,9 @@ const AudioFilesHeader = () => {
                 }}
             >
                 <BtnAdd handleClick={handleShow} borderRadius="8px" btnText="Last opp fil" endIcon={<AddCircleOutlineOutlined />}/>
-                <SearchInput 
-                    onChange={(event) => {
-                        resetFiles();
-                        updateSearchValue(event.target.value);
-                    }}
-                    value={searchValue}
-                    placeholder="Søk etter spesifikt spørsmål, for å finne korresponderende fil"
-                />
+                <InputField value={searchValue} onChange={handleChange} placeholder="Søk etter spesifikt spørsmål, for å finne korresponderende fil" 
+                    type="text" height="36px" fontSize="18px" />
             </Box>
-
             <UploadAudioFile handleClose={handleShow} open={open}/>
         </Box>
     )

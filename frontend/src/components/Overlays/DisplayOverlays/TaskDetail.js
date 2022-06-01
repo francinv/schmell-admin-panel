@@ -5,14 +5,16 @@ import CloseIcon from '@mui/icons-material/Close';
 import { BODY_BOLD, CARD_TEXT, H1, H4 } from "../../styles/Typography";
 import { useAppDispatch } from "../../../features/hooks";
 import { resetStatus, updateTask } from "../../../features/tasks/taskSlice";
-import { getCategory, getPriority } from "../../../utils/taskUtil";
-import { UpdateDateTime, UpdateSelectGame, UpdateSelectStatus } from "../../form/Task/TaskDetail";
+import { getCategory, getPriority, parseGamesToOptions } from "../../../utils/taskUtil";
 import { getAllowedDate } from "../../../utils/dateUtil";
 import { postComment } from "../../../features/comments/commentSlice";
 import { useSelector } from "react-redux";
 import { selectActiveUser } from "../../../features/user/userSelectors";
 import { addSolved, resetStatistics } from "../../../features/statistics/statisticSlice";
 import Comments from "../../Tasks/Comments";
+import { InputContainer, SelectContainerSmall } from "../../form";
+import { STATUS_OPTIONS } from "../../../constants/taskConstants";
+import { selectGames } from "../../../features/games/gameSelectors";
 
 const style_container = {
     position: 'absolute',
@@ -56,12 +58,10 @@ const CustomTextField = styled(TextField)({
 
 
 const TaskDetail = ({open, handleShow, task}) => {
-    const { updateTask } = actionDispatch(useAppDispatch());
-    const { resetTasks } = actionDispatch(useAppDispatch());
-    const { postComment } = actionDispatch(useAppDispatch());
-    const { resetStatistics } = actionDispatch(useAppDispatch());
-    const { addSolved } = actionDispatch(useAppDispatch());
+    const { updateTask, resetTasks, postComment, resetStatistics, addSolved } = actionDispatch(useAppDispatch());
+
     const user = useSelector(selectActiveUser);
+    const games = useSelector(selectGames);
     const [tempComment, setTempComment] = useState('');
 
     const [values, setValues] = useState({
@@ -72,12 +72,13 @@ const TaskDetail = ({open, handleShow, task}) => {
         category: '',
         priority: '',
         user_id: '',
-        related_game: ''
+        related_game: '',
     });
 
     useEffect(() => {
         if (open) {
             setValues({
+                ...values,
                 title: task.title,
                 description: task.description,
                 status: task.status,
@@ -85,8 +86,8 @@ const TaskDetail = ({open, handleShow, task}) => {
                 category: task.category,
                 priority: task.priority,
                 user_id: task.responsible.id,
-                related_game: task.related_game
-            })
+                related_game: task.related_game,
+            });
         }
     }, [open, task]);
     
@@ -277,28 +278,21 @@ const TaskDetail = ({open, handleShow, task}) => {
                             }}
                         >
                             <H4 sx={{marginBottom: '1rem'}}>Informasjon</H4>
-                            <Box sx={{display:'flex', width: '95%', marginTop: '0.8rem', marginBottom: '0.8rem'}}>
-                                <BODY_BOLD>Status:</BODY_BOLD>
-                                <UpdateSelectStatus value={values.status} onChange={handleChange('status')} />
-                            </Box>
-                            <Box sx={{display:'flex', width: '95%', marginTop: '0.8rem', marginBottom: '0.8rem'}}>
-                                <BODY_BOLD>Frist:</BODY_BOLD>
-                                <UpdateDateTime value={values.deadline} onChange={handleChange('deadline')} />
-                            </Box>
-                            <Box sx={{display:'flex', width: '95%', marginTop: '0.8rem', marginBottom: '0.8rem'}}>
-                                <BODY_BOLD>Prioritet:</BODY_BOLD>
-                                <Box sx={{width:'70%', marginLeft: 'auto'}}>{getPriority(task.priority)}</Box>
-                            </Box>
-                            <Box sx={{display:'flex', width: '95%', marginTop: '0.8rem', marginBottom: '0.8rem'}}>
+                            <SelectContainerSmall  label="Status:" value={values.status} onChange={handleChange('status')} options={STATUS_OPTIONS} width='95%' fontSize='14px' marginRight={0} />
+                            <InputContainer label="Frist:" value={values.deadline} onChange={handleChange('deadline')} width='95%' fontSize='14px' marginRight={0} type="datetime-local" />
+                            { task.category === 'G'
+                                ? <SelectContainerSmall label="Relatert spill:" value={values.related_game} onChange={handleChange('related_game')} options={parseGamesToOptions(games)} width='95%' fontSize='14px' marginRight={0} />
+                                : null
+                            }
+                            <Box sx={{display:'flex', width: '95%', margin: '1rem auto'}}>
                                 <BODY_BOLD>Kategori:</BODY_BOLD>
                                 <Typography sx={{marginLeft:'auto', fontSize: '14px'}}>{getCategory(task.category)}</Typography>
                             </Box>
-                            <UpdateSelectGame 
-                                onChange={handleChange('related_game')} 
-                                value={values.related_game} 
-                                category={task.category}    
-                                label="Relatert spill"
-                            />
+                            <Box sx={{display:'flex', width: '95%', margin: '1rem auto'}}>
+                                <BODY_BOLD>Prioritet:</BODY_BOLD>
+                                <Box sx={{width:'70%', marginLeft: 'auto'}}>{getPriority(task.priority)}</Box>
+                            </Box>
+                            
                             <Box sx={{ display:'flex', width: '95%', marginTop: 'auto', marginBottom:'0.5rem'}}>
                                 <Box>
                                     <BODY_BOLD>Ansvarlig:</BODY_BOLD>

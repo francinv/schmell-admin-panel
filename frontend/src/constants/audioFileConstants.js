@@ -1,4 +1,6 @@
 export const genderOptions = [
-    { value: 'M', label: 'Mann' },
-    { value: 'F', label: 'Kvinne' },
-]
+    { value: 'M', text: 'Mann' },
+    { value: 'F', text: 'Kvinne' },
+];
+
+export const AUDIO_TABLE_HEADERS=["Tilhørende spørsmål", "Kjønn", "Fil", "Handlinger"];

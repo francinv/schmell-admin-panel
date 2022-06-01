@@ -7,9 +7,9 @@ import {updatePassword, updateUser} from '../../features/user/userSlice';
 import { useAppDispatch } from "../../features/hooks";
 import { getLabels, getInputType } from "../../utils/settingsUtil";
 import SmallContainer from "../layout/containers/SmallContainer";
-import { ProfileImageChange, ProfileInput } from "../form/Settings";
 import DisplayPicture from "./DisplayPicture";
 import DisplayDetail from "./DisplayDetail";
+import { FileButtonContainer, ProfileInputContainer } from "../form";
 
 const actionDispatch = (dispatch) => ({
     updateUser: (query) => dispatch(updateUser(query)),
@@ -22,7 +22,7 @@ const Information = ({ value, changeState, onStateChange, label, type, onChange,
         <>
             {
                 changeState
-                ? <ProfileInput label={label} value={value} type={type} onChange={onChange} handleSubmit={handleSubmit} onStateChange={onStateChange}/>
+                ? <ProfileInputContainer label={label} value={value} type={type} onChange={onChange} handleSubmit={handleSubmit} onStateChange={onStateChange}/>
                 : <DisplayDetail label={label} value={value} handleClick={() => onStateChange(true)} />
             }
         </>
@@ -33,7 +33,7 @@ const ProfilePic = ({setFileState, handleSubmit, changeStatus, setChangeStatus})
     return (
         <>
             { changeStatus
-                ?   <ProfileImageChange setFileState={setFileState} handleSubmit={handleSubmit} onStateChange={setChangeStatus} />
+                ?   <FileButtonContainer setFileState={setFileState} handleSubmit={handleSubmit} onStateChange={setChangeStatus} />
                 :   <DisplayPicture setChangeStatus={setChangeStatus} />
             }
         </>

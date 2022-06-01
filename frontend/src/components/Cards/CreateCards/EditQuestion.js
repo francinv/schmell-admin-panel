@@ -5,9 +5,9 @@ import { selectedGame } from "../../../features/games/gameSelectors";
 import { updateGame } from "../../../features/games/gameSlice";
 import { updateQuestion } from "../../../features/questions/questionSlice";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { QuestionTextArea, TextInputQuestion } from "../../form/Question";
 import { useAppDispatch } from "../../../features/hooks";
 import QuestionWrapper from "../QuestionWrapper";
+import { SmallInputContainer, SmallTextAreaContainer } from "../../form";
 
 const actionDispatch = (dispatch) => ({
     updateQuestion: (query) => dispatch(updateQuestion(query)),
@@ -52,11 +52,11 @@ const EditQuestion = ({question, setStateChangeQuestion}) => {
 
     return(
         <QuestionWrapper component="form" handleSubmit={handleSubmit} cardHeaderContent={<HeaderContent />} cardTitle={`#${question.id}`}>
-            <TextInputQuestion label={"Type:"} handleChange={handleChange('type')} value={values.type} type={"text"}/>
-            <TextInputQuestion label={"Fase:"} handleChange={handleChange('phase')} value={values.phase} type={"number"}/>
-            <QuestionTextArea label={"SP:"} handleChange={handleChange('question_desc')} value={values.question_desc} />
-            <QuestionTextArea label={"Hint:"} handleChange={handleChange('hint')} value={values.hint} />
-            <TextInputQuestion label={"Straff:"} handleChange={handleChange('punishment')} value={values.punishment} type={"text"}/>
+            <SmallInputContainer label="Type:" onChange={handleChange('type')} value={values.type} type="text"/>
+            <SmallInputContainer label="Fase:" onChange={handleChange('phase')} value={values.phase} type="number"/>
+            <SmallTextAreaContainer label={"SP:"} onChange={handleChange('question_desc')} value={values.question_desc} />
+            <SmallTextAreaContainer label={"Hint:"} onChange={handleChange('hint')} value={values.hint} />
+            <SmallInputContainer label="Straff:" onChange={handleChange('punishment')} value={values.punishment} type="text"/>
         </QuestionWrapper>
     );
 };
