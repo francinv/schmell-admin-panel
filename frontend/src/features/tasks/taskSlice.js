@@ -24,24 +24,14 @@ export const fetchTasks = createAsyncThunk('task/fetchTasks', async (content) =>
     const responsible = content.responsible;
     const page_size = content.page_size;
     const p = content.p;
-    let url = `task/?sort=${sort}`
-    if (status !== '') {
-        url = `task/?sort=${sort}&status=${status}`
-    }
-    if (priority !== '') {
-        url = `task/?sort=${sort}&priority=${priority}`
-    }
-    if (responsible !== '') {
-        url = `task/?sort=${sort}&responsible=${responsible}`
-    }
-    if (page_size !== '') {
-        const temp = `&page_size=${page_size}`;
-        url += temp;
-    }
-    if (p !== '') {
-        const temp = `&p=${p}`;
-        url += temp;
-    }
+
+    let url = `task/?sort=${sort}`;
+    if (status !== '') url += `&status=${status}`;
+    if (priority !== '') url += `&priority=${priority}`;
+    if (responsible !== '') url += `&responsible=${responsible}`;
+    if (page_size !== '') url += `&page_size=${page_size}`;
+    if (p !== '') url += `&p=${p}`;
+    
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;
