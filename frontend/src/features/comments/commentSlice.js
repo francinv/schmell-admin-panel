@@ -8,14 +8,14 @@ const initialState = {
 }
 
 export const fetchComments = createAsyncThunk('comment/fetchComments/', async (taskId) => {
-    let url = `comment/?task=${taskId}`
+    let url = `tasks/comment/?task=${taskId}`
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;
 });
 
 export const postComment = createAsyncThunk('comment/postComment/', async (data) => {
-    const url = 'comment/';
+    const url = 'tasks/comment/';
     const axe = axiosService.post(url, data)
     const response = await axe.then(res => res.data)
     axe.catch(res => console.log(res));

@@ -55,7 +55,7 @@ const UploadAudioFile = ({open, handleClose}) => {
 
     const fetchAllQuestions = async () => {
         axiosService
-            .get('/question/')
+            .get('cms/question/')
             .then( response => {
                 setQuestionOptions(parseQuestionsToOptions(response.data));
             });

@@ -30,8 +30,9 @@ class GameViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
-        job = NotUpdatedJob(serializer.data['id'])
-        job.alert_game_not_updated()
+        id = serializer.data['id']
+        job = NotUpdatedJob(id)
+        job.alert_game_not_updated(id)
 
 class WeekViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated | HasAPIKey]
@@ -58,7 +59,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
         return queryset
 
 class ReadOutFileViewset(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated | HasAPIKey]
     serializer_class = ReadOutFileSerializer
     pagination_class = CustomPagination
 

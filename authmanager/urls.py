@@ -4,7 +4,7 @@ from authmanager.api import ChangePasswordView, LoginViewSet, RefreshViewSet, To
 from authmanager.views import APIKeyViewSet
 
 router = routers.DefaultRouter()
-router.register('user/', UserViewSet, 'user')
+router.register('user', UserViewSet, 'user')
 router.register('login', LoginViewSet, 'login')
 router.register('key/refresh', RefreshViewSet, 'key-refresh')
 router.register('key/validate', TokenActiveViewSet, 'key-validate')

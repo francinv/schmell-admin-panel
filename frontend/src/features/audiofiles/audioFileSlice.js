@@ -15,9 +15,9 @@ const initialState = {
 }
 
 export const fetchAudioFiles = createAsyncThunk('audioFiles/fetchAudioFiles', async content => {
-    const { questionid, question, page_size, p } = content;
-    let url = `readoutfiles?`;
-    if (question !== '') url += `question=${question}`;
+    const { question, page_size, p } = content;
+    let url = `cms/files/readout/`;
+    if (question !== '') url += `?question=${question}`;
     if (page_size !== 10) url += `&page_size=${page_size}`;
     if (p !== 1) url += `&p=${p}`;
 
@@ -27,14 +27,14 @@ export const fetchAudioFiles = createAsyncThunk('audioFiles/fetchAudioFiles', as
 });
 
 export const addAudioFile = createAsyncThunk('audioFiles/addAudioFile', async data => {
-    const url = 'readoutfiles/';
+    const url = 'cms/files/readout/';
     const axe = axiosService.post(url, data)
     const response = await axe.then(res => res.data)
     return response;
 });
 
 export const deleteAudioFile = createAsyncThunk('audioFiles/deleteAudioFile', async id => {
-    const url = `readoutfiles/${id}/`;
+    const url = `cms/files/readout/${id}/`;
     const axe = axiosService.delete(url);
     const response = await axe.then(res => res.status);
     if (response === 204) {

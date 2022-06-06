@@ -29,9 +29,7 @@ const AudioFilesTable = () => {
     const page_size = useSelector(selectAudioFilesPageSize);
     const p = useSelector(selectAudioFilesP);
 
-    const handleShow = () => {
-        setDialogOpen((wasOpen) => !wasOpen);
-    }
+    const handleShow = () => setDialogOpen((wasOpen) => !wasOpen);
 
     const handleChangePage = (event, newAlignment) => {
         resetStatus();

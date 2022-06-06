@@ -46,7 +46,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
-        want_alert = User.objects.filter(is_alert = True)
+        want_alert = User.objects.filter(alerts_task = True)
         emails = []
 
         for user in want_alert:

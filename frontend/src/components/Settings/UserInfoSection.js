@@ -72,7 +72,6 @@ const UserInfoSection = () => {
         const keys = Object.keys(values);
         keys.forEach(key => data.append(key, values[key]));
         data.append('profile_picture', fileState);
-        data.append('username', user.username);
         const dataToSend = {
             id: user.id,
             content: data

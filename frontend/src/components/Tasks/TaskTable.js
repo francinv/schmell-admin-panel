@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectP, selectPageSize, selectTaskCount, selectTasks } from '../../features/tasks/taskSelectors';
+import { selectP, selectPageSize, selectSelectedTask, selectTaskCount, selectTasks } from '../../features/tasks/taskSelectors';
 import { Avatar, Box, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { BODY_BOLD, CARD_TEXT } from '../styles/Typography';
 import { getCategory, getPriority, getUpdatedTime } from '../../utils/taskUtil';
-import { resetStatus, setP, setPageSize } from '../../features/tasks/taskSlice';
+import { resetStatus, setP, setPageSize, setSelected } from '../../features/tasks/taskSlice';
 import { fetchComments } from '../../features/comments/commentSlice';
 import { useAppDispatch } from '../../features/hooks';
 import TaskDetail from '../Overlays/DisplayOverlays/TaskDetail';
@@ -16,19 +16,20 @@ const actionDispatch = (dispatch) => ({
     setP: (query) => dispatch(setP(query)),
     setPageSize: (query) => dispatch(setPageSize(query)),
     resetStatus: () => dispatch(resetStatus()),
-    fetchComments: (query) => dispatch(fetchComments(query))
+    fetchComments: (query) => dispatch(fetchComments(query)),
+    setSelectedTask: (query) => dispatch(setSelected(query))
 });
 
 const TaskTable = () => {
     const [open, setOpen] = useState(false);
-    const [selectedTask, setSelectedTask] = useState('');
 
-    const { setP, setPageSize, resetStatus, fetchComments } = actionDispatch(useAppDispatch());
+    const { setP, setPageSize, resetStatus, fetchComments, setSelectedTask } = actionDispatch(useAppDispatch());
     
     const tasks = useSelector(selectTasks);
     const count = useSelector(selectTaskCount);
     const page_size = useSelector(selectPageSize);
     const p = useSelector(selectP);
+    const activeTask = useSelector(selectSelectedTask);
 
     const handleShow = () => setOpen((wasOpen) => !wasOpen);
 
@@ -87,7 +88,7 @@ const TaskTable = () => {
                     <CustomFooter count={count} handleChangePage={handleChangePage} handleChangeRowsPerPage={handleChangeRowsPerPage} p={p} page_size={page_size} />
                 </Table>
             </TableContainer>
-            <TaskDetail open={open} handleShow={handleShow} task={selectedTask}/>
+            { activeTask.id ? <TaskDetail open={open} handleShow={handleShow} /> : null }
         </Box>
     )
 }

@@ -126,7 +126,7 @@ export const FileColContainer = ({ label, placeholder, fileState, handleFileChan
     return (
         <ColContainerForm>
             <BODY_BOLD>{fileSet ? fileState.name : label}</BODY_BOLD>
-            <ColUpload onChange={handleFileChange} placeholder={placeholder} setFileState={setFileSet} />
+            <ColUpload onChange={handleFileChange} placeholder={placeholder} setFileSet={setFileSet} />
         </ColContainerForm>
     );
 };

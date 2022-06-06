@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import { H3 } from '../styles/Typography';
 import { useSelector } from "react-redux";
@@ -14,27 +14,23 @@ const actionDispatch = (dispatch) => ({
 
 const AlertsSection = () => {
     const { updateUser } = actionDispatch(useAppDispatch());
+
     const user = useSelector(selectActiveUser);
-    const [n, setN] = useState(0);
+
     const [values, setValues] = useState({
-        username: user.username,
         alerts_task: user.alerts_task,
         alerts_deadlines: user.alerts_deadlines
     });
-
-    useEffect(() => {
-        if (n !== 0) {
-            const dataToSend = {
-                id: user.id,
-                content: values,
-            };
-            updateUser(dataToSend)
-        }   
-    }, [values]);
     
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.checked });
-        setN(n+1);
+        const dataToSend = {
+            id: user.id,
+            content: {
+                [prop]: event.target.checked
+            }
+        };
+        updateUser(dataToSend);
     };
 
     return (

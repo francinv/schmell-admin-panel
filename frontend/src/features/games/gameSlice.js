@@ -10,13 +10,13 @@ const initialState = {
 }
 
 export const fetchGames = createAsyncThunk('game/fetchGames', async () => {
-    const axe = axiosService.get('game/');
+    const axe = axiosService.get('cms/game/');
     const response = await axe.then(res => res.data);
     return response;
 });
 
 export const postGame = createAsyncThunk('game/postGame', async (data) => {
-    const axe = axiosService.post('game/', data);
+    const axe = axiosService.post('cms/game/', data);
     const response = await axe.then(res => 
         res.data
     );
@@ -24,7 +24,7 @@ export const postGame = createAsyncThunk('game/postGame', async (data) => {
 });
 
 export const updateGame = createAsyncThunk('game/updateGame', async (content) => {
-    const url = `game/${content.id}/`;
+    const url = `cms/game/${content.id}/`;
     const axe = axiosService.put(url, content.content)
     const response = await axe.then(res => res.data)
     axe.catch(res => console.log(res));
@@ -32,15 +32,15 @@ export const updateGame = createAsyncThunk('game/updateGame', async (content) =>
 });
 
 export const putStatus = createAsyncThunk('game/putStatus', async (data) => {
-    const url = `game/${data.id}/`;
-    const axe = axiosService.put(url, {'status': data.content})
+    const url = `cms/game/${data.id}/`;
+    const axe = axiosService.patch(url, {'status': data.content})
     const response = await axe.then(res => res.data);
     axe.catch(res => console.log(res));
     return response;
 });
 
 export const deleteGame = createAsyncThunk('game/deleteGame', async (idGame) => {
-    const url = `game/${idGame}/`;
+    const url = `cms/game/${idGame}/`;
     const axe = axiosService.delete(url);
     const response = await axe.then(res => res.status);
     if (response === 204) {

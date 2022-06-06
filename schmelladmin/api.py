@@ -24,6 +24,7 @@ class IdeaViewSet(viewsets.ModelViewSet):
         
 class StaticsViewSet(views.APIView):
     permission_classes = [permissions.AllowAny]
+    allowed_methods = ['GET']
     
     def get(self, request, format=None):
         users_count = User.objects.all().count()

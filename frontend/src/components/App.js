@@ -24,8 +24,12 @@ function App() {
 
     useEffect(async () => {
         if (await checkIfUserIsLoggedIn()) {
-            logIn(await axiosService.get(`user/${localStorage.getItem('user')}`).then(res => res.data));
-        }  else {
+            const userID = localStorage.getItem('user');
+            if (userID) {
+                const { data } = await axiosService.get(`/auth/user/${userID}/`);
+                logIn(data);
+            }
+        } else {
             localStorage.removeItem('access');
             localStorage.removeItem('user');
             localStorage.removeItem('refresh');

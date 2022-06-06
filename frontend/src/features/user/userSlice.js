@@ -12,12 +12,11 @@ const initialState = {
 export const logIn = createAsyncThunk('auth/login', async (data) => {
     const axe = axiosService.post('auth/login/', data);
     const response = await axe.then(res => res.data);
-    axe.catch(res => console.log(res));
     return response;
 });
 
 export const fetchUsers = createAsyncThunk('user/', async () => {
-    const axe = axiosService.get('user/');
+    const axe = axiosService.get('auth/user/');
     const response = await axe.then(res => res.data);
     axe.catch(res => console.log(res));
     return response;
@@ -25,17 +24,15 @@ export const fetchUsers = createAsyncThunk('user/', async () => {
 
 export const updateUser = createAsyncThunk('user/updateUser', async (data) => {
     const {id, content} = data;
-    const axe = axiosService.put(`user/${id}/`, content);
+    const axe = axiosService.patch(`auth/user/${id}/`, content);
     const response = await axe.then(res => res.data);
-    axe.catch(res => console.log(res));
     return response;
 })
 
 export const updatePassword = createAsyncThunk('user/updatePassword', async (data) => {
     const {id, content} = data;
-    const axe = axiosService.put(`auth/password/${id}/`, {password: content});
+    const axe = axiosService.patch(`auth/password/${id}/`, {password: content});
     const response = await axe.then(res => res.status);
-    axe.catch(res => console.log(res));
     return response;
 })
 

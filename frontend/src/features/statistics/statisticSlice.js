@@ -19,7 +19,7 @@ const initialState = {
 }
 
 export const fetchStatistics = createAsyncThunk('statistic/fetchStatistics', async () => {
-    let url = 'statistics';
+    let url = 'admin/statistics/';
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;

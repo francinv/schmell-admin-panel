@@ -37,25 +37,18 @@ class NotUpdatedJob():
     def __init__(self, id):
         self.id = id
     
-    def get_game(self):
-        return Game.objects.get(id = self.id)
-    
-    def get_limit(self):
-        return date.today() - timedelta(days=14)
-    
-    def should_update(self):
-        return self.get_game().last_updated < self.get_limit()
-    
     @shared_task(name='alert_game', bind=True)
-    def alert_game_not_updated(self):
-        if(self.should_update()):
+    def alert_game_not_updated(self, id):
+        game = Game.objects.get(id = id)
+        limit = date.today() - timedelta(days=14)
+        if (game.last_updated < limit):
             want_alert = User.objects.all().filter(alerts_deadlines = True)
             to_emails = []
             for user in want_alert:
                 to_emails.append(user.email)
             sender = SendTaskDeadlineClosing(
-                self.get_game().title, self.get_game().description,
-                self.get_game().last_updated, to_emails)
+                game.title, game.description,
+                game.last_updated, to_emails)
             sender.send_mail()
             return 'Alert sent'
     

@@ -25,7 +25,7 @@ export const fetchTasks = createAsyncThunk('task/fetchTasks', async (content) =>
     const page_size = content.page_size;
     const p = content.p;
 
-    let url = `task/?sort=${sort}`;
+    let url = `tasks/task/?sort=${sort}`;
     if (status !== '') url += `&status=${status}`;
     if (priority !== '') url += `&priority=${priority}`;
     if (responsible !== '') url += `&responsible=${responsible}`;
@@ -38,7 +38,7 @@ export const fetchTasks = createAsyncThunk('task/fetchTasks', async (content) =>
 });
 
 export const postTask = createAsyncThunk('task/postTask', async (data) => {
-    const url = 'task/';
+    const url = 'tasks/task/';
     const axe = axiosService.post(url, data)
     const response = await axe.then(res => res.data)
     axe.catch(res => console.log(res));
@@ -46,8 +46,9 @@ export const postTask = createAsyncThunk('task/postTask', async (data) => {
 });
 
 export const updateTask = createAsyncThunk('task/updateTask', async (content) => {
-    const url = `task/${content.id}/`;
-    const axe = axiosService.put(url, content.data);
+    const { id, data } = content;
+    const url = `tasks/task/${id}/`;
+    const axe = axiosService.patch(url, data);
     const response = await axe.then(res => res.data);
     axe.catch(res => console.log(res));
     return response;
@@ -79,6 +80,7 @@ export const TaskSlice = createSlice({
             state.p = action.payload;
         },
         setSelected: (state, action) => {
+            console.log(action.payload);
             state.selectedTask = action.payload;
         }
     },

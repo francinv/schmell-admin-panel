@@ -13,14 +13,14 @@ const initialState = {
 }
 
 export const fetchIdeas = createAsyncThunk('idea/fetchIdea', async (category) => {
-    const url = `idea/?category=${category}`
+    const url = `admin/idea/?category=${category}`
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;
 });
 
 export const postIdea = createAsyncThunk('idea/postIdea', async (data) => {
-    const url = 'idea/';
+    const url = 'admin/idea/';
     const axe = axiosService.post(url, data)
     const response = await axe.then(res => res.data)
     axe.catch(res => console.log(res));
@@ -28,7 +28,7 @@ export const postIdea = createAsyncThunk('idea/postIdea', async (data) => {
 });
 
 export const deleteIdea = createAsyncThunk('idea/deleteIdea', async (idIdea) => {
-    const url = `idea/${idIdea}/`;
+    const url = `admin/idea/${idIdea}/`;
     const axe = axiosService.delete(url);
     const response = await axe.then(res => res.status);
     if (response === 204) {

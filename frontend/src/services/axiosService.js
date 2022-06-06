@@ -6,10 +6,20 @@ const axiosService = axios.create({
     baseURL: baseURL,
     timeout: 5000,
     headers: {
-		Authorization: 'Bearer ' + localStorage.getItem('access'),
 		accept: 'application/json',
 	}, 
 });
+
+axiosService.interceptors.request.use(
+	async request => {
+	  const token = localStorage.getItem('access');
+	  request.headers.Authorization = `Bearer ${token}`;
+	  return request;
+	},
+	error => {
+	  return Promise.reject(error);
+	},
+);
 
 axiosService.interceptors.response.use(
 	(response) => {
@@ -29,7 +39,7 @@ axiosService.interceptors.response.use(
 
 		if (
 			error.response.status === 401 &&
-			originalRequest.url === baseURL + 'auth/refresh/'
+			originalRequest.url === baseURL + 'auth/key/refresh/'
 		) {
 			alert(
 				'A server/network error occurred. ' +
@@ -54,7 +64,7 @@ axiosService.interceptors.response.use(
 
 				if (tokenParts.exp > now) {
 					return axiosService
-						.post('auth/refresh/', { refresh: refreshToken })
+						.post('auth/key/refresh/', { refresh: refreshToken })
 						.then((response) => {
 							localStorage.setItem('access', response.data.access);
 
