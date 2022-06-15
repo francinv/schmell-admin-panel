@@ -1,203 +1,164 @@
 import React, { useState } from 'react';
-import FormControl from '@mui/material/FormControl';
-import { InputAdornment, MenuItem, OutlinedInput, Select, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { Box, styled } from '@mui/system';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import BtnIconSubmit from '../Buttons/BtnIconSubmit';
+import BtnSubmit from '../Buttons/BtnSubmit';
 import { BODY_BOLD } from '../styles/Typography';
+import { ColUpload, OnlyUpload, SimpleUpload } from './file/FileUpload';
+import InputField from './input/InputField';
+import TextArea from './input/TextArea';
+import Radio from './radio/Radio';
+import { PersonRadio } from './radio/SpecificRadio';
+import SmallSelect from './select/Select';
+import { ColContainerForm, ColSmallContainerForm, CustomContainerForm, CustomSmallContainerForm, CustomWidthText, FormContainer, FormText } from './styles';
+import CustomSwitch from './switch/Switch';
 
-export const CustomWidthText = styled(Typography)(({ theme }) => ({
-    fontFamily: 'Quicksand',
-    fontSize: 16,
-    fontWeight: 500,
-    width: '30%',
-    marginRight: '0.8rem',
-}));
-
-export const CustomContainerForm = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    flexDirection: 'row',
-    width: '65%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: '1rem',
-    marginBottom:'1rem',
-    alignItems: 'center',
-}));
-
-export const CustomToggleButtonGroup = styled(ToggleButtonGroup)(({theme}) => ({
-    width: '70%',
-    height: '29px',
-    bgcolor: '#E5E5E5',
-
-}))
-
-export const InputTextField = ({label, placeholder, value, onChange, type}) => {
-
-    return(
-        <CustomContainerForm>
-            <CustomWidthText>{label}</CustomWidthText>
-            <FormControl 
-                fullWidth 
-                sx={{
-                    width: '70%',
-                    height: '29px',
-                }}
-            >
-                <OutlinedInput
-                    value={value}
-                    onChange={onChange}
-                    placeholder={placeholder} 
-                    required
-                    type={type}
-                    style={{
-                        fontFamily: 'Quicksand',
-                        color: '#000',
-                        fontSize: 14,
-                    }}
-                    sx={{
-                        borderRadius: '8px',
-                        height: '29px',
-                        bgcolor: '#E5E5E5',
-                        '&.Mui-focused' : {
-                            borderColor: '#000',
-                        },
-                    }}
-                />
-            </FormControl>
+export const InputContainer = props => {
+    const { label, placeholder, value, onChange, type, width, fontSize, marginRight } = props;
+    return (
+        <CustomContainerForm width={width}>
+            <CustomWidthText fontSize={fontSize} marginRight={marginRight}>{label}</CustomWidthText>
+            <InputField value={value} onChange={onChange} placeholder={placeholder} type={type} height='29px' fontSize={14} marginLeft="0" backgroundColor="#E5E5E5" width="70%"/>
         </CustomContainerForm>
-    )
-}
+    );
+};
 
-export const InputTextArea = ({label, placeholder, value, onChange}) => {
+export const SmallInputContainer = ({ label, placeholder, value, onChange, type }) => {
+    return (
+        <CustomSmallContainerForm>
+            <BODY_BOLD sx={{width:'20%'}}>{label}</BODY_BOLD>
+            <InputField value={value} onChange={onChange} placeholder={placeholder} type={type} height='20px' fontSize={12} marginLeft="0.8rem" backgroundColor="#9FA2B4" width="70%"/>
+        </CustomSmallContainerForm>
+    );
+};
 
-    return(
-        <CustomContainerForm>
-            <CustomWidthText>{label}</CustomWidthText>
-            <FormControl 
-                fullWidth 
-                sx={{
-                    width: '70%',
-                }}
-            >
-                <OutlinedInput
-                    value={value}
-                    onChange={onChange}
-                    placeholder={placeholder} 
-                    multiline
-                    rows={3}
-                    required
-                    style={{
-                        fontFamily: 'Quicksand',
-                        color: '#000',
-                        fontSize: 14,
-                    }}
-                    sx={{
-                        borderRadius: '8px',
-                        bgcolor: '#E5E5E5',
-                        '&.Mui-focused' : {
-                            borderColor: '#000',
-                        },
-                    }}
-                />
-            </FormControl>
-        </CustomContainerForm>
-    )
-}
+export const ProfileInputContainer = props => {
+    const { label, placeholder, value, onChange, type, handleSubmit, onStateChange } = props;
 
-export const ImageUpload = ({label, placeholder, fileState, setFileState}) => {
+    const handleInputSubmit = e => {
+        e.preventDefault();
+        onStateChange(false);
+        handleSubmit();
+    }
 
+    return (
+        <FormContainer component="form" onSubmit={handleInputSubmit}>
+            <FormText>{label}</FormText>
+            <InputField value={value} onChange={onChange} placeholder={placeholder} type={type} height='29px' fontSize={14} marginLeft="1rem" backgroundColor="#FFF" width="55%"/>
+            <BtnIconSubmit />
+        </FormContainer>
+    );
+};
     
-    const handleFileChange = (event) => {
+export const TextAreaContainer = ({label, placeholder, value, onChange}) => {
+
+    return(
+        <CustomContainerForm>
+            <CustomWidthText>{label}</CustomWidthText>
+            <TextArea value={value} placeholder={placeholder} label={label} onChange={onChange} width='70%' marginLeft={0} fontSize='14px' backgroundColor='#E5E5E5' />
+        </CustomContainerForm>
+    );
+};
+
+export const SmallTextAreaContainer = ({ label, placeholder, value, onChange }) => {
+    return (
+        <CustomSmallContainerForm>
+            <BODY_BOLD sx={{width:'20%'}}>{label}</BODY_BOLD>
+            <TextArea value={value} placeholder={placeholder} label={label} onChange={onChange} width='80%' marginLeft='0.8rem' fontSize='12px' backgroundColor="#9FA2B4" />
+        </CustomSmallContainerForm>
+    );
+};
+
+export const FileContainer = ({label, placeholder, fileState, setFileState}) => {
+    const fileName = fileState.name;
+
+    const onChange = (event) => {
         event.preventDefault();
         setFileState(event.target.files[0]);
-    }
-
-    const inputStyle = {
-        display: 'none',
-    }
-
-    const inputContainerStyle = {
-        width: '70%',
-        display: 'flex',
-        flexDirection: 'row',
-        height: '29px',
-        fontFamily: 'Quicksand',
-    }
-
-    const inputButtonStyle = {
-        cursor: 'pointer',
-        backgroundColor: '#e0e000',
-        borderRadius: '8px 0px 0px 8px',
-        borderRight: '1px solid #000',
-        width: '50%',
-        texxtAlign: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        '&:hover': {
-            backgroundColor: '#fff',
-        },
-        
-    }
-
-    const preview_color = {
-        borderRadius: '0px 8px 8px 0px',
-        backgroundColor: '#E5E5E5',
-        width: '50%',
-        paddingLeft: '0.2rem',
-        display:'flex',
-        alignItems: 'center',
     }
 
     return (
         <CustomContainerForm>
             <CustomWidthText>{label}</CustomWidthText>
-            <div style={inputContainerStyle}>
-                <label style={inputButtonStyle}>
-                    <input type="file" multiple onChange={handleFileChange} style={inputStyle}/>
-                    {placeholder}
-                </label>
-                <label style={preview_color}><b>Fil: </b> {fileState.name}</label>
-            </div>
-
+            <SimpleUpload props={{onChange, placeholder, fileName}} />
         </CustomContainerForm>
     );
 }
 
-export const CustomDateTimePicker = ({label, onChange, value}) => {
-
+export const SelectContainerSmall = props => {
+    const { label, value, onChange, options, width, fontSize, marginRight } = props;
     return(
+        <CustomContainerForm width={width}>
+            <CustomWidthText fontSize={fontSize} marginRight={marginRight}>{label}</CustomWidthText>
+            <SmallSelect value={value} onChange={onChange} options={options} height='29px' fontSize={14} />
+        </CustomContainerForm>
+    );
+};
+
+export const RadioContainer = ({ label, onChange, options}) => {
+    return (
+        <CustomContainerForm>
+                <CustomWidthText>{label}</CustomWidthText>
+                <Radio onChange={onChange} options={options} fontSize='14px' />
+        </CustomContainerForm> 
+    );
+};
+
+export const PersonRadioContainer = ({ label, onChange }) => {
+    return (
         <CustomContainerForm>
             <CustomWidthText>{label}</CustomWidthText>
-            <FormControl 
-                fullWidth 
-                sx={{
-                    width: '70%',
-                    height: '29px',
-                }}
-            >
-                <OutlinedInput
-                    value={value}
-                    onChange={onChange}
-                    required
-                    endAdornment={<InputAdornment position='end'><AccessTimeIcon /></InputAdornment>}
-                    type='datetime-local'
-                    style={{
-                        fontFamily: 'Quicksand',
-                        color: '#000',
-                        fontSize: 14,
-                        height: '29px',
-                    }}
-                    sx={{
-                        borderRadius: '8px',
-                        bgcolor: '#E5E5E5',
-                        height: '29px',
-                        '&.Mui-focused' : {
-                            borderColor: '#000',
-                        },
-                    }}
-                />
-            </FormControl>
+            <PersonRadio onChange={onChange} />
         </CustomContainerForm>
+    );
+};
+
+export const ColTextAreaContainer = ({ label, value, onChange }) => {
+    return (
+        <ColContainerForm width='65%'>
+            <BODY_BOLD>{label}</BODY_BOLD>
+            <TextArea value={value} onChange={onChange} width='100%' />
+        </ColContainerForm>
+    );
+};
+
+export const FileColContainer = ({ label, placeholder, fileState, handleFileChange }) => {
+    const [fileSet, setFileSet] = useState(false);
+
+    return (
+        <ColContainerForm>
+            <BODY_BOLD>{fileSet ? fileState.name : label}</BODY_BOLD>
+            <ColUpload onChange={handleFileChange} placeholder={placeholder} setFileSet={setFileSet} />
+        </ColContainerForm>
+    );
+};
+
+export const FileButtonContainer = props => {
+    const { setFileState, handleSubmit, onStateChange } = props;
+
+    const handleChange = e => {
+        e.preventDefault();
+        setFileState(e.target.files[0]);
+    }
+
+    const handleInputSubmit = e => {
+        e.preventDefault();
+        onStateChange(false);
+        handleSubmit();
+    }
+
+    return (
+        <ColSmallContainerForm component="form" onSubmit={handleInputSubmit}>
+            <OnlyUpload onChange={handleChange} />
+            <BtnSubmit endIcon={null} btnText="Last opp" width='100%' />
+        </ColSmallContainerForm>
+    )
+}
+
+export const ToggleContainer = props => {
+    const { label, value, onChange } = props;
+    return (
+        <FormContainer>
+            <FormText sx={{width: '70%'}}>{label}</FormText>
+            <CustomSwitch checked={value} onChange={onChange} />
+        </FormContainer>
     )
 }

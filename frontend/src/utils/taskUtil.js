@@ -1,40 +1,28 @@
-import { Box } from "@mui/material";
 import React from "react";
+import { Box } from "@mui/material";
 import { BODY_BOLD } from "../components/styles/Typography";
 
-export function getUpdatedTime(date) {
-    let this_day = new Date();
-    let updated_last = new Date(date);
+export const getUpdatedTime = date => {
+    const dateNow = new Date();
+    const dateLastUpdated = new Date(date);
 
-    var difference = this_day.getTime() - updated_last.getTime();
+    const difference = dateNow.getTime() - dateLastUpdated.getTime();
 
-    var diff_day = difference / (1000 * 3600 * 24);
+    const diff_day = difference / (1000 * 3600 * 24);
 
     if (diff_day <= 1) {
-        let temp = Math.round(difference / (1000 * 3600));
-        return `Oppdatert ${temp} timer siden`
+        const hoursSinceUpdate = Math.round(difference / (1000 * 3600));
+        return `Oppdatert ${hoursSinceUpdate} timer siden`
     } else if (diff_day < 1.5) {
-        let temp = Math.round(diff_day);
-        return `Oppdatert ${temp} dag siden`
+        const daySinceUpdate = Math.round(diff_day);
+        return `Oppdatert ${daySinceUpdate} dag siden`
     } else if (diff_day >= 1.5) {
-        let temp = Math.round(diff_day);
-        return `Oppdatert ${temp} dager siden`
+        const daysSinceUpdate = Math.round(diff_day);
+        return `Oppdatert ${daysSinceUpdate} dager siden`
     }
 }
 
-export function getDate(date) {
-    let deadline = new Date(date);
-    var options = { month: 'long' , day: 'numeric', year: 'numeric' };
-    return (deadline.toLocaleString("no-NO", options));
-}
-
-export function getTime(date) {
-    let deadline = new Date(date);
-    var options = {hour: 'numeric', minute: '2-digit', timeZone: 'UTC'}
-    return (deadline.toLocaleTimeString("no-NO", options))
-}
-
-export function getPriority(priority) {
+export const getPriority = priority => {
     let color;
     let text;
 
@@ -64,7 +52,7 @@ export function getPriority(priority) {
     )
 }
 
-export function getCategory(category) {
+export const getCategory = category => {
     let category_text;
 
     switch (category) {
@@ -86,20 +74,17 @@ export function getCategory(category) {
     return category_text;
 }
 
-export function getFullDate(date) {
-    let temp = new Date(date);
-    var options = { month: 'long' , day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: "h24"};
-    return (temp.toLocaleString("no-NO", options));
-}
-
-export function resetFields(values) {
-    values.title = '';
-    values.description = '';
-    values.status = '';
-    values.deadline = '';
-    values.category = '';
-    values.priority = '';
-    values.user_id = '';
-    values.related_game = '';
+export const resetFields = values => {
+    Object.keys(values).forEach(key => values[key] = '');
     return values;
-}
+};
+
+export const parseGamesToOptions = games => {
+    const parsedGames = games
+        .map(game => ({
+            ...game,
+            value: game.id,
+            text: game.name
+        }));
+    return parsedGames;
+};

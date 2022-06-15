@@ -1,69 +1,13 @@
-from schmelladmin.models import Comment, Game, Idea, Question, ReadOutFile, Task, User, Week
-from rest_framework import viewsets, permissions, status, views, generics
+from cms.models import Game, Question
+from schmelladmin.models import Idea
+from rest_framework import viewsets, permissions, views
 from rest_framework.response import Response
 
-from schmelladmin.tasks import alert_deadline_closing, alert_game_not_updated
-from .serializers import CommentSerializer, GameSerializer, IdeaSerializer, LoginSerializer, QuestionSerializer, ReadOutFileSerializer, TaskSerializer, UserSerializer, WeekSerializer, ChangePasswordSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
-from .pagination import CustomPagination
-from datetime import date, datetime
-from schmelladmin.date_util import get_seconds_of_delay
-from django.core.mail import send_mail
-from rest_framework_api_key.permissions import HasAPIKey
+from authmanager.models import User
+from taskmanager.models import Task
+from .serializers import IdeaSerializer
+from datetime import date
 
-# Game Viewset
-class GameViewSet(viewsets.ModelViewSet):
-    serializer_class = GameSerializer
-    permission_classes = [permissions.IsAuthenticated | HasAPIKey]
-    def get_queryset(self):
-        queryset = Game.objects.all()
-        name = self.request.query_params.get('name')
-        status = self.request.query_params.get('status')
-        if name is not None:
-            queryset = queryset.filter(name=name)
-        if status is not None:
-            queryset = queryset.filter(status=status)
-        return queryset
-    
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    def perform_create(self, serializer):
-        serializer.save()
-        alert_game_not_updated(serializer.data['id'])
-        
-
-
-class WeekViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated | HasAPIKey]
-    serializer_class = WeekSerializer
-
-    def get_queryset(self):
-        queryset = Week.objects.all()
-        game = self.request.query_params.get('game')
-        if game is not None:
-            queryset = queryset.filter(game=game)
-        return queryset
-
-# Question Viewset
-class QuestionViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated | HasAPIKey]
-    serializer_class = QuestionSerializer
-    def get_queryset(self):
-        queryset = Question.objects.all()
-        related_week = self.request.query_params.get('related_week')
-        related_game = self.request.query_params.get('game')
-        if related_week is not None:
-            queryset = queryset.filter(related_week=related_week)
-        elif related_game is not None:
-            queryset = queryset.filter(related_game=related_game)
-        return queryset
-    
 class IdeaViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = IdeaSerializer
@@ -77,129 +21,10 @@ class IdeaViewSet(viewsets.ModelViewSet):
         elif createdBy is not None:
             queryset = queryset.filter(createdBy = createdBy)
         return queryset
-
-class TaskViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = TaskSerializer
-    pagination_class = CustomPagination
-
-    def get_queryset(self):
-        queryset = Task.objects.all()      
-        sort = self.request.query_params.get('sort')
-        status = self.request.query_params.get('status')
-        priority = self.request.query_params.get('priority')
-        responsible = self.request.query_params.get('responsible')
-        deadline = self.request.query_params.get('deadline')
-        filter = self.request.query_params.get('filter')
-        if (sort is not None and status is not None):
-            queryset = switchSort(queryset, sort)
-            queryset = queryset.filter(status = status)
-        elif (sort is not None and responsible is not None):
-            queryset = switchSort(queryset, sort)
-            queryset = queryset.filter(responsible = responsible)            
-        elif (sort is not None and priority is not None):
-            queryset = switchSort(queryset, sort)
-            queryset = queryset.filter(priority = priority)   
-        elif (deadline is not None and sort is not None):
-            queryset = switchSort(queryset, sort)
-            queryset = queryset.filter(deadline__lt = deadline).exclude(status = 'F')
-        elif (sort is not None and filter == 'ONLY_ACT'):
-            queryset = switchSort(queryset, sort)
-            queryset = queryset.exclude(status = 'F')
-        if ((sort is not None) and (filter == 'ONLY_ACT') and (responsible is not None)):
-            queryset = switchSort(queryset, sort)
-            queryset = queryset.filter(responsible = responsible).exclude(status = 'F')
-        elif ((status is None) or (priority is None) or (responsible is None) or (deadline is None) or (filter is None)) and (sort is not None):
-            queryset = switchSort(queryset, sort)
-        return queryset
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    def perform_create(self, serializer):
-        serializer.save()
-        title = serializer.data['title']
-        description = serializer.data['description']
-        resp_firstname = serializer.data['responsible']['first_name']
-        resp_lastname = serializer.data['responsible']['last_name']
-        priority = str(serializer.data['priority'])
-        nonformatted_deadline = serializer.data['deadline']
-        d = datetime.fromisoformat(nonformatted_deadline [:-1])
-        deadline = d.strftime('%Y-%m-%d %H:%M:%S')
-        message = 'Hei, det har blitt lagt til en ny oppgave. \n\n' + 'Tittel: ' + title + '\n' + 'Beskrivelse: ' + description + '\n' + 'Ansvarlig: ' + resp_firstname + ' ' + resp_lastname + '\n' + 'Prioritet: ' + priority + '\n' + 'Frist: ' + deadline + '\n' + 'Gå til panelet for å fullføre oppgaven: https://schmell.herokuapp.com \n\nMvh Schmell :-)' 
-        user_queryset = User.objects.all()
-        want_alert = user_queryset.filter(alerts_task = True)
-        to_emails = []
-        for user in want_alert:
-            to_emails.append(user.email)
-        if (len(to_emails) > 0):
-            print()
-            send_mail(
-                subject = 'Ny arbeidsoppgave lagt til: ' + title,
-                message = message,
-                from_email='schmellapp@gmail.com',
-                recipient_list = to_emails
-            )
-        id = serializer.data['id']
-        print('Scheduling alert in: ' + str(get_seconds_of_delay(d)) + 'seconds')
-        alert_deadline_closing.apply_async([id], countdown=get_seconds_of_delay(d))
-
-class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = UserSerializer
-
-    def get_queryset(self):
-        queryset = User.objects.all()
-        return queryset
-
-class CommentViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = CommentSerializer
-
-    def get_queryset(self):
-        queryset = Comment.objects.all()
-        related_task = self.request.query_params.get('task')
-        if related_task is not None:
-            queryset = queryset.filter(related_task = related_task) 
-            queryset = queryset.order_by('date')
         
-        return queryset
-        
-class LoginViewSet(viewsets.ModelViewSet, TokenObtainPairView):
-    serializer_class = LoginSerializer
-    permission_classes = (permissions.AllowAny,)
-    http_method_names = ['post']
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
-
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
-class RefreshViewSet(viewsets.ViewSet, TokenRefreshView):
-    permission_classes = (permissions.AllowAny,)
-    http_method_names = ['post']
-
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-
-        try:
-            serializer.is_valid(raise_exception=True)
-        except TokenError as e:
-            raise InvalidToken(e.args[0])
-
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
-
 class StaticsViewSet(views.APIView):
     permission_classes = [permissions.AllowAny]
+    allowed_methods = ['GET']
     
     def get(self, request, format=None):
         users_count = User.objects.all().count()
@@ -248,43 +73,3 @@ class StaticsViewSet(views.APIView):
                 },
             }
         )
-
-class ChangePasswordView(generics.UpdateAPIView):
-    queryset = User.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = ChangePasswordSerializer
-
-class ReadOutFileViewset(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = ReadOutFileSerializer
-    pagination_class = CustomPagination
-
-    def get_queryset(self):
-        queryset = ReadOutFile.objects.all()
-        related_question = self.request.query_params.get('questionid')
-        question_desc = self.request.query_params.get('question')
-        if related_question is not None:
-            queryset = queryset.filter(related_question = related_question)
-        if question_desc is not None:
-            question_queryset = Question.objects.all().filter(question_desc__contains = question_desc)
-            if question_queryset.count() > 0:
-                for question in question_queryset:
-                    queryset = queryset.filter(related_question = question.id)
-        return queryset
-
-def switchSort(queryset, sort):
-    if sort == 'PRIORITY_HTL':
-        queryset = queryset.order_by('priority')           
-    elif sort == 'PRIORITY_LTH':
-        queryset = queryset.order_by('-priority')
-    elif sort == 'DEADLINE_DESC':
-        queryset = queryset.order_by('-deadline')
-    elif sort == 'DEADLINE_ASC':
-        queryset = queryset.order_by('deadline')
-    elif sort == 'PUBL_DESC':
-        queryset = queryset.order_by('-date')
-    elif sort == 'UPDT_DESC':
-        queryset = queryset.order_by('-updated')
-    elif sort == 'UPDT_ASC': 
-        queryset = queryset.order_by('updated')
-    return queryset

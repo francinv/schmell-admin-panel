@@ -1,51 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { selectP, selectPageSize, selectTaskCount, selectTasks } from '../../features/tasks/taskSelectors';
-import { Avatar, Box, makeStyles, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material';
-import { styled } from '@mui/system';
+import { selectP, selectPageSize, selectSelectedTask, selectTaskCount, selectTasks } from '../../features/tasks/taskSelectors';
+import { Avatar, Box, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { BODY_BOLD, CARD_TEXT } from '../styles/Typography';
-import { getCategory, getDate, getPriority, getTime, getUpdatedTime } from '../../utils/taskUtil';
-import { resetStatus, setP, setPageSize } from '../../features/tasks/taskSlice';
+import { getCategory, getPriority, getUpdatedTime } from '../../utils/taskUtil';
+import { resetStatus, setP, setPageSize, setSelected } from '../../features/tasks/taskSlice';
 import { fetchComments } from '../../features/comments/commentSlice';
 import { useAppDispatch } from '../../features/hooks';
-import TaskDetail from './TaskDetail';
-
-
-export const CTableCell = styled(TableCell)(({theme}) => ({
-    fontFamily:'Quicksand',
-    fontSize:14,
-    fontWeight:500,
-    color: '#9FA2B4',
-}))
-
-export const DTableCell = styled(TableCell)(({theme}) => ({
-    fontFamily:'Quicksand',
-    fontSize:14,
-    fontWeight:500,
-    color: '#141400',
-}))
+import TaskDetail from '../Overlays/DisplayOverlays/TaskDetail';
+import { TASK_TABLE_HEADER } from '../../constants/taskConstants';
+import { CTableCell, CustomFooter, DTableCell, TableHeader } from '../table/TableComponents';
+import { getDateFromDate, getTimeFromDate } from '../../utils/dateUtil';
 
 const actionDispatch = (dispatch) => ({
     setP: (query) => dispatch(setP(query)),
     setPageSize: (query) => dispatch(setPageSize(query)),
     resetStatus: () => dispatch(resetStatus()),
-    fetchComments: (query) => dispatch(fetchComments(query))
-})
+    fetchComments: (query) => dispatch(fetchComments(query)),
+    setSelectedTask: (query) => dispatch(setSelected(query))
+});
+
 const TaskTable = () => {
     const [open, setOpen] = useState(false);
-    const [selectedTask, setSelectedTask] = useState('');
-    const handleShow = () => {
-        setOpen((wasOpen) => !wasOpen);
 
-    }
-    const { setP } = actionDispatch(useAppDispatch());
-    const { setPageSize } = actionDispatch(useAppDispatch());
-    const { resetStatus } = actionDispatch(useAppDispatch());
-    const { fetchComments } = actionDispatch(useAppDispatch());
+    const { setP, setPageSize, resetStatus, fetchComments, setSelectedTask } = actionDispatch(useAppDispatch());
+    
     const tasks = useSelector(selectTasks);
     const count = useSelector(selectTaskCount);
     const page_size = useSelector(selectPageSize);
     const p = useSelector(selectP);
+    const activeTask = useSelector(selectSelectedTask);
+
+    const handleShow = () => setOpen((wasOpen) => !wasOpen);
 
     const handleChangePage = (event, newAlignment) => {
         resetStatus();
@@ -62,20 +48,13 @@ const TaskTable = () => {
         setSelectedTask(task);
         fetchComments(task.id);
         handleShow();
-    }
+    };
 
     return (
         <Box sx={{width: '100%'}}>
             <TableContainer>
                 <Table sx={{width: '100%'}}>
-                    <TableHead>
-                        <TableRow>
-                            <CTableCell>Oppgave detaljer</CTableCell>
-                            <CTableCell>Kategori</CTableCell>
-                            <CTableCell>Frist</CTableCell>
-                            <CTableCell>Prioritet</CTableCell>
-                        </TableRow>
-                    </TableHead>
+                    <TableHeader>{TASK_TABLE_HEADER.map(content => (<CTableCell key={content}>{content}</CTableCell>))}</TableHeader>
                     <TableBody>
                         {tasks.map((task) => (
                             <TableRow
@@ -98,50 +77,18 @@ const TaskTable = () => {
                                 <DTableCell>{getCategory(task.category)}</DTableCell>
                                 <TableCell>
                                     <Box sx={{display:'flex', flexDirection:'column'}}>
-                                        <BODY_BOLD>{getDate(task.deadline)}</BODY_BOLD>
-                                        <CARD_TEXT>{getTime(task.deadline)}</CARD_TEXT>
+                                        <BODY_BOLD>{getDateFromDate(task.deadline)}</BODY_BOLD>
+                                        <CARD_TEXT>{getTimeFromDate(task.deadline)}</CARD_TEXT>
                                     </Box>
                                 </TableCell>
                                 <TableCell>{getPriority(task.priority)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[10, 25, 50]}
-                                count={count}
-                                rowsPerPage={page_size}
-                                page={p-1}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                                sx={{
-                                    '& .MuiTablePagination-selectLabel':{
-                                        fontFamily: 'Quicksand',
-                                        fontSize: 14,
-                                        color: '#9FA2B4'
-                                    },
-                                    '& .MuiTablePagination-select': {
-                                        fontFamily: 'Quicksand',
-                                        color: '#4B506D',
-                                        fontSize: 14,
-                                        fontWeight: 500,
-                                    },
-                                    '& .MuiTablePagination-selectIcon': {
-                                        color: '#9FA2B4'
-                                    },
-                                    '& .MuiTablePagination-displayedRows': {
-                                        fontFamily: 'Quicksand',
-                                        fontSize: 14,
-                                        color: '#9FA2B4'
-                                    }
-                                }}
-                            />
-                        </TableRow>
-                    </TableFooter>  
+                    <CustomFooter count={count} handleChangePage={handleChangePage} handleChangeRowsPerPage={handleChangeRowsPerPage} p={p} page_size={page_size} />
                 </Table>
             </TableContainer>
-            <TaskDetail open={open} handleShow={handleShow} task={selectedTask}/>
+            { activeTask.id ? <TaskDetail open={open} handleShow={handleShow} /> : null }
         </Box>
     )
 }

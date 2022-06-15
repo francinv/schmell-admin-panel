@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosService from '../../utils/axios';
+import axiosService from '../../services/axiosService';
 
 const initialState = {
     count: 0,
@@ -24,31 +24,21 @@ export const fetchTasks = createAsyncThunk('task/fetchTasks', async (content) =>
     const responsible = content.responsible;
     const page_size = content.page_size;
     const p = content.p;
-    let url = `task/?sort=${sort}`
-    if (status !== '') {
-        url = `task/?sort=${sort}&status=${status}`
-    }
-    if (priority !== '') {
-        url = `task/?sort=${sort}&priority=${priority}`
-    }
-    if (responsible !== '') {
-        url = `task/?sort=${sort}&responsible=${responsible}`
-    }
-    if (page_size !== '') {
-        const temp = `&page_size=${page_size}`;
-        url += temp;
-    }
-    if (p !== '') {
-        const temp = `&p=${p}`;
-        url += temp;
-    }
+
+    let url = `tasks/task/?sort=${sort}`;
+    if (status !== '') url += `&status=${status}`;
+    if (priority !== '') url += `&priority=${priority}`;
+    if (responsible !== '') url += `&responsible=${responsible}`;
+    if (page_size !== '') url += `&page_size=${page_size}`;
+    if (p !== '') url += `&p=${p}`;
+    
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;
 });
 
 export const postTask = createAsyncThunk('task/postTask', async (data) => {
-    const url = 'task/';
+    const url = 'tasks/task/';
     const axe = axiosService.post(url, data)
     const response = await axe.then(res => res.data)
     axe.catch(res => console.log(res));
@@ -56,8 +46,9 @@ export const postTask = createAsyncThunk('task/postTask', async (data) => {
 });
 
 export const updateTask = createAsyncThunk('task/updateTask', async (content) => {
-    const url = `task/${content.id}/`;
-    const axe = axiosService.put(url, content.data);
+    const { id, data } = content;
+    const url = `tasks/task/${id}/`;
+    const axe = axiosService.patch(url, data);
     const response = await axe.then(res => res.data);
     axe.catch(res => console.log(res));
     return response;
@@ -89,6 +80,7 @@ export const TaskSlice = createSlice({
             state.p = action.payload;
         },
         setSelected: (state, action) => {
+            console.log(action.payload);
             state.selectedTask = action.payload;
         }
     },

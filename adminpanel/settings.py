@@ -45,6 +45,11 @@ INSTALLED_APPS = [
     'frontend',
     'rest_framework.authtoken',
     'storages',
+    'authmanager',
+    'taskmanager',
+    'mailmanager',
+    'cms',
+    'jobmanager',
 ]
 
 REST_FRAMEWORK = {
@@ -150,7 +155,7 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'schmelladmin.User'
+AUTH_USER_MODEL = 'authmanager.User'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),

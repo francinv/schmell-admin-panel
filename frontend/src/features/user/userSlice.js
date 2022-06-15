@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosService from '../../utils/axios';
+import axiosService from '../../services/axiosService';
 
 const initialState = {
     activeUser: {},
@@ -12,12 +12,11 @@ const initialState = {
 export const logIn = createAsyncThunk('auth/login', async (data) => {
     const axe = axiosService.post('auth/login/', data);
     const response = await axe.then(res => res.data);
-    axe.catch(res => console.log(res));
     return response;
 });
 
 export const fetchUsers = createAsyncThunk('user/', async () => {
-    const axe = axiosService.get('user/');
+    const axe = axiosService.get('auth/user/');
     const response = await axe.then(res => res.data);
     axe.catch(res => console.log(res));
     return response;
@@ -25,17 +24,15 @@ export const fetchUsers = createAsyncThunk('user/', async () => {
 
 export const updateUser = createAsyncThunk('user/updateUser', async (data) => {
     const {id, content} = data;
-    const axe = axiosService.put(`user/${id}/`, content);
+    const axe = axiosService.patch(`auth/user/${id}/`, content);
     const response = await axe.then(res => res.data);
-    axe.catch(res => console.log(res));
     return response;
 })
 
 export const updatePassword = createAsyncThunk('user/updatePassword', async (data) => {
     const {id, content} = data;
-    const axe = axiosService.put(`auth/password/${id}/`, {password: content});
+    const axe = axiosService.patch(`auth/password/${id}/`, {password: content});
     const response = await axe.then(res => res.status);
-    axe.catch(res => console.log(res));
     return response;
 })
 
@@ -45,14 +42,14 @@ export const UserSlice = createSlice({
     reducers: {
         setLogIn: (state, action) => {
             state.isLoggedIn = true;
-            state.activeUser = action.payload.user;
-            state.access = action.payload.access
+            state.activeUser = action.payload;
         },
         setLogOut: (state) => {
             state.isLoggedIn = false;
             state.activeUser = {};
-            state.access = '';
-            localStorage.removeItem('refresh')
+            localStorage.removeItem('refresh');
+            localStorage.removeItem('access');
+            localStorage.removeItem('user');
         },
     },
     extraReducers(builder) {
@@ -65,6 +62,7 @@ export const UserSlice = createSlice({
                 state.activeUser = action.payload.user
                 localStorage.setItem('access', action.payload.access)
                 localStorage.setItem('refresh', action.payload.refresh)
+                localStorage.setItem('user', action.payload.user.id)
                 let temp = localStorage.getItem('refresh');
                 if (temp === undefined) {
                     alert('Could not set refresh token. Try logging out and in.');

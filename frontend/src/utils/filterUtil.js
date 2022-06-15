@@ -1,4 +1,4 @@
-export function deleteObject(listToFilter, idObjectToRemove) {
+export const deleteObject = (listToFilter, idObjectToRemove) => {
     for (let i = 0; i < listToFilter.length; i++) {
         if (listToFilter[i].id === idObjectToRemove) {
             listToFilter.splice(i,1);
@@ -7,7 +7,7 @@ export function deleteObject(listToFilter, idObjectToRemove) {
     return listToFilter;
 }
 
-export function replaceObject(listToReplace, objectToReplace) {
+export const replaceObject = (listToReplace, objectToReplace) => {
     for (let i = 0; i < listToReplace.length; i++) {
         if (listToReplace[i].id === objectToReplace.id) {
             listToReplace[i].description = objectToReplace.description
