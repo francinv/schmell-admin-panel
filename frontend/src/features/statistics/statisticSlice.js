@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosService from '../../utils/axios';
+import axiosService from '../../services/axiosService';
 
 const initialState = {
     users_count: '',
@@ -19,7 +19,7 @@ const initialState = {
 }
 
 export const fetchStatistics = createAsyncThunk('statistic/fetchStatistics', async () => {
-    let url = 'statistics';
+    let url = 'admin/statistics/';
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;

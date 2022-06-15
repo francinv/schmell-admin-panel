@@ -1,0 +1,1 @@
+export const myTaskUrl = userID => `tasks/task/?sort=PUBL_DESC&responsible=${userID}&filter=ONLY_ACT`;

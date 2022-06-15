@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import axiosService from '../../utils/axios';
+import axiosService from '../../services/axiosService';
 import { deleteObject } from '../../utils/filterUtil';
 
 const initialState = {
@@ -11,14 +10,14 @@ const initialState = {
 }
 
 export const fetchWeeks = createAsyncThunk('week/fetchWeeks', async (gameID) => {
-    const url = `week/?game=${gameID}`;
+    const url = `cms/week/?game=${gameID}`;
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
     return response;
 });
 
 export const postWeek = createAsyncThunk('week/postWeek', async (data) => {
-    const axe = axiosService.post('week/', data);
+    const axe = axiosService.post('cms/week/', data);
     const response = await axe.then(res => 
         res.data
     );
@@ -26,7 +25,7 @@ export const postWeek = createAsyncThunk('week/postWeek', async (data) => {
 });
 
 export const deleteWeek = createAsyncThunk('game/deleteWeek', async (idWeek) => {
-    const url = `week/${idWeek}/`;
+    const url = `cms/week/${idWeek}/`;
     const axe = axiosService.delete(url);
     const response = await axe.then(res => res.status);
     if (response === 204) {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -7,36 +7,25 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Alert, FormControl, IconButton, InputAdornment, InputLabel, Link, OutlinedInput } from '@mui/material';
+import { Alert, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import { logIn } from '../../features/user/userSlice';
 import { useAppDispatch } from '../../features/hooks';
 import { useSelector } from 'react-redux';
-import { selectUserError, selectUserStatus } from '../../features/user/userSelectors';
-
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      light: '#757ce8',
-      main: '#3f50b5',
-      dark: '#000000',
-      contrastText: '#fff',
-    },
-  },
-});
+import { selectUserStatus } from '../../features/user/userSelectors';
 
 const actionDispatch = (dispatch) => ({
   logIn: (query) => dispatch(logIn(query)),
 });
 
-export default function LogIn() {
-  const status = useSelector(selectUserStatus);
-  const error = useSelector(selectUserError);
-  const [values, setValues] = React.useState({
+const LogIn = () => {
+  const [values, setValues] = useState({
     password: '',
     username: '',
     showPassword: false,
   });  
+
+  const status = useSelector(selectUserStatus);
+  
   const { logIn } = actionDispatch(useAppDispatch());
     
   const handleChange = (prop) => (event) => {
@@ -54,7 +43,7 @@ export default function LogIn() {
     event.preventDefault();
   };    
 
-  const HandleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     data.append('username', values.username);
@@ -63,19 +52,16 @@ export default function LogIn() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-    <CssBaseline />
       <Container 
         component="main"
         maxWidth="false"
         sx={{
-            margin:0,
-            width:'1',
-            height:'100vh',
-            bgcolor:'#363740',
-            display:'flex',
-            justifyContent:'center',
-            alignItems:'center',
+          height: '100vh',
+          width: '100%',
+          bgcolor:'#363740',
+          display:'flex',
+          justifyContent:'center',
+          alignItems:'center',
         }}
       >
         <Box
@@ -89,7 +75,7 @@ export default function LogIn() {
                 alignItems:'center',
             }}
             component="form"
-            onSubmit={HandleSubmit}
+            onSubmit={handleSubmit}
             noValidate
         >
             <img className='img_logo' style={{marginTop:'1rem'}} src="/static/images/assetlogo.png" width={350}/>
@@ -192,6 +178,7 @@ export default function LogIn() {
         </Box>
 
       </Container>
-    </ThemeProvider>
   );
 }
+
+export default LogIn;

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosService from '../../utils/axios';
+import axiosService from '../../services/axiosService';
 import { deleteObject } from '../../utils/filterUtil';
 
 const initialState = {
@@ -11,9 +11,9 @@ const initialState = {
 export const fetchQuestions = createAsyncThunk('question/fetchQuestions', async (idWeek) => {
     let url = '';
     if (idWeek != undefined || idWeek != '') {
-        url = `question/?related_week=${idWeek}`
+        url = `cms/question/?related_week=${idWeek}`
     } else {
-        url = 'question/'
+        url = 'cms/question/'
     }
     const axe = axiosService.get(url);
     const response = await axe.then(res => res.data);
@@ -21,7 +21,7 @@ export const fetchQuestions = createAsyncThunk('question/fetchQuestions', async 
 });
 
 export const postQuestion = createAsyncThunk('question/postQuestion', async (data) => {
-    const url = 'question/';
+    const url = 'cms/question/';
     const axe = axiosService.post(url, data)
     const response = axe.then(res => res.data)
     axe.catch(res => console.log(res));
@@ -29,7 +29,7 @@ export const postQuestion = createAsyncThunk('question/postQuestion', async (dat
 });
 
 export const updateQuestion = createAsyncThunk('question/updateQuestion', async (content) => {
-    const url = `question/${content.id}/`
+    const url = `cms/question/${content.id}/`
     const axe = axiosService.put(url, content.content)
     const response = axe.then(res => res.data)
     axe.catch(res => console.log(res));
@@ -37,7 +37,7 @@ export const updateQuestion = createAsyncThunk('question/updateQuestion', async 
 });
 
 export const deleteQuestion = createAsyncThunk('question/deleteQuestion', async (idQuestion) => {
-    const url = `question/${idQuestion}/`;
+    const url = `cms/question/${idQuestion}/`;
     const axe = axiosService.delete(url);
     const response = await axe.then(res => res.status);
     if (response === 204) {
@@ -71,13 +71,14 @@ export const QuestionSlice = createSlice({
             })
             .addCase(updateQuestion.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                const {id, type, question_desc, hint, phase} = action.payload;
+                const {id, type, question_desc, hint, phase, read_out_file} = action.payload;
                 const existingQuestion = state.questions.find(q => q.id === id);
                 if (existingQuestion) {
                     existingQuestion.type = type;
                     existingQuestion.question_desc = question_desc;
                     existingQuestion.hint = hint;
                     existingQuestion.phase = phase;
+                    existingQuestion.read_out_file = read_out_file;
                 }
             })
             .addCase(updateQuestion.rejected, (state, action) => {
