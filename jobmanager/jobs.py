@@ -1,5 +1,5 @@
-from datetime import date, datetime, timedelta
-
+from datetime import date, datetime, timedelta, tzinfo
+from dateutil.parser import parse
 from celery import shared_task
 from authmanager.models import User
 from mailmanager.sender import SendTaskDeadlineClosing
@@ -14,18 +14,19 @@ class DeadlineJob():
         self.deadline = deadline
     
     def get_seconds_of_delay(self):
-        d = datetime.strptime(self.deadline, '%Y-%m-%d %H:%M:%S')
-        return (d - datetime.now()).total_seconds()
+        d = parse(self.deadline, tzinfos=None)
+        naive = d.replace(tzinfo=None)
+        return (naive - datetime.now()).total_seconds()
         
     def alert(self):
         print('Scheduling alert in: ' + str(self.get_seconds_of_delay()) + 'seconds')
 
     @shared_task(bind = True)
-    def set_deadline(self):
-        task = Task.objects.get(id = self.id)
+    def set_deadline(self, id):
+        task = Task.objects.get(id = id)
         if (task and task.status != 'F'):
             user = User.objects.get(id = task.responsible_id)
-            if (user.alerts_deadline): 
+            if (user.alerts_deadlines): 
                 sender = SendTaskDeadlineClosing(
                     task.title, task.description, task.priority, task.deadline, 
                     user.email

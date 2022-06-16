@@ -2,7 +2,7 @@ from datetime import datetime
 from django.core.mail import send_mail
 from mailmanager.constant import FROM_EMAIL
 
-from mailmanager.helpers import parseStatusToString
+from mailmanager.helpers import parse_priority_to_string, parseStatusToString
 
 
 class SendTaskCreatedMail():
@@ -20,8 +20,14 @@ class SendTaskCreatedMail():
         return d.strftime('%Y-%m-%d %H:%M:%S')
         
     def build_message(self):
-        message = 'Hei, det har blitt lagt til en ny oppgave. \n\n' + 'Tittel: ' + self.title + '\n' + 'Beskrivelse: ' + self.description + '\n' + 'Ansvarlig: ' + self.firstname + ' ' + self.lastname + '\n' + 'Prioritet: ' + self.priority + '\n' + 'Frist: ' + self.format_deadline() + '\n' + 'Gå til panelet for å fullføre oppgaven: https://schmell.herokuapp.com \n\nMvh Schmell :-)' 
-        return message
+        return 'Hei, det har blitt lagt til en ny oppgave. \n\n'\
+            'Tittel: ' + self.title + '\n'\
+            'Beskrivelse: ' + self.description + '\n'\
+            'Ansvarlig: ' + self.firstname + ' ' + self.lastname + '\n'\
+            'Prioritet: ' + parse_priority_to_string(self.priority) + '\n'\
+            'Frist: ' + self.format_deadline() + '\n'\
+            'Gå til panelet for å fullføre oppgaven: https://schmell.herokuapp.com \n\n'\
+            'Mvh Schmell :-)'
     
     def send_mail(self):
         send_mail(

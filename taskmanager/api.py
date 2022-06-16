@@ -65,7 +65,7 @@ class TaskViewSet(viewsets.ModelViewSet):
         
         job = DeadlineJob(serializer.data['id'], serializer.data['deadline'])
         job.alert()
-        job.set_deadline().apply_async(countdown=job.get_seconds_of_delay())
+        job.set_deadline.apply_async(serializer.data['id'], countdown=job.get_seconds_of_delay())
 
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
