@@ -52,7 +52,9 @@ const CreateQuestion = ({open, handleClose}) => {
         updateGame(temp);
         handleClose();
         addCountByGame(game.id);
+        console.log(values);
         setValues(resetQuestions(values));
+        console.log(values)
     };
 
     return (
