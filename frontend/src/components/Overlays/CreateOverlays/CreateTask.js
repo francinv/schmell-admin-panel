@@ -16,7 +16,7 @@ import FormOverlayWrapper from "../../layout/FormOverlayWrapper";
 const actionDispatch = (dispatch) => ({
     addTask: (query) => dispatch(postTask(query)),
     resetTasks: (query) => dispatch(resetStatus(query)),
-    resetStatistics: () => dispatch(resetStatistics())
+    resetStat: () => dispatch(resetStatistics())
 });
 
 const CreateTaskForm = ({open, handleShow}) => {
@@ -31,7 +31,7 @@ const CreateTaskForm = ({open, handleShow}) => {
         related_game: '',
     });
 
-    const { addTask, resetStatistics } = actionDispatch(useAppDispatch());
+    const { addTask, resetStat } = actionDispatch(useAppDispatch());
 
     const status = useSelector(selectTaskStatus);
     const games = useSelector(selectGames);
@@ -47,7 +47,7 @@ const CreateTaskForm = ({open, handleShow}) => {
         addTask(values);
         if (status === 'succeeded') {
             handleShow();
-            resetStatistics();
+            resetStat();
             setValues(resetFields(values))
         }
     };

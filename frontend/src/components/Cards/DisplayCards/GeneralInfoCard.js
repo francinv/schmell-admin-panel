@@ -5,11 +5,22 @@ import { BODY_BOLD, H3 } from "../../styles/Typography";
 
 const GeneralInfoCard = ({ title, content, positioning }) => {
     
+    const getBorderRadius = () => {
+        if (isFirst(positioning)) {
+            return '0px 8px 0px 0px';
+        } else {
+            if (isLast(positioning)) {
+                return '0px 0px 8px 0px';
+            } else {
+                return 0
+            }
+        }
+    }
     return (
         <Box
             sx={{
-                borderBottom: isLast ? 'none' : '1px solid #DFE0EB',
-                borderRadius: isFirst ? '0px 8px 0px 0px' : isLast ? '0px 0px 8px 0px' : 0,
+                borderBottom: isLast(positioning) ? 'none' : '1px solid #DFE0EB',
+                borderRadius: getBorderRadius(),
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',

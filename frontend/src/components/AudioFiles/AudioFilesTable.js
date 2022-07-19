@@ -12,14 +12,14 @@ import { CTableCell, CustomFooter, DTableCell, TableHeader } from '../table/Tabl
 import { AUDIO_TABLE_HEADERS } from '../../constants/audioFileConstants';
 
 const actionDispatch = (dispatch) => ({
-    setP: (query) => dispatch(setP(query)),
-    setPageSize: (query) => dispatch(setPageSize(query)),
+    updateP: (query) => dispatch(setP(query)),
+    updatePageSize: (query) => dispatch(setPageSize(query)),
     deleteFile: (query) => dispatch(deleteAudioFile(query)),
-    resetStatus: () => dispatch(resetStatus()),
+    reset: () => dispatch(resetStatus()),
 })
 
 const AudioFilesTable = () => {
-    const { setP, setPageSize, deleteFile, resetStatus } = actionDispatch(useAppDispatch());
+    const { updateP, updatePageSize, deleteFile, reset } = actionDispatch(useAppDispatch());
 
     const [dialogOpen, setDialogOpen] = useState(false);
     const [idOfDeleted, setIdOfDeleted] = useState(null);
@@ -31,15 +31,15 @@ const AudioFilesTable = () => {
 
     const handleShow = () => setDialogOpen((wasOpen) => !wasOpen);
 
-    const handleChangePage = (event, newAlignment) => {
-        resetStatus();
-        setP(newAlignment + 1);
+    const handleChangePage = (_event, newAlignment) => {
+        reset();
+        updateP(newAlignment + 1);
     };
     
     const handleChangeRowsPerPage = (event) => {
-        resetStatus();
-        setPageSize(parseInt(event.target.value, 10));
-        setP(1);
+        reset();
+        updatePageSize(parseInt(event.target.value, 10));
+        updateP(1);
     };
 
     const handleDelete = () => {

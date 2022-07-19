@@ -80,11 +80,10 @@ export const resetFields = values => {
 };
 
 export const parseGamesToOptions = games => {
-    const parsedGames = games
+    return games
         .map(game => ({
             ...game,
             value: game.id,
             text: game.name
         }));
-    return parsedGames;
 };

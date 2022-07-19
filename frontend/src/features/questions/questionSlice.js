@@ -15,25 +15,22 @@ export const fetchQuestions = createAsyncThunk('question/fetchQuestions', async 
     } else {
         url = 'cms/question/'
     }
-    const axe = axiosService.get(url);
-    const response = await axe.then(res => res.data);
-    return response;
+    return axiosService
+        .get(url)
+        .then(res => res.data);
 });
 
 export const postQuestion = createAsyncThunk('question/postQuestion', async (data) => {
-    const url = 'cms/question/';
-    const axe = axiosService.post(url, data)
-    const response = axe.then(res => res.data)
-    axe.catch(res => console.log(res));
-    return response;
+    return axiosService
+        .post('cms/question/', data)
+        .then(res => res.data);
 });
 
 export const updateQuestion = createAsyncThunk('question/updateQuestion', async (content) => {
     const url = `cms/question/${content.id}/`
-    const axe = axiosService.put(url, content.content)
-    const response = axe.then(res => res.data)
-    axe.catch(res => console.log(res));
-    return response;
+    return axiosService
+        .put(url, content.content)
+        .then(res => res.data);
 });
 
 export const deleteQuestion = createAsyncThunk('question/deleteQuestion', async (idQuestion) => {
@@ -55,7 +52,7 @@ export const QuestionSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(postQuestion.pending, (state, action) => {
+            .addCase(postQuestion.pending, state => {
                 state.status = 'loading'
             })
             .addCase(postQuestion.fulfilled, (state, action) => {
@@ -66,17 +63,17 @@ export const QuestionSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(updateQuestion.pending, (state, action) => {
+            .addCase(updateQuestion.pending, state => {
                 state.status = 'loading'
             })
             .addCase(updateQuestion.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                const {id, type, question_desc, hint, phase, read_out_file} = action.payload;
+                const {id, type, question_desc, phase, read_out_file} = action.payload;
                 const existingQuestion = state.questions.find(q => q.id === id);
                 if (existingQuestion) {
                     existingQuestion.type = type;
                     existingQuestion.question_desc = question_desc;
-                    existingQuestion.hint = hint;
+                    existingQuestion.function = action.payload.function;
                     existingQuestion.phase = phase;
                     existingQuestion.read_out_file = read_out_file;
                 }
@@ -85,7 +82,7 @@ export const QuestionSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(deleteQuestion.pending, (state, action) => {
+            .addCase(deleteQuestion.pending, state => {
                 state.status = 'loading'
             })
             .addCase(deleteQuestion.fulfilled, (state, action) => {
@@ -96,7 +93,7 @@ export const QuestionSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(fetchQuestions.pending, (state, action) => {
+            .addCase(fetchQuestions.pending, state => {
                 state.status = 'loading'
             })
             .addCase(fetchQuestions.fulfilled, (state, action) => {

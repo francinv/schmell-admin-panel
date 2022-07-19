@@ -17,7 +17,7 @@ import CreateQuestion from "../Overlays/CreateOverlays/CreateQuestion";
 
 const actionDispatch = (dispatch) => ({
     getQuestions: (query) => dispatch(fetchQuestions(query)),
-    resetQuestions: () => dispatch(resetQuestions())
+    reset: () => dispatch(resetQuestions())
 })
 
 const QuestionOverview = ({ setStage }) => {
@@ -29,7 +29,7 @@ const QuestionOverview = ({ setStage }) => {
     const game = useSelector(selectedGame);
     const error = useSelector(selectQuestionsError);
     
-    const { getQuestions, resetQuestions } = actionDispatch(useAppDispatch());
+    const { getQuestions, reset } = actionDispatch(useAppDispatch());
 
     useEffect(() => {
         if (questionsStatus === 'idle') {
@@ -46,7 +46,7 @@ const QuestionOverview = ({ setStage }) => {
             <IconButton
                 onClick={() => {
                     setStage('W');
-                    resetQuestions();
+                    reset();
                 }}
                 size="large"
                 sx={{color:'#141400'}}

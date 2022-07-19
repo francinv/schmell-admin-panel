@@ -12,11 +12,11 @@ import { ColContainerForm, ColSmallContainerForm, CustomContainerForm, CustomSma
 import CustomSwitch from './switch/Switch';
 
 export const InputContainer = props => {
-    const { label, placeholder, value, onChange, type, width, fontSize, marginRight } = props;
+    const { label, placeholder, value, onChange, type, width, fontSize, marginRight, required } = props;
     return (
         <CustomContainerForm width={width}>
             <CustomWidthText fontSize={fontSize} marginRight={marginRight}>{label}</CustomWidthText>
-            <InputField value={value} onChange={onChange} placeholder={placeholder} type={type} height='29px' fontSize={14} marginLeft="0" backgroundColor="#E5E5E5" width="70%"/>
+            <InputField value={value} onChange={onChange} placeholder={placeholder} type={type} height='29px' fontSize={14} marginLeft="0" backgroundColor="#E5E5E5" width="70%" required={required} />
         </CustomContainerForm>
     );
 };
@@ -31,11 +31,11 @@ export const SmallInputContainer = ({ label, placeholder, value, onChange, type 
 };
 
 export const ProfileInputContainer = props => {
-    const { label, placeholder, value, onChange, type, handleSubmit, onStateChange } = props;
+    const { label, placeholder, value, onChange, type, handleSubmit, stateChange } = props;
 
     const handleInputSubmit = e => {
         e.preventDefault();
-        onStateChange(false);
+        stateChange(false);
         handleSubmit();
     }
 
@@ -139,14 +139,14 @@ export const FileButtonContainer = props => {
         setFileState(e.target.files[0]);
     }
 
-    const handleInputSubmit = e => {
+    const handleFileSubmit = e => {
         e.preventDefault();
         onStateChange(false);
         handleSubmit();
     }
 
     return (
-        <ColSmallContainerForm component="form" onSubmit={handleInputSubmit}>
+        <ColSmallContainerForm component="form" onSubmit={handleFileSubmit}>
             <OnlyUpload onChange={handleChange} />
             <BtnSubmit endIcon={null} btnText="Last opp" width='100%' />
         </ColSmallContainerForm>

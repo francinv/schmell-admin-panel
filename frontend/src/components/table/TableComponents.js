@@ -2,14 +2,14 @@ import React from "react";
 import { TableCell, TableHead, TablePagination, TableRow, TableFooter } from "@mui/material";
 import { styled } from "@mui/system";
 
-export const CTableCell = styled(TableCell)(({theme}) => ({
+export const CTableCell = styled(TableCell)(({_theme}) => ({
     fontFamily:'Quicksand',
     fontSize:14,
     fontWeight:500,
     color: '#9FA2B4',
 }));
 
-export const DTableCell = styled(TableCell)(({theme}) => ({
+export const DTableCell = styled(TableCell)(({_theme}) => ({
     fontFamily:'Quicksand',
     fontSize:14,
     fontWeight:500,

@@ -1,18 +1,3 @@
-export const FOLLOW_OPTIONS = [
-    {
-        value: true,
-        text: 'Ja',
-        color: '#141400',
-        textColor: '#E0E000',
-    },
-    {
-        value: false,
-        text: 'Nei',
-        color: '#141400',
-        textColor: '#E0E000'
-    }
-];
-
 export const STATUS_OPTIONS = [
     {
         value: 'D',

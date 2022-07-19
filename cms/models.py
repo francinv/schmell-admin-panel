@@ -30,7 +30,7 @@ class Question(models.Model):
     question_desc = models.CharField(max_length=500)
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)
-    punishment = models.CharField(max_length=200)
+    punishment = models.IntegerField(default=1)
 
     def __str__(self): 
         return self.id + " " + self.question_desc

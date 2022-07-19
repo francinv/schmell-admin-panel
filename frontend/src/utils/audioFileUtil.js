@@ -7,12 +7,11 @@ export const resetUploadFile = values => {
 export const getGender = value => value === 'M' ?  'Mann' : 'Kvinne';
 
 export const parseQuestionsToOptions = questions => {
-    const parsedQuestions = questions
+    return questions
         .map(question => {
             question.value = question.id
             question.text = `${question.value} ${question.question_desc}`
             delete question.id
             return question;
         });
-    return parsedQuestions;
 }

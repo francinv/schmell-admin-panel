@@ -10,19 +10,19 @@ import IdeasHeader from "../components/IdeasSection/IdeaHeader";
 import IdeaColumn from "../components/IdeasSection/IdeaColumn";
 
 const actionDispatch = (dispatch) => ({
-    fetchIdeas: (query) => dispatch(fetchIdeas(query)),
+    getIdeas: (query) => dispatch(fetchIdeas(query)),
 })
 
 const Ideas = () => {
     const ideaStatus = useSelector(selectIdeaStatus);
-    const { fetchIdeas } = actionDispatch(useAppDispatch());
+    const { getIdeas } = actionDispatch(useAppDispatch());
 
     useEffect(() => {
         if (ideaStatus === 'idle') {
-            fetchIdeas('G');
-            fetchIdeas('D');
-            fetchIdeas('W');
-            fetchIdeas('E');
+            getIdeas('G');
+            getIdeas('D');
+            getIdeas('W');
+            getIdeas('E');
         }
     }, [])
     

@@ -10,12 +10,12 @@ import { fetchTasks } from "../features/tasks/taskSlice";
 import { fetchUsers } from "../features/user/userSlice";
 
 const actionDispatch = (dispatch) => ({
-    fetchTasks: (query) => dispatch(fetchTasks(query)),
-    fetchUsers: () => dispatch(fetchUsers())
+    getTasks: (query) => dispatch(fetchTasks(query)),
+    getUsers: () => dispatch(fetchUsers())
 })
 
 const Tasks = () => {
-    const { fetchTasks, fetchUsers } = actionDispatch(useAppDispatch());
+    const { getTasks, getUsers } = actionDispatch(useAppDispatch());
 
     const sort = useSelector(selectSortState);
     const status = useSelector(selectStatusState);
@@ -35,8 +35,8 @@ const Tasks = () => {
                 page_size: page_size,
                 p: p,
             };
-            fetchTasks(temp);
-            fetchUsers();
+            getTasks(temp);
+            getUsers();
         }
     }, [sort, status, priority, responsible, page_size, p, statusOfRedux])
     

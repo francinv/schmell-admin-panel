@@ -14,10 +14,10 @@ import { ColTextAreaContainer, FileColContainer } from "../form";
 
 const actionDispatch = (dispatch) => ({
     editStatus: (query) => dispatch(putStatus(query)),
-    updateGame: (query) => dispatch(updateGame(query))
+    putGame: (query) => dispatch(updateGame(query))
 })
 
-const ContentWrapper = styled(Box)(({ theme }) => ({
+const ContentWrapper = styled(Box)(({ _theme }) => ({
     display:'flex',
     flexDirection: 'row',
     width: '50%',
@@ -26,7 +26,7 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
     minHeight: '100px',
 }));
 
-const InnerContainer = styled(Box)(({ theme }) => ({
+const InnerContainer = styled(Box)(({ _theme }) => ({
     display:'flex',
     flexDirection: 'column',
     width: '70%',
@@ -49,7 +49,7 @@ const QuestionHeader = ({handleOpen}) => {
         editStatus(temp);
     };
 
-    const CustomInput = styled(InputBase)(({ theme }) => ({
+    const CustomInput = styled(InputBase)(({ _theme }) => ({
         '& .MuiInputBase-input': {
             paddingLeft: '0.5rem',
         },
@@ -147,7 +147,7 @@ const EditState = ({setStateChange, game}) => {
     const [description, setDescription] = useState(game.description);
     const [fileState, setFileState] = useState('');
 
-    const { updateGame } = actionDispatch(useAppDispatch());
+    const { putGame } = actionDispatch(useAppDispatch());
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -161,7 +161,7 @@ const EditState = ({setStateChange, game}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        var data = new FormData();
+        let data = new FormData();
         const today = new Date().toISOString().split('T')[0];
         data.append('description', description);
         data.append('last_updated', today);
@@ -170,7 +170,7 @@ const EditState = ({setStateChange, game}) => {
             content: data,
             id: game.id,
         }
-        updateGame(temp);
+        putGame(temp);
         setStateChange(false);
     }
 
