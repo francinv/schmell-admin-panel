@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { BODY_BOLD, CARD_TEXT } from "../styles/Typography";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { styled } from "@mui/system";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useAppDispatch } from "../../features/hooks";
@@ -33,7 +34,7 @@ const InnerContainer = styled(Box)(({ _theme }) => ({
     padding: '0.5rem',
 }));
 
-const QuestionHeader = ({handleOpen}) => {
+const QuestionHeader = ({handleOpen, handleJsonShow}) => {
     const game = useSelector(selectedGame);
     const { editStatus } = actionDispatch(useAppDispatch());
     const [stateChange, setStateChange] = useState(false);
@@ -79,9 +80,16 @@ const QuestionHeader = ({handleOpen}) => {
                     alignSelf: 'flex-end',
                 }}
             >
+                <BtnAdd 
+                    handleClick={handleJsonShow}
+                    borderRadius="8px 0px 0px 0px"
+                    btnText="Last opp et sett"
+                    endIcon={<NoteAddIcon />}
+                />
+
                 <BtnAdd
                     handleClick={handleOpen}
-                    borderRadius="8px 0px 0px 0px"
+                    borderRadius="0px"
                     btnText="Legg til spørsmål"
                     endIcon={<AddCircleOutlineOutlinedIcon />}
                 />

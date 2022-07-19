@@ -2,7 +2,7 @@ import React from "react";
 import { FormControl, OutlinedInput } from "@mui/material";
 
 const TextArea = props => {
-    const { value, onChange, placeholder, width, marginLeft, fontSize, backgroundColor} = props;
+    const { value, onChange, placeholder, width, marginLeft, fontSize, backgroundColor, row, borderRadius} = props;
 
     return (
         <FormControl fullWidth sx={{ width: width, marginLeft: marginLeft }}>
@@ -11,7 +11,7 @@ const TextArea = props => {
                 onChange={onChange}
                 placeholder={placeholder}
                 multiline
-                rows={3}
+                rows={row || 3}
                 required
                 style={{
                     fontFamily: 'Quicksand',
@@ -20,7 +20,7 @@ const TextArea = props => {
                     padding: '0.5rem',
                 }}
                 sx={{
-                    borderRadius: '8px',
+                    borderRadius: borderRadius || '8px',
                     backgroundColor: backgroundColor,
                     '&.Mui-focused': {
                         borderColor: '#000',

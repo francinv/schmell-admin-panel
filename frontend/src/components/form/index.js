@@ -48,6 +48,14 @@ export const ProfileInputContainer = props => {
     );
 };
     
+export const LargeTextAreaContainer = ({label, placeholder, value, onChange}) => {
+    return (
+        <CustomContainerForm width={'85%'} marginTop='0rem'>
+            <TextArea value={value} placeholder={placeholder} label={label} onChange={onChange} width='100%' marginLeft={0} fontSize='14px' backgroundColor='#E5E5E5' row={20} borderRadius="8px 0px 8px 8px"/>
+        </CustomContainerForm>
+    );
+}
+
 export const TextAreaContainer = ({label, placeholder, value, onChange}) => {
 
     return(

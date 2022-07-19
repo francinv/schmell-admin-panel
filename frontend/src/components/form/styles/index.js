@@ -10,13 +10,13 @@ export const CustomWidthText = styled(Typography)(({ _theme, fontSize, marginRig
     marginRight: marginRight || '0.8rem',
 }));
 
-export const CustomContainerForm = styled(Box)(({ _theme, width }) => ({
+export const CustomContainerForm = styled(Box)(({ _theme, width, marginTop }) => ({
     display: 'flex',
     flexDirection: 'row',
     width: width || '65%',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginTop: '1rem',
+    marginTop: marginTop || '1rem',
     marginBottom:'1rem',
     alignItems: 'center',
 }));
