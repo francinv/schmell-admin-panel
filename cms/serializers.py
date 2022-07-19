@@ -4,7 +4,7 @@ from cms.models import Game, Question, ReadOutFile, Week
 class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
-        fields = ('id', 'name', 'description', 'related_questions', 'last_updated', 'status', 'logo', 'release_date',)
+        fields = ('id', 'name', 'description', 'last_updated', 'status', 'logo', 'release_date',)
 
 class WeekSerializer(serializers.ModelSerializer):
     class Meta:
@@ -14,7 +14,7 @@ class WeekSerializer(serializers.ModelSerializer):
 class QuestionSerializer(serializers.ModelSerializer):  
     class Meta:
         model = Question
-        fields = ('id', 'type','question_desc', 'hint', 'related_question', 'phase', 'function', 'related_game', 'related_week', 'punishment')
+        fields = ('id', 'type','question_desc', 'phase', 'function', 'related_game', 'related_week', 'punishment')
 
 class ReadOutFileSerializer(serializers.ModelSerializer):
     related_question = QuestionSerializer(read_only=True)
