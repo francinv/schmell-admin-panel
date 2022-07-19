@@ -4,10 +4,6 @@ import { inputStyle } from "../styles";
 export const SimpleUpload = ({ props }) => {
     const { onChange, placeholder, fileName } = props;
 
-    const inputStyle = {
-        display: 'none',
-    }
-
     const inputContainerStyle = {
         width: '70%',
         display: 'flex',
@@ -61,7 +57,6 @@ export const ColUpload = props => {
         height: '29px',
         fontFamily: 'Quicksand',
         justifyContent: 'center',
-        height: '100%',
         alignItems: 'center',
     }
 

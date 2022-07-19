@@ -10,19 +10,19 @@ import OverviewHeader from '../components/Overview/OverviewHeader';
 import StatisticsByDay from '../components/Overview/StatisticsByDay';
 
 const actionDispatch = (dispatch) => ({
-    fetchGames: () => dispatch(fetchGames()),
-    fetchStatistics: () => dispatch(fetchStatistics())
+    getGames: () => dispatch(fetchGames()),
+    getStatistics: () => dispatch(fetchStatistics())
 })
 
 const Overview = ({ setActiveTab }) => {
     const staticsStatus = useSelector(selectStatisticStatus);
 
-    const { fetchStatistics, fetchGames } = actionDispatch(useAppDispatch());
+    const { getStatistics, getGames } = actionDispatch(useAppDispatch());
     
     useEffect(() => {
         if (staticsStatus === 'idle') {
-            fetchGames();
-            fetchStatistics();
+            getGames();
+            getStatistics();
         }
     }, [staticsStatus])
 

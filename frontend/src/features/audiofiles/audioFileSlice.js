@@ -21,16 +21,15 @@ export const fetchAudioFiles = createAsyncThunk('audioFiles/fetchAudioFiles', as
     if (page_size !== 10) url += `&page_size=${page_size}`;
     if (p !== 1) url += `&p=${p}`;
 
-    const axe = axiosService.get(url);
-    const response = await axe.then(res => res.data);
-    return response;
+    return axiosService
+        .get(url)
+        .then(res => res.data);
 });
 
 export const addAudioFile = createAsyncThunk('audioFiles/addAudioFile', async data => {
-    const url = 'cms/files/readout/';
-    const axe = axiosService.post(url, data)
-    const response = await axe.then(res => res.data)
-    return response;
+    return axiosService
+        .post('cms/files/readout/', data)
+        .then(res => res.data);
 });
 
 export const deleteAudioFile = createAsyncThunk('audioFiles/deleteAudioFile', async id => {
@@ -64,7 +63,7 @@ export const AudioFileSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchAudioFiles.pending, (state, action) => {
+            .addCase(fetchAudioFiles.pending, (state) => {
                 state.status = 'loading'
             })
             .addCase(fetchAudioFiles.fulfilled, (state, action) => {
@@ -78,7 +77,7 @@ export const AudioFileSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(addAudioFile.pending, (state, action) => {
+            .addCase(addAudioFile.pending, (state) => {
                 state.status = 'loading'
             })
             .addCase(addAudioFile.fulfilled, (state, action) => {

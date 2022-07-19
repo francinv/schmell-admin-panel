@@ -19,11 +19,11 @@ import { Container95 } from "../../layout/containers/StyledContainers";
 import { selectSelectedTask } from "../../../features/tasks/taskSelectors";
 
 const actionDispatch = (dispatch) => ({
-    updateTask: (query) => dispatch(updateTask(query)),
+    putTask: (query) => dispatch(updateTask(query)),
     resetTasks: (query) => dispatch(resetStatus(query)),
-    postComment: (query) => dispatch(postComment(query)),
-    resetStatistics: () => dispatch(resetStatistics()),
-    addSolved: () => dispatch(addSolved())
+    addComment: (query) => dispatch(postComment(query)),
+    resetStat: () => dispatch(resetStatistics()),
+    postSolved: () => dispatch(addSolved())
 })
 
 const CustomTextField = styled(TextField)({
@@ -44,7 +44,7 @@ const CustomTextField = styled(TextField)({
 
 
 const TaskDetail = ({ open, handleShow }) => {
-    const { updateTask, resetTasks, postComment, resetStatistics, addSolved } = actionDispatch(useAppDispatch());
+    const { putTask, resetTasks, addComment, resetStat, postSolved } = actionDispatch(useAppDispatch());
 
     const task = useSelector(selectSelectedTask);
     const user = useSelector(selectActiveUser);
@@ -67,13 +67,13 @@ const TaskDetail = ({ open, handleShow }) => {
             id: task.id,
             [prop]: event.target.value
         }
-        updateTask(dataToSend);
+        putTask(dataToSend);
         setValues({ ...values, [prop]: event.target.value });
         if (prop === 'status' && event.target.value === 'F') {
-            addSolved();
+            postSolved();
         }
         resetTasks();
-        resetStatistics();
+        resetStat();
     };
 
     const handleCommentChange = (event) => {
@@ -87,7 +87,7 @@ const TaskDetail = ({ open, handleShow }) => {
             user_id: user.id,
             related_task: task.id
         }
-        postComment(temp);
+        addComment(temp);
         setTempComment('');
     }
 

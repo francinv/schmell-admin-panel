@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@mui/material";
 import { styled } from "@mui/system";
 
-const StyledBtn = styled(Button)(({ theme }) => ({
+const StyledBtn = styled(Button)(({ _theme }) => ({
     backgroundColor: '#e0e000',
     color: '#141400',
     fontFamily: 'Quicksand',

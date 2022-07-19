@@ -2,7 +2,7 @@ from datetime import datetime
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from authmanager.models import User
-from jobmanager.jobs import DeadlineJob
+from jobmanager.jobs import get_seconds_of_delay, scheduling_alert, set_deadline
 from mailmanager.sender import SendTaskCreatedMail
 from taskmanager.helpers import switchSort
 from schmelladmin.pagination import CustomPagination
@@ -63,9 +63,11 @@ class TaskViewSet(viewsets.ModelViewSet):
             print()
             sender.send_mail()
         
-        job = DeadlineJob(serializer.data['id'], serializer.data['deadline'])
-        job.alert()
-        job.set_deadline().apply_async(countdown=job.get_seconds_of_delay())
+        seconds_of_delay = get_seconds_of_delay(serializer.data['deadline'])
+        task_id = serializer.data['id']
+
+        scheduling_alert(seconds_of_delay)
+        set_deadline.apply_async([task_id], countdomwn=seconds_of_delay)
 
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]

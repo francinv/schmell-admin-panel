@@ -11,10 +11,10 @@ import { STATUS_OPTIONS } from "../../../constants/taskConstants";
 
 const actionDispatch = (dispatch) => ({
     setStatus: (query) => dispatch(setStatusState(query)),
-    resetStatus: () => dispatch(resetStatus())
+    resetStat: () => dispatch(resetStatus())
 })
 
-const StyledBtnStatus = styled(Button)(({theme}) => ({
+const StyledBtnStatus = styled(Button)(({_theme}) => ({
     marginLeft: '0.5rem',
     marginRight: '0.5rem',
     color: '#141400',
@@ -24,14 +24,14 @@ const StyledBtnStatus = styled(Button)(({theme}) => ({
 }))
 
 const Status = () => {
-    const { setStatus, resetStatus } = actionDispatch(useAppDispatch());
+    const { setStatus, resetStat } = actionDispatch(useAppDispatch());
 
     const status = useSelector(selectStatusState);
     
     const isSelected = value => status === value ? <CheckIcon sx={{color: '#C5C7CD'}} /> : null;
 
     const handleClick = value => {
-        resetStatus();
+        resetStat();
         setStatus(value);
     }
 
@@ -55,9 +55,9 @@ const Status = () => {
                     marginBottom: '1rem',
                 }}
             >
-                {STATUS_OPTIONS.map(status => (
-                    <StyledBtnStatus fullWidth onClick={() => handleClick(status.value)} endIcon={isSelected(status.value)} key={status.value}>
-                        {status.text}
+                {STATUS_OPTIONS.map(state => (
+                    <StyledBtnStatus fullWidth onClick={() => handleClick(state.value)} endIcon={isSelected(state.value)} key={state.value}>
+                        {state.text}
                     </StyledBtnStatus>
                 ))}
             </Box>

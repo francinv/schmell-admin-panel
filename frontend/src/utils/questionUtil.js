@@ -1,4 +1,8 @@
 export const resetQuestions = values => {
-    Object.keys(values).forEach(key => values[key] = '');
+    values.type = '';
+    values.question_desc = '';
+    values.phase = '';
+    values.function = '';
+    values.punishment = '';
     return values;
 };

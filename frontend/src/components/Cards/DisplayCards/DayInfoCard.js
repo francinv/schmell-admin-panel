@@ -5,6 +5,18 @@ import { isFirst, isLast } from "../../../utils/overviewUtil";
 
 const DayInfoCard = ({ title, content, positioning }) => {
 
+    const getMargin = () => {
+        if(isFirst(positioning)) {
+            return '0.5rem 0.5rem 0.5rem 0';
+        } else {
+            if (isLast(positioning)) {
+                return '0.5rem 0 0.5rem 0';
+            } else {
+                return '0.5rem 0.5rem 0.5rem 0.5rem';
+            }
+        }
+    }
+
     return (
         <Box
             sx={{
@@ -17,7 +29,7 @@ const DayInfoCard = ({ title, content, positioning }) => {
                 borderRadius: '8px',
                 backgroundColor: '#fff',
                 border: '1px solid #DFE0EB',
-                margin: isFirst(positioning) ? '0.5rem 0.5rem 0.5rem 0' : isLast(positioning) ? '0.5rem 0 0.5rem 0' : '0.5rem 0.5rem 0.5rem 0.5rem',
+                margin: getMargin(),
                 '&:hover':{
                     color: '#e0e000'
                 }

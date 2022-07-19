@@ -16,7 +16,7 @@ import WeekCard from "../Cards/DisplayCards/WeekCard";
 
 const actionDispatch = (dispatch) => ({
     getWeeks: (query) => dispatch(fetchWeeks(query)),
-    resetWeek: () => dispatch(resetWeek())
+    reset: () => dispatch(resetWeek())
 })
 
 const WeekOverview = ({setStage}) => {
@@ -24,7 +24,7 @@ const WeekOverview = ({setStage}) => {
     const weeks = useSelector(selectWeeks);
     const weeksStatus = useSelector(selectWeeksStatus);
     
-    const { getWeeks, resetWeek } = actionDispatch(useAppDispatch());
+    const { getWeeks, reset } = actionDispatch(useAppDispatch());
 
     useEffect(() => {
         if (weeksStatus === 'idle') {
@@ -41,7 +41,7 @@ const WeekOverview = ({setStage}) => {
             <IconButton
                 onClick={() => {
                     setStage('G');
-                    resetWeek();
+                    reset();
                 }}
                 size="large"
                 sx={{color:'#141400'}}

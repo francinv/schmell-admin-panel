@@ -13,23 +13,19 @@ const initialState = {
 }
 
 export const fetchIdeas = createAsyncThunk('idea/fetchIdea', async (category) => {
-    const url = `admin/idea/?category=${category}`
-    const axe = axiosService.get(url);
-    const response = await axe.then(res => res.data);
-    return response;
+    return axiosService
+        .get(`admin/idea/?category=${category}`)
+        .then(res => res.data);
 });
 
 export const postIdea = createAsyncThunk('idea/postIdea', async (data) => {
-    const url = 'admin/idea/';
-    const axe = axiosService.post(url, data)
-    const response = await axe.then(res => res.data)
-    axe.catch(res => console.log(res));
-    return response;
+    return axiosService
+        .post('admin/idea/', data)
+        .then(res => res.data);
 });
 
 export const deleteIdea = createAsyncThunk('idea/deleteIdea', async (idIdea) => {
-    const url = `admin/idea/${idIdea}/`;
-    const axe = axiosService.delete(url);
+    const axe = axiosService.delete(`admin/idea/${idIdea}/`);
     const response = await axe.then(res => res.status);
     if (response === 204) {
         return idIdea;
@@ -47,7 +43,7 @@ export const IdeaSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchIdeas.pending, (state, action) => {
+            .addCase(fetchIdeas.pending, state => {
                 state.statusByWeek = 'loading'
             })
             .addCase(fetchIdeas.fulfilled, (state, action) => {
@@ -72,7 +68,7 @@ export const IdeaSlice = createSlice({
                 state.statusByWeek = 'failed'
                 state.error = action.error.message
             })
-            .addCase(postIdea.pending, (state, action) => {
+            .addCase(postIdea.pending, state => {
                 state.status = 'loading'
             })
             .addCase(postIdea.fulfilled, (state, action) => {
@@ -95,7 +91,7 @@ export const IdeaSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(deleteIdea.pending, (state, action) => {
+            .addCase(deleteIdea.pending, state => {
                 state.status = 'loading'
             })
             .addCase(deleteIdea.fulfilled, (state, action) => {
@@ -103,12 +99,18 @@ export const IdeaSlice = createSlice({
                 switch(getIdeaList(state.gameIdeas, state.devIdeas, state.designIdeas, state.variousIdeas, action.payload)) {
                     case 'G':
                         state.gameIdeas = deleteObject(state.gameIdeas, action.payload);
+                        break;
                     case 'D':
                         state.devIdeas = deleteObject(state.devIdeas, action.payload);
+                        break;
                     case 'W':
                         state.designIdeas = deleteObject(state.designIdeas, action.payload);
+                        break;
                     case 'E':
                         state.variousIdeas = deleteObject(state.variousIdeas, action.payload);
+                        break;
+                    default: 
+                        break;
                 }
             })
             .addCase(deleteIdea.rejected, (state, action) => {

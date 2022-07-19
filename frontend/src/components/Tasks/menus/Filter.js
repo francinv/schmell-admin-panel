@@ -12,11 +12,11 @@ const actionDispatch = (dispatch) => ({
   setPriority: (query) => dispatch(setPriorityState(query)),
   setResponsible: (query) => dispatch(setResponsibleState(query)),
   setStatus: (query) => dispatch(setStatusState(query)),
-  resetStatus: () => dispatch(resetStatus())
+  resetStat: () => dispatch(resetStatus())
 })
 
 const Filter = () => {
-  const { setPriority, setResponsible, setStatus, resetStatus } = actionDispatch(useAppDispatch());
+  const { setPriority, setResponsible, setStatus, resetStat } = actionDispatch(useAppDispatch());
 
   const [isFilterShown, setIsFilterShown] = useState(false);
 
@@ -61,7 +61,7 @@ const Filter = () => {
             },
           }}
           onClick={() => {
-            resetStatus();
+            resetStat();
             setPriority('');
             setResponsible('');
             setStatus('');

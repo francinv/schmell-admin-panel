@@ -10,23 +10,19 @@ const initialState = {
 }
 
 export const fetchWeeks = createAsyncThunk('week/fetchWeeks', async (gameID) => {
-    const url = `cms/week/?game=${gameID}`;
-    const axe = axiosService.get(url);
-    const response = await axe.then(res => res.data);
-    return response;
+    return axiosService
+        .get(`cms/week/?game=${gameID}`)
+        .then(res => res.data);
 });
 
 export const postWeek = createAsyncThunk('week/postWeek', async (data) => {
-    const axe = axiosService.post('cms/week/', data);
-    const response = await axe.then(res => 
-        res.data
-    );
-    return response;
+    return axiosService
+        .post('cms/week/', data)
+        .then(res => res.data);
 });
 
 export const deleteWeek = createAsyncThunk('game/deleteWeek', async (idWeek) => {
-    const url = `cms/week/${idWeek}/`;
-    const axe = axiosService.delete(url);
+    const axe = axiosService.delete(`cms/week/${idWeek}/`);
     const response = await axe.then(res => res.status);
     if (response === 204) {
         return idWeek;
@@ -46,18 +42,13 @@ export const WeekSlice = createSlice({
         weekAdded: (state, action) => {
             state.weeks.push(action.payload);
         },
-        weekDeleted: (state, action) => {
-            state.weeks = state.weeks.filter((w) => {
-                w.id != action.payload;
-            })
-        },
         resetWeek: (state) => {
             state.status = 'idle';
         }
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchWeeks.pending, (state, action) => {
+            .addCase(fetchWeeks.pending, (state) => {
                 state.status = 'loading'
             })
             .addCase(fetchWeeks.fulfilled, (state, action) => {
@@ -68,7 +59,7 @@ export const WeekSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(postWeek.pending, (state, action) => {
+            .addCase(postWeek.pending, (state) => {
                 state.status = 'loading'
             })
             .addCase(postWeek.fulfilled, (state, action) => {
@@ -79,7 +70,7 @@ export const WeekSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(deleteWeek.pending, (state, action) => {
+            .addCase(deleteWeek.pending, (state) => {
                 state.status = 'loading'
             })
             .addCase(deleteWeek.fulfilled, (state, action) => {

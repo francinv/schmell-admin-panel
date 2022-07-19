@@ -103,7 +103,7 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': config('PASSWORD'),
         'HOST': config('HOST'),
-        'PORT': '5433',
+        'PORT': '5432',
     }
 }
 

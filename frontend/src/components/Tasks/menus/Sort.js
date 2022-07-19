@@ -14,7 +14,7 @@ import { SORT_OPTIONS } from '../../../constants/taskConstants';
 
 const actionDispatch = (dispatch) => ({
   setSort: (query) => dispatch(setSortState(query)),
-  resetStatus: () => dispatch(resetStatus())
+  resetStat: () => dispatch(resetStatus())
 })
 
 const CustomMenuItemContent = ({ value, sort, text }) => {
@@ -36,7 +36,7 @@ const CustomMenuItemContent = ({ value, sort, text }) => {
 }
 
 const Sort = () => {
-  const { setSort, resetStatus } = actionDispatch(useAppDispatch());
+  const { setSort, resetStat } = actionDispatch(useAppDispatch());
 
   const sort = useSelector(selectSortState);
 
@@ -52,7 +52,7 @@ const Sort = () => {
   };
 
   const handleClick = (value) => {
-    resetStatus();
+    resetStat();
     setSort(value);
     handleClose();
   }

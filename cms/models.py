@@ -6,7 +6,6 @@ from cms.constant import ALLOWED_WEEKS, STATUS
 class Game(models.Model):
     name = models.CharField(max_length=200, blank=True)
     description = models.CharField(max_length=500, blank=True)
-    related_questions = models.BooleanField(default=False, blank=True)
     last_updated = models.DateField(blank=True)
     status = models.CharField(max_length=1, choices=STATUS, blank=True)
     logo = models.ImageField(upload_to="game-pictures/", blank=True)
@@ -29,11 +28,9 @@ class Question(models.Model):
     related_game = models.ForeignKey(Game, on_delete=models.CASCADE)
     type = models.CharField(max_length=200)
     question_desc = models.CharField(max_length=500)
-    hint = models.CharField(max_length=500)
-    related_question = models.IntegerField(blank=True)
     phase = models.IntegerField()
     function = models.CharField(blank=True, max_length=200)
-    punishment = models.CharField(max_length=200)
+    punishment = models.IntegerField(default=1)
 
     def __str__(self): 
         return self.id + " " + self.question_desc

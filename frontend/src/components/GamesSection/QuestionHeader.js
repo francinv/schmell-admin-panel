@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { BODY_BOLD, CARD_TEXT } from "../styles/Typography";
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
 import { styled } from "@mui/system";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useAppDispatch } from "../../features/hooks";
@@ -14,10 +15,10 @@ import { ColTextAreaContainer, FileColContainer } from "../form";
 
 const actionDispatch = (dispatch) => ({
     editStatus: (query) => dispatch(putStatus(query)),
-    updateGame: (query) => dispatch(updateGame(query))
+    putGame: (query) => dispatch(updateGame(query))
 })
 
-const ContentWrapper = styled(Box)(({ theme }) => ({
+const ContentWrapper = styled(Box)(({ _theme }) => ({
     display:'flex',
     flexDirection: 'row',
     width: '50%',
@@ -26,14 +27,14 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
     minHeight: '100px',
 }));
 
-const InnerContainer = styled(Box)(({ theme }) => ({
+const InnerContainer = styled(Box)(({ _theme }) => ({
     display:'flex',
     flexDirection: 'column',
     width: '70%',
     padding: '0.5rem',
 }));
 
-const QuestionHeader = ({handleOpen}) => {
+const QuestionHeader = ({handleOpen, handleJsonShow}) => {
     const game = useSelector(selectedGame);
     const { editStatus } = actionDispatch(useAppDispatch());
     const [stateChange, setStateChange] = useState(false);
@@ -49,7 +50,7 @@ const QuestionHeader = ({handleOpen}) => {
         editStatus(temp);
     };
 
-    const CustomInput = styled(InputBase)(({ theme }) => ({
+    const CustomInput = styled(InputBase)(({ _theme }) => ({
         '& .MuiInputBase-input': {
             paddingLeft: '0.5rem',
         },
@@ -79,9 +80,16 @@ const QuestionHeader = ({handleOpen}) => {
                     alignSelf: 'flex-end',
                 }}
             >
+                <BtnAdd 
+                    handleClick={handleJsonShow}
+                    borderRadius="8px 0px 0px 0px"
+                    btnText="Last opp et sett"
+                    endIcon={<NoteAddIcon />}
+                />
+
                 <BtnAdd
                     handleClick={handleOpen}
-                    borderRadius="8px 0px 0px 0px"
+                    borderRadius="0px"
                     btnText="Legg til spørsmål"
                     endIcon={<AddCircleOutlineOutlinedIcon />}
                 />
@@ -147,7 +155,7 @@ const EditState = ({setStateChange, game}) => {
     const [description, setDescription] = useState(game.description);
     const [fileState, setFileState] = useState('');
 
-    const { updateGame } = actionDispatch(useAppDispatch());
+    const { putGame } = actionDispatch(useAppDispatch());
 
     const handleChange = (event) => {
         event.preventDefault();
@@ -161,7 +169,7 @@ const EditState = ({setStateChange, game}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        var data = new FormData();
+        let data = new FormData();
         const today = new Date().toISOString().split('T')[0];
         data.append('description', description);
         data.append('last_updated', today);
@@ -170,7 +178,7 @@ const EditState = ({setStateChange, game}) => {
             content: data,
             id: game.id,
         }
-        updateGame(temp);
+        putGame(temp);
         setStateChange(false);
     }
 

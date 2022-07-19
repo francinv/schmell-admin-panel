@@ -19,10 +19,10 @@ const CardContainer = ({ children, width, flexDirection, setButtonStyle }) => {
                     color: '#e0e000',
                 }
             }}
-            onMouseEnter={e => {
+            onMouseEnter={() => {
                 setButtonStyle({ display: 'block' });
             }}
-            onMouseLeave={e => {
+            onMouseLeave={() => {
                 setButtonStyle({ display: 'none' });
             }}
         >

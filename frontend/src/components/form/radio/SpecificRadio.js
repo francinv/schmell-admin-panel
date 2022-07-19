@@ -10,7 +10,7 @@ export const PersonRadio = props => {
 
     const [alignment, setAlignment] = useState('');
 
-    const handleChange = (event, newAlignment) => {
+    const handleChange = (_event, newAlignment) => {
         setAlignment(newAlignment);
         const thisEvent = {
             target: {

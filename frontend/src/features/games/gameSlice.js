@@ -10,38 +10,31 @@ const initialState = {
 }
 
 export const fetchGames = createAsyncThunk('game/fetchGames', async () => {
-    const axe = axiosService.get('cms/game/');
-    const response = await axe.then(res => res.data);
-    return response;
+    return axiosService
+        .get('cms/game/')
+        .then(res => res.data);
 });
 
 export const postGame = createAsyncThunk('game/postGame', async (data) => {
-    const axe = axiosService.post('cms/game/', data);
-    const response = await axe.then(res => 
-        res.data
-    );
-    return response;
+    return axiosService
+        .post('cms/game/', data)
+        .then(res => res.data);
 });
 
 export const updateGame = createAsyncThunk('game/updateGame', async (content) => {
-    const url = `cms/game/${content.id}/`;
-    const axe = axiosService.put(url, content.content)
-    const response = await axe.then(res => res.data)
-    axe.catch(res => console.log(res));
-    return response;
+    return axiosService
+        .put(`cms/game/${content.id}/`, content.content)
+        .then(res => res.data);
 });
 
 export const putStatus = createAsyncThunk('game/putStatus', async (data) => {
-    const url = `cms/game/${data.id}/`;
-    const axe = axiosService.patch(url, {'status': data.content})
-    const response = await axe.then(res => res.data);
-    axe.catch(res => console.log(res));
-    return response;
+    return axiosService
+        .patch(`cms/game/${data.id}/`, {'status': data.content})
+        .then(res => res.data);
 });
 
 export const deleteGame = createAsyncThunk('game/deleteGame', async (idGame) => {
-    const url = `cms/game/${idGame}/`;
-    const axe = axiosService.delete(url);
+    const axe = axiosService.delete(`cms/game/${idGame}/`);
     const response = await axe.then(res => res.status);
     if (response === 204) {
         return idGame;
@@ -71,11 +64,6 @@ export const GameSlice = createSlice({
         gameAdded: (state, action) => {
             state.games.push(action.payload);
         },
-        gameDeleted: (state, action) => {
-            state.games = state.games.filter((g) => {
-                g.id != action.payload;
-            })
-        },
         statusUpdated: (state, action) => {
             const {id, status} = action.payload;
             state.selectedGame.status = status;
@@ -87,7 +75,7 @@ export const GameSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchGames.pending, (state, action) => {
+            .addCase(fetchGames.pending, state => {
                 state.status = 'loading'
             })
             .addCase(fetchGames.fulfilled, (state, action) => {
@@ -98,7 +86,7 @@ export const GameSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(postGame.pending, (state, action) => {
+            .addCase(postGame.pending, state => {
                 state.status = 'loading'
             })
             .addCase(postGame.fulfilled, (state, action) => {
@@ -109,7 +97,7 @@ export const GameSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(putStatus.pending, (state, action) => {
+            .addCase(putStatus.pending, state => {
                 state.status = 'loading'
             })
             .addCase(putStatus.fulfilled, (state, action) => {
@@ -125,7 +113,7 @@ export const GameSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(deleteGame.pending, (state, action) => {
+            .addCase(deleteGame.pending, state=> {
                 state.status = 'loading'
             })
             .addCase(deleteGame.fulfilled, (state, action) => {
@@ -136,7 +124,7 @@ export const GameSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })    
-            .addCase(updateGame.pending, (state, action) => {
+            .addCase(updateGame.pending, state => {
                 state.status = 'loading'
             })
             .addCase(updateGame.fulfilled, (state, action) => {
@@ -151,6 +139,6 @@ export const GameSlice = createSlice({
     }
 })
 
-export const {setGames, setSelectedGame, descLogoUpdated, gameAdded, gameDeleted, statusUpdated} = GameSlice.actions;
+export const {setGames, setSelectedGame, descLogoUpdated, gameAdded, statusUpdated} = GameSlice.actions;
 
 export default GameSlice.reducer;
