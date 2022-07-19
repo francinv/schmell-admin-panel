@@ -23,7 +23,7 @@ export const postGame = createAsyncThunk('game/postGame', async (data) => {
 
 export const updateGame = createAsyncThunk('game/updateGame', async (content) => {
     return axiosService
-        .put(`cms/game/${content.id}`, content.content)
+        .put(`cms/game/${content.id}/`, content.content)
         .then(res => res.data);
 });
 

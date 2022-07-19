@@ -11,7 +11,7 @@ const initialState = {
 
 export const fetchWeeks = createAsyncThunk('week/fetchWeeks', async (gameID) => {
     return axiosService
-        .get(`cms/week/?game=${gameID}/`)
+        .get(`cms/week/?game=${gameID}`)
         .then(res => res.data);
 });
 

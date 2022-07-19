@@ -16,6 +16,7 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = ('id', 'type','question_desc', 'phase', 'function', 'related_game', 'related_week', 'punishment')
 
+
 class ReadOutFileSerializer(serializers.ModelSerializer):
     related_question = QuestionSerializer(read_only=True)
     related_question_id = serializers.PrimaryKeyRelatedField(queryset=Question.objects.all(), source='related_question', write_only=True)
