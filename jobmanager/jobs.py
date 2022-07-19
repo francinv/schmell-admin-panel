@@ -29,7 +29,7 @@ def set_deadline(self, id):
             return 'Alert sent'
 
 @shared_task(name='alert_game', bind=True)
-def alert_game_not_updated(id):
+def alert_game_not_updated(self, id):
     game = Game.objects.get(id = id)
     limit = date.today() - timedelta(days=14)
     if (game.last_updated < limit):
