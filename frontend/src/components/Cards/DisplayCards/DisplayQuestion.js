@@ -12,8 +12,8 @@ import { deleteQuestion } from "../../../features/questions/questionSlice";
 import { selectedGame } from "../../../features/games/gameSelectors";
 
 const actionDispatch = (dispatch) => ({
-    deleteQuestion: (query) => dispatch(deleteQuestion(query)),
-    subCountByGame: (query) => dispatch(subCountByGame(query))
+    removeQuestion: (query) => dispatch(deleteQuestion(query)),
+    subCount: (query) => dispatch(subCountByGame(query))
 });
 
 const HeaderContent = ({ setStateChangeQuestion, handleShow }) => (
@@ -28,7 +28,7 @@ const HeaderContent = ({ setStateChangeQuestion, handleShow }) => (
 );
 
 const DisplayQuestion = ({question, setStateChangeQuestion}) => {
-    const { deleteQuestion, subCountByGame } = actionDispatch(useAppDispatch());
+    const { removeQuestion, subCount } = actionDispatch(useAppDispatch());
     const game = useSelector(selectedGame);
 
     const [open, setOpen] = useState(false);
@@ -38,8 +38,8 @@ const DisplayQuestion = ({question, setStateChangeQuestion}) => {
     }
 
     const handleDelete = () => {
-        deleteQuestion(question.id);
-        subCountByGame(game.id);
+        removeQuestion(question.id);
+        subCount(game.id);
     }
 
     return (
@@ -52,9 +52,7 @@ const DisplayQuestion = ({question, setStateChangeQuestion}) => {
             <CARD_TEXT><b>Type:  </b>{question.type}</CARD_TEXT> 
             <CARD_TEXT><b>Fase:  </b>{question.phase}</CARD_TEXT> 
             <CARD_TEXT><b>SP:  </b>{question.question_desc}</CARD_TEXT> 
-            <CARD_TEXT><b>Hint:  </b>{question.hint}</CARD_TEXT> 
             <CARD_TEXT><b>Straff: </b>{question.punishment}</CARD_TEXT>
-            <CARD_TEXT><b>Relatert til:  </b>{question.related_question}</CARD_TEXT> 
             <CARD_TEXT><b>Funksjoner:  </b>{question.function}</CARD_TEXT>
             <DeleteDialog open={open} handleDelete={handleDelete} handleShow={handleShow} />
         </QuestionWrapper>
