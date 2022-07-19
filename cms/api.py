@@ -39,8 +39,11 @@ class WeekViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Week.objects.all()
         game = self.request.query_params.get('game')
+        week_number = self.request.query_params.get('weekNum')
         if game is not None:
             queryset = queryset.filter(game=game)
+        if week_number is not None:
+            queryset = queryset.filter(week_number=week_number)
         return queryset
 
 class QuestionViewSet(viewsets.ModelViewSet):
