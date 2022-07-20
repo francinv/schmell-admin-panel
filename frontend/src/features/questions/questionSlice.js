@@ -56,8 +56,12 @@ export const QuestionSlice = createSlice({
                 state.status = 'loading'
             })
             .addCase(postQuestion.fulfilled, (state, action) => {
-                state.status = 'succeeded'
-                state.questions.push(...action.payload);
+                state.status = 'succeeded';
+                try {
+                    state.questions.push(...action.payload);
+                } catch (error) {
+                    state.questions.push(action.payload);
+                }
             })
             .addCase(postQuestion.rejected, (state, action) => {
                 state.status = 'failed'
