@@ -7,27 +7,18 @@ const initialState = {
     error: null,
 }
 
-export const fetchComments = createAsyncThunk('comment/fetchComments/', async (taskId) => {
-    const url = `tasks/comment/?task=${taskId}`;
-    return axiosService
-        .get(url)
-        .then(res => res.data);
+export const fetchComments = createAsyncThunk('comment/fetchComments/', async (taskId) => { 
+    return axiosService.get(`tasks/comment/?task=${taskId}`).then(res => res.data);
 });
 
 export const postComment = createAsyncThunk('comment/postComment/', async (data) => {
-    return axiosService
-        .post('tasks/comment/', data)
-        .then(res => res.data);
+    return axiosService.post('tasks/comment/', data).then(res => res.data);
 });
 
 export const CommentSlice = createSlice({
     name: 'comment',
     initialState,
-    reducers: {
-        resetCommentStatus: (state) => {
-            state.status = 'idle';
-        },
-    },
+    reducers: {}, 
     extraReducers(builder) {
         builder
             .addCase(fetchComments.pending, state => {
@@ -46,7 +37,7 @@ export const CommentSlice = createSlice({
             })
             .addCase(postComment.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.comments.push(action.payload);
+                state.comments.push(...action.payload);
             })
             .addCase(postComment.rejected, (state, action) => {
                 state.status = 'failed'
@@ -54,7 +45,5 @@ export const CommentSlice = createSlice({
             })
     }
 })
-
-export const {resetCommentStatus} = CommentSlice.actions;
 
 export default CommentSlice.reducer;
