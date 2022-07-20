@@ -33,13 +33,10 @@ export const addAudioFile = createAsyncThunk('audioFiles/addAudioFile', async da
 });
 
 export const deleteAudioFile = createAsyncThunk('audioFiles/deleteAudioFile', async id => {
-    const url = `cms/files/readout/${id}/`;
-    const axe = axiosService.delete(url);
-    const response = await axe.then(res => res.status);
-    if (response === 204) {
+    if (await axiosService.delete(`cms/files/readout/${id}/`).then(res => res.status) === 204) {
         return id;
     }
-})
+});
 
 export const AudioFileSlice = createSlice({
     name: 'audioFile',
@@ -50,15 +47,15 @@ export const AudioFileSlice = createSlice({
         },
         setQuestion: (state, action) => {
             state.question = action.payload;
+            state.status = 'idle';
         },
         setPageSize: (state, action) => {
             state.page_size = action.payload;
-        },
-        resetStatus: (state) => {
             state.status = 'idle';
         },
         setP: (state, action) => {
             state.p = action.payload;
+            state.status = 'idle';
         }
     },
     extraReducers(builder) {
@@ -108,6 +105,6 @@ export const AudioFileSlice = createSlice({
     }
 })
 
-export const {resetStatus, setQuestionId, setQuestion, setP, setPageSize} = AudioFileSlice.actions;
+export const {setQuestionId, setQuestion, setP, setPageSize} = AudioFileSlice.actions;
 
 export default AudioFileSlice.reducer;

@@ -60,6 +60,9 @@ export const StatisticSlice = createSlice({
         },
         addGameCountGame: (state, action) => {
             state.count_by_game["N"+action.payload.id] = action.payload.value;
+        },
+        addGameCount: (state, action) => {
+            state.game_count += action.payload;
         }
     },
     extraReducers(builder) {
@@ -89,6 +92,6 @@ export const StatisticSlice = createSlice({
     }
 })
 
-export const {resetStatistics, addCountByGame, subCountByGame, addSolved, addGameCountGame, addMultipleByGame} = StatisticSlice.actions;
+export const {resetStatistics, addCountByGame, subCountByGame, addSolved, addGameCountGame, addMultipleByGame, addGameCount} = StatisticSlice.actions;
 
 export default StatisticSlice.reducer;

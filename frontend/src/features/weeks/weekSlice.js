@@ -22,11 +22,9 @@ export const postWeek = createAsyncThunk('week/postWeek', async (data) => {
 });
 
 export const deleteWeek = createAsyncThunk('game/deleteWeek', async (idWeek) => {
-    const axe = axiosService.delete(`cms/week/${idWeek}/`);
-    const response = await axe.then(res => res.status);
-    if (response === 204) {
-        return idWeek;
-    }
+    if (await axiosService.delete(`cms/week/${idWeek}/`).then(res => res.status) === 204) {
+        return idWeek
+    };
 });
 
 export const WeekSlice = createSlice({

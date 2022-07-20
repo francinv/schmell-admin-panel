@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosService from '../../services/axiosService';
+import axiosService, { authService } from '../../services/axiosService';
 
 const initialState = {
     activeUser: {},
@@ -10,14 +10,14 @@ const initialState = {
 }
 
 export const logIn = createAsyncThunk('auth/login', async (data) => {
-    return axiosService
-        .post('auth/login/', data)
+    return authService
+        .post('login/', data)
         .then(res => res.data);
 });
 
 export const fetchUsers = createAsyncThunk('user/', async () => {
     return axiosService
-        .get('auth/user')
+        .get('auth/user/')
         .then(res => res.data);
 })
 

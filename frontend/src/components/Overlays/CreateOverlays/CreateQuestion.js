@@ -42,12 +42,10 @@ const CreateQuestion = ({open, handleClose}) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         addQuestion(values);
-        const today = {last_updated: new Date().toISOString().split('T')[0]};
-        const temp = {
-            content: today,
+        putGame({
             id: game.id,
-        }   
-        putGame(temp);
+            data: {last_updated: new Date().toISOString().split('T')[0]}
+        });
         handleClose();
         addCount(game.id);
         setValues(resetQuestions(values));

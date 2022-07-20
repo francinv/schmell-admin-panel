@@ -4,7 +4,7 @@ import { selectedGame } from "../../../features/games/gameSelectors";
 import { updateGame } from "../../../features/games/gameSlice";
 import { useAppDispatch } from "../../../features/hooks";
 import { postQuestion } from "../../../features/questions/questionSlice";
-import { addCountByGame, addMultipleByGame } from "../../../features/statistics/statisticSlice";
+import { addMultipleByGame } from "../../../features/statistics/statisticSlice";
 import { selectedWeek } from "../../../features/weeks/weekSelectors";
 import BtnSubmit from "../../Buttons/BtnSubmit";
 import { LargeTextAreaContainer } from "../../form";
@@ -52,12 +52,10 @@ const UploadJson = props => {
     const handleSubmit = (event) => {
         event.preventDefault();
         uploadQuestions(values);
-        const today = {last_updated: new Date().toISOString().split('T')[0]};
-        const temp = {
-            content: today,
+        putGame({
             id: game.id,
-        }   
-        putGame(temp);
+            data: {last_updated: new Date().toISOString().split('T')[0]}
+        });
         handleClose();
         addCount({ id: game.id, addedCount: values.length});
         resetAll();

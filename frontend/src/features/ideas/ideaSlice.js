@@ -25,9 +25,7 @@ export const postIdea = createAsyncThunk('idea/postIdea', async (data) => {
 });
 
 export const deleteIdea = createAsyncThunk('idea/deleteIdea', async (idIdea) => {
-    const axe = axiosService.delete(`admin/idea/${idIdea}/`);
-    const response = await axe.then(res => res.status);
-    if (response === 204) {
+    if (await axiosService.delete(`admin/idea/${idIdea}/`).then(res => res.status)) {
         return idIdea;
     }
 });
@@ -35,12 +33,7 @@ export const deleteIdea = createAsyncThunk('idea/deleteIdea', async (idIdea) => 
 export const IdeaSlice = createSlice({
     name: 'idea',
     initialState,
-    reducers: {
-
-        resetStatus: (state) => {
-            state.status = 'idle';
-        }
-    },
+    reducers: {},
     extraReducers(builder) {
         builder
             .addCase(fetchIdeas.pending, state => {
@@ -119,7 +112,5 @@ export const IdeaSlice = createSlice({
             })
     }
 })
-
-export const {resetStatus} = IdeaSlice.actions;
 
 export default IdeaSlice.reducer;

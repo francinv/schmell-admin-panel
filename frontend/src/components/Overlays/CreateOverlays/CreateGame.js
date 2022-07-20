@@ -4,7 +4,7 @@ import { FileContainer, InputContainer, RadioContainer, TextAreaContainer } from
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { postGame } from "../../../features/games/gameSlice";
 import { useAppDispatch } from "../../../features/hooks";
-import { resetStatistics } from '../../../features/statistics/statisticSlice';
+import { addGameCount, resetStatistics } from '../../../features/statistics/statisticSlice';
 import { useSelector } from "react-redux";
 import FileDialog from "../../Dialog/FileDialog";
 import { selectGameError, selectGameStatus } from "../../../features/games/gameSelectors";
@@ -16,7 +16,7 @@ import FormOverlayWrapper from "../../layout/FormOverlayWrapper";
 
 const actionDispatch = (dispatch) => ({
     addGame: (query) => dispatch(postGame(query)),
-    resetStat: () => dispatch(resetStatistics()),
+    addCount: () => dispatch(addGameCount()),
 });
 
 const AddGame = ({ open, handleClose }) => {
@@ -33,7 +33,7 @@ const AddGame = ({ open, handleClose }) => {
     const status = useSelector(selectGameStatus);
     const error = useSelector(selectGameError);
 
-    const { addGame, resetStat } = actionDispatch(useAppDispatch());
+    const { addGame, addCount } = actionDispatch(useAppDispatch());
 
     const handleShow = () => {
         setDialogOpen((wasOpen) => !wasOpen);
@@ -53,7 +53,7 @@ const AddGame = ({ open, handleClose }) => {
             handleClose();
             setValues(resetCreateGame(values));
             setFileState('');
-            resetStat();
+            addCount(1);
         }
     };
 

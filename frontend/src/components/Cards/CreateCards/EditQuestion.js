@@ -40,13 +40,13 @@ const EditQuestion = ({question, setStateChangeQuestion}) => {
             content: values,
             id: question.id,
         }
-        const today = {last_updated: new Date().toISOString().split('T')[0]}
         changeQuestion(tempQuestion);
-        const tempGame = {
-            content: today,
-            id: game.id,
-        }
-        changeGame(tempGame);
+        changeGame(
+            {
+                id: game.id,
+                data: {last_updated: new Date().toISOString().split('T')[0]}
+            }
+        );
         setStateChangeQuestion(false);
     }
 

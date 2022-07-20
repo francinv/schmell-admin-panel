@@ -43,11 +43,10 @@ const QuestionHeader = ({handleOpen, handleJsonShow}) => {
 
     const handleSelectChange = (event) => {
         setStatus(event.target.value);
-        const temp = {
-                content: event.target.value,
-                id: game.id,
-        }
-        editStatus(temp);
+        editStatus({
+            id: game.id,
+            content: event.target.value
+        });
     };
 
     const CustomInput = styled(InputBase)(({ _theme }) => ({
@@ -169,16 +168,11 @@ const EditState = ({setStateChange, game}) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        let data = new FormData();
-        const today = new Date().toISOString().split('T')[0];
-        data.append('description', description);
-        data.append('last_updated', today);
-        data.append("logo", fileState);
-        const temp = {
-            content: data,
-            id: game.id,
-        }
-        putGame(temp);
+        let formData = new FormData();
+        formData.append('description', description);
+        formData.append('last_updated', new Date().toISOString().split('T')[0]);
+        formData.append("logo", fileState);
+        putGame({id: game.id, data: formData});
         setStateChange(false);
     }
 

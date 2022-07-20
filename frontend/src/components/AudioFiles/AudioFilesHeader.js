@@ -3,7 +3,7 @@ import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlin
 import { Box } from "@mui/material";
 import { H3 } from "../styles/Typography";
 import { useAppDispatch } from "../../features/hooks";
-import { resetStatus, setQuestion } from "../../features/audiofiles/audioFileSlice";
+import { setQuestion } from "../../features/audiofiles/audioFileSlice";
 import { useSelector } from "react-redux";
 import { selectAudioFilesQuestion } from "../../features/audiofiles/audiofileSelector";
 import UploadAudioFile from "../Overlays/CreateOverlays/UploadAudioFile";
@@ -12,12 +12,11 @@ import InputField from "../form/input/InputField";
 import { StyledOuterContainer } from "../styles/Containers";
 
 const actionDispatch = (dispatch) => ({
-    updateSearchValue: (query) => dispatch(setQuestion(query)),
-    resetFiles: () => dispatch(resetStatus())
-})
+    updateSearchValue: (query) => dispatch(setQuestion(query))
+});
 
 const AudioFilesHeader = () => {
-    const { updateSearchValue, resetFiles } = actionDispatch(useAppDispatch());
+    const { updateSearchValue } = actionDispatch(useAppDispatch());
     const searchValue = useSelector(selectAudioFilesQuestion);
 
     const [open, setOpen] = useState(false);
@@ -28,7 +27,6 @@ const AudioFilesHeader = () => {
 
     const handleChange = (event) => {
         event.preventDefault();
-        resetFiles();
         updateSearchValue(event.target.value);
     };
 
