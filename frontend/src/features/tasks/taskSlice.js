@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosService from '../../services/axiosService';
+import { replaceUsingMap } from '../../utils/filterUtil';
 
 const initialState = {
     count: 0,
@@ -45,6 +46,7 @@ export const postTask = createAsyncThunk('task/postTask', async (data) => {
 
 export const updateTask = createAsyncThunk('task/updateTask', async (content) => {
     const { id, data } = content;
+    console.log(data);
     return axiosService
         .patch(`tasks/task/${id}/`, data)
         .then(res => res.data);
@@ -99,8 +101,12 @@ export const TaskSlice = createSlice({
             .addCase(postTask.pending, (state) => {
                 state.status = 'loading'
             })
-            .addCase(postTask.fulfilled, (state) => {
-                state.status = 'succeeded'
+            .addCase(postTask.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                if (state.tasks.length < state.page_size && state.sortState === 'PUBL_DESC') {
+                    state.tasks.unshift(action.payload);
+                }
+                state.count++
             })
             .addCase(postTask.rejected, (state, action) => {
                 state.status = 'failed'
@@ -109,8 +115,9 @@ export const TaskSlice = createSlice({
             .addCase(updateTask.pending, (state) => {
                 state.status = 'loading'
             })
-            .addCase(updateTask.fulfilled, (state) => {
+            .addCase(updateTask.fulfilled, (state, action) => {
                 state.status = 'succeeded'
+                state.tasks = replaceUsingMap(state.tasks, action.payload);
             })
             .addCase(updateTask.rejected, (state, action) => {
                 state.status = 'failed'

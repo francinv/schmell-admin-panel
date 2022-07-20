@@ -18,3 +18,9 @@ export const replaceObject = (listToReplace, objectToReplace) => {
     }
     return listToReplace;
 }
+
+export const replaceUsingMap = (listToReplace, objectToReplace) => {
+    return listToReplace.map(function (item) {
+        return item.id == objectToReplace.id ? objectToReplace : item;
+    });
+};

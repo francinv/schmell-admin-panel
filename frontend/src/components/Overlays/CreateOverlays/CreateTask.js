@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { InputContainer, PersonRadioContainer, RadioContainer, SelectContainerSmall, TextAreaContainer } from "../../form";
 import { useAppDispatch } from "../../../features/hooks";
-import { postTask, resetStatus } from "../../../features/tasks/taskSlice";
+import { postTask } from "../../../features/tasks/taskSlice";
 import { resetStatistics } from '../../../features/statistics/statisticSlice';
 import AddCircleOutlineOutlined from "@mui/icons-material/AddCircleOutlineOutlined";
 import { selectTaskStatus } from "../../../features/tasks/taskSelectors";
@@ -15,7 +15,6 @@ import FormOverlayWrapper from "../../layout/FormOverlayWrapper";
 
 const actionDispatch = (dispatch) => ({
     addTask: (query) => dispatch(postTask(query)),
-    resetTasks: (query) => dispatch(resetStatus(query)),
     resetStat: () => dispatch(resetStatistics())
 });
 
