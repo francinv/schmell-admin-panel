@@ -14,14 +14,16 @@ import ContentWrapper from "../layout/ContentWrapper";
 import InnerWrapper from "../layout/InnerWrapper";
 import QuestionCard from "../Cards/DisplayCards/QuestionCard";
 import CreateQuestion from "../Overlays/CreateOverlays/CreateQuestion";
+import UploadJson from "../Overlays/CreateOverlays/UploadJson";
 
 const actionDispatch = (dispatch) => ({
     getQuestions: (query) => dispatch(fetchQuestions(query)),
-    resetQuestions: () => dispatch(resetQuestions())
+    reset: () => dispatch(resetQuestions())
 })
 
 const QuestionOverview = ({ setStage }) => {
     const [open, setOpen] = useState(false);
+    const [jsonOpen, setJsonOpen] = useState(false);
 
     const questions = useSelector(selectQuestions);
     const questionsStatus = useSelector(selectQuestionStatus);
@@ -29,7 +31,7 @@ const QuestionOverview = ({ setStage }) => {
     const game = useSelector(selectedGame);
     const error = useSelector(selectQuestionsError);
     
-    const { getQuestions, resetQuestions } = actionDispatch(useAppDispatch());
+    const { getQuestions, reset } = actionDispatch(useAppDispatch());
 
     useEffect(() => {
         if (questionsStatus === 'idle') {
@@ -38,6 +40,7 @@ const QuestionOverview = ({ setStage }) => {
     }, [questions, questionsStatus])
 
     const handleShow = () => setOpen((wasOpen) => !wasOpen);
+    const handleJsonShow = () => setJsonOpen((wasOpen) => !wasOpen);
 
     const getSubTitle = () => <CARD_TEXT sx={{alignSelf:'center'}}><b>Spill: </b> {game.name} / <b>Uke: </b> {week.week_number}</CARD_TEXT>;
 
@@ -46,7 +49,7 @@ const QuestionOverview = ({ setStage }) => {
             <IconButton
                 onClick={() => {
                     setStage('W');
-                    resetQuestions();
+                    reset();
                 }}
                 size="large"
                 sx={{color:'#141400'}}
@@ -65,12 +68,13 @@ const QuestionOverview = ({ setStage }) => {
                     </Alert>
                 : null
             }
-            <QuestionHeader handleOpen={handleShow} />
+            <QuestionHeader handleOpen={handleShow} handleJsonShow={handleJsonShow} />
             <InnerWrapper>
                 {(sortGames(questions)).map((question) => (
                     <QuestionCard question={question} key={question.id} />
                 ))}
                 <CreateQuestion handleClose={handleShow} open={open} />
+                <UploadJson handleClose={handleJsonShow} open={jsonOpen} />
             </InnerWrapper>
         </ContentWrapper>
     );

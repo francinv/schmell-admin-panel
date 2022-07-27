@@ -12,8 +12,8 @@ import DisplayDetail from "./DisplayDetail";
 import { FileButtonContainer, ProfileInputContainer } from "../form";
 
 const actionDispatch = (dispatch) => ({
-    updateUser: (query) => dispatch(updateUser(query)),
-    updatePassword: (query) => dispatch(updatePassword(query))
+    changeUser: (query) => dispatch(updateUser(query)),
+    changePassword: (query) => dispatch(updatePassword(query))
 })
 
 const Information = ({ value, changeState, onStateChange, label, type, onChange, handleSubmit }) => {
@@ -22,7 +22,7 @@ const Information = ({ value, changeState, onStateChange, label, type, onChange,
         <>
             {
                 changeState
-                ? <ProfileInputContainer label={label} value={value} type={type} onChange={onChange} handleSubmit={handleSubmit} onStateChange={onStateChange}/>
+                ? <ProfileInputContainer label={label} value={value} type={type} onChange={onChange} handleSubmit={handleSubmit} stateChange={onStateChange}/>
                 : <DisplayDetail label={label} value={value} handleClick={() => onStateChange(true)} />
             }
         </>
@@ -57,7 +57,7 @@ const UserInfoSection = () => {
     });
     
 
-    const {updateUser, updatePassword} = actionDispatch(useAppDispatch());
+    const {changeUser, changePassword} = actionDispatch(useAppDispatch());
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -81,9 +81,9 @@ const UserInfoSection = () => {
                 id: user.id,
                 content: values.password
             }
-            updatePassword(passwordDataToSend);
+            changePassword(passwordDataToSend);
         }
-        updateUser(dataToSend);
+        changeUser(dataToSend);
     };
 
 

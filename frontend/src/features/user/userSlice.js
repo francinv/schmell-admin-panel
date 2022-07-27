@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axiosService from '../../services/axiosService';
+import axiosService, { authService } from '../../services/axiosService';
 
 const initialState = {
     activeUser: {},
@@ -10,30 +10,29 @@ const initialState = {
 }
 
 export const logIn = createAsyncThunk('auth/login', async (data) => {
-    const axe = axiosService.post('auth/login/', data);
-    const response = await axe.then(res => res.data);
-    return response;
+    return authService
+        .post('login/', data)
+        .then(res => res.data);
 });
 
 export const fetchUsers = createAsyncThunk('user/', async () => {
-    const axe = axiosService.get('auth/user/');
-    const response = await axe.then(res => res.data);
-    axe.catch(res => console.log(res));
-    return response;
+    return axiosService
+        .get('auth/user/')
+        .then(res => res.data);
 })
 
 export const updateUser = createAsyncThunk('user/updateUser', async (data) => {
     const {id, content} = data;
-    const axe = axiosService.patch(`auth/user/${id}/`, content);
-    const response = await axe.then(res => res.data);
-    return response;
+    return axiosService
+        .patch(`auth/user/${id}/`, content)
+        .then(res => res.data);
 })
 
 export const updatePassword = createAsyncThunk('user/updatePassword', async (data) => {
     const {id, content} = data;
-    const axe = axiosService.patch(`auth/password/${id}/`, {password: content});
-    const response = await axe.then(res => res.status);
-    return response;
+    return axiosService
+        .patch(`auth/password/${id}/`, {password: content})
+        .then(res => res.data);
 })
 
 export const UserSlice = createSlice({

@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from cms.models import Game, Question, ReadOutFile, Week
 from cms.serializers import GameSerializer, QuestionSerializer, ReadOutFileSerializer, WeekSerializer
-from jobmanager.jobs import NotUpdatedJob
+from jobmanager.jobs import alert_game_not_updated
 from schmelladmin.pagination import CustomPagination
 
 
@@ -30,9 +30,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
-        id = serializer.data['id']
-        job = NotUpdatedJob(id)
-        job.alert_game_not_updated(id)
+        alert_game_not_updated(serializer.data['id'])
 
 class WeekViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated | HasAPIKey]
@@ -41,13 +39,24 @@ class WeekViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Week.objects.all()
         game = self.request.query_params.get('game')
+        week_number = self.request.query_params.get('weekNum')
         if game is not None:
             queryset = queryset.filter(game=game)
+        if week_number is not None:
+            queryset = queryset.filter(week_number=week_number)
         return queryset
 
 class QuestionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated | HasAPIKey]
     serializer_class = QuestionSerializer
+
+    def create(self, request, *args, **kwargs):
+            serializer = self.get_serializer(data=request.data, many=isinstance(request.data,list))
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+            
     def get_queryset(self):
         queryset = Question.objects.all()
         related_week = self.request.query_params.get('related_week')

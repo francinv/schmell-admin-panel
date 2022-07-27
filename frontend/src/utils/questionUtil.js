@@ -1,8 +1,8 @@
 export const resetQuestions = values => {
-    Object.keys(values).forEach(key => {
-        if (!(key === 'related_game' || key === 'related_week')) {
-            values[key] = '';
-        }
-    });
+    values.type = '';
+    values.question_desc = '';
+    values.phase = '';
+    values.function = '';
+    values.punishment = '';
     return values;
 };

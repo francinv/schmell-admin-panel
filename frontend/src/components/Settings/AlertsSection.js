@@ -9,11 +9,11 @@ import SmallContainer from "../layout/containers/SmallContainer";
 import { ToggleContainer } from "../form";
 
 const actionDispatch = (dispatch) => ({
-    updateUser: (query) => dispatch(updateUser(query)),
+    changeUser: (query) => dispatch(updateUser(query)),
 });
 
 const AlertsSection = () => {
-    const { updateUser } = actionDispatch(useAppDispatch());
+    const { changeUser } = actionDispatch(useAppDispatch());
 
     const user = useSelector(selectActiveUser);
 
@@ -30,7 +30,7 @@ const AlertsSection = () => {
                 [prop]: event.target.checked
             }
         };
-        updateUser(dataToSend);
+        changeUser(dataToSend);
     };
 
     return (

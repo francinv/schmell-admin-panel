@@ -3,7 +3,7 @@ import { FormControl, InputAdornment, OutlinedInput } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 const InputField = props => {
-    const { value, onChange, placeholder, type, height, fontSize, marginLeft, backgroundColor, width } = props;
+    const { value, onChange, placeholder, type, height, fontSize, marginLeft, backgroundColor, width, required } = props;
 
     const isDateTime = type === 'datetime-local';
 
@@ -20,7 +20,7 @@ const InputField = props => {
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder} 
-                required
+                required={required}
                 type={type}
                 style={{
                     fontFamily: 'Quicksand',

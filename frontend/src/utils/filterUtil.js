@@ -8,13 +8,19 @@ export const deleteObject = (listToFilter, idObjectToRemove) => {
 }
 
 export const replaceObject = (listToReplace, objectToReplace) => {
-    for (let i = 0; i < listToReplace.length; i++) {
-        if (listToReplace[i].id === objectToReplace.id) {
-            listToReplace[i].description = objectToReplace.description
-            listToReplace[i].last_updated = objectToReplace.last_updated
-            listToReplace[i].status = objectToReplace.status
-            listToReplace[i].logo = objectToReplace.logo
+    for (const element of listToReplace) {
+        if (element.id === objectToReplace.id) {
+            element.description = objectToReplace.description
+            element.last_updated = objectToReplace.last_updated
+            element.status = objectToReplace.status
+            element.logo = objectToReplace.logo
         }
     }
     return listToReplace;
 }
+
+export const replaceUsingMap = (listToReplace, objectToReplace) => {
+    return listToReplace.map(function (item) {
+        return item.id == objectToReplace.id ? objectToReplace : item;
+    });
+};

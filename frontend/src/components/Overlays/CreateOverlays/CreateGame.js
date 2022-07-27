@@ -4,19 +4,19 @@ import { FileContainer, InputContainer, RadioContainer, TextAreaContainer } from
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { postGame } from "../../../features/games/gameSlice";
 import { useAppDispatch } from "../../../features/hooks";
-import { resetStatistics } from '../../../features/statistics/statisticSlice';
+import { addGameCount, resetStatistics } from '../../../features/statistics/statisticSlice';
 import { useSelector } from "react-redux";
 import FileDialog from "../../Dialog/FileDialog";
 import { selectGameError, selectGameStatus } from "../../../features/games/gameSelectors";
 import { resetCreateGame } from "../../../utils/gameUtil";
-import { FOLLOW_OPTIONS, STATUS_OPTIONS } from "../../../constants/gameConstants";
+import { STATUS_OPTIONS } from "../../../constants/gameConstants";
 import ModalWrapper from "../../layout/ModalWrapper";
 import BtnSubmit from "../../Buttons/BtnSubmit";
 import FormOverlayWrapper from "../../layout/FormOverlayWrapper";
 
 const actionDispatch = (dispatch) => ({
     addGame: (query) => dispatch(postGame(query)),
-    resetStatistics: () => dispatch(resetStatistics()),
+    addCount: () => dispatch(addGameCount()),
 });
 
 const AddGame = ({ open, handleClose }) => {
@@ -24,7 +24,6 @@ const AddGame = ({ open, handleClose }) => {
     const [values, setValues] = useState({
         name: '',
         description: '',
-        related_questions: true,
         last_updated: new Date().toISOString().split('T')[0],
         status: 'D',
         release_date: '',
@@ -34,7 +33,7 @@ const AddGame = ({ open, handleClose }) => {
     const status = useSelector(selectGameStatus);
     const error = useSelector(selectGameError);
 
-    const { addGame, resetStatistics } = actionDispatch(useAppDispatch());
+    const { addGame, addCount } = actionDispatch(useAppDispatch());
 
     const handleShow = () => {
         setDialogOpen((wasOpen) => !wasOpen);
@@ -54,7 +53,7 @@ const AddGame = ({ open, handleClose }) => {
             handleClose();
             setValues(resetCreateGame(values));
             setFileState('');
-            resetStatistics();
+            addCount(1);
         }
     };
 
@@ -73,7 +72,6 @@ const AddGame = ({ open, handleClose }) => {
             <FormOverlayWrapper handleSubmit={handleSubmit}>
                 <InputContainer label="Navn" placeholder="Skriv inn navn på spill..." onChange={handleChange('name')} value={values.name} type="text" />
                 <TextAreaContainer label="Beskrivelse" placeholder="Beskrivelse om spillet..." value={values.description} onChange={handleChange('description')} />
-                <RadioContainer label="Følgespørsmål?" value={values.related_questions} onChange={handleChange('related_questions')} options={FOLLOW_OPTIONS} />
                 <RadioContainer label="Status:" value={values.status} onChange={handleChange('status')} options={STATUS_OPTIONS} />
                 <FileContainer label="Last opp logo:" placeholder="Velg fil:" fileState={fileState} setFileState={setFileState} />
                 <InputContainer label="Forventet utslippsdato:" value={values.release_date} onChange={handleChange('release_date')} type="datetime-local" />  

@@ -10,8 +10,8 @@ router.register('key/refresh', RefreshViewSet, 'key-refresh')
 router.register('key/validate', TokenActiveViewSet, 'key-validate')
 
 urlpatterns = [
-    path('key/generate', APIKeyViewSet.as_view(), name='generatekey_view'),
-    path('password/<int:pk>/', ChangePasswordView.as_view(), name='updatepassword_view'),
+    path('key/generate/', APIKeyViewSet.as_view(), name='generatekey_view'),
+    path('password/<int:pk>', ChangePasswordView.as_view(), name='updatepassword_view'),
 ]
 
 urlpatterns += router.urls

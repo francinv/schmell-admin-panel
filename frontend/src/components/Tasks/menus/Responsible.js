@@ -10,11 +10,11 @@ import { InnerContainer, OuterContainer } from "./StyledComponents";
 
 const actionDispatch = (dispatch) => ({
     setResponsible: (query) => dispatch(setResponsibleState(query)),
-    resetStatus: () => dispatch(resetStatus())
+    resetStat: () => dispatch(resetStatus())
 });
 
 const Responsible = () => {
-    const { setResponsible, resetStatus } = actionDispatch(useAppDispatch());
+    const { setResponsible, resetStat } = actionDispatch(useAppDispatch());
 
     const responsible = useSelector(selectResponsibleState);
     const users = useSelector(selectAllUsers);
@@ -22,7 +22,7 @@ const Responsible = () => {
     const getOpacity = value => responsible === value ? 1 : 0.5;
 
     const handleClick = (value) => {
-        resetStatus();
+        resetStat();
         setResponsible(value);
     };
 

@@ -3,7 +3,7 @@ import { Avatar, Button, Paper, TextField, Typography } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import { BODY_BOLD, CARD_TEXT, H1, H4 } from "../../styles/Typography";
 import { useAppDispatch } from "../../../features/hooks";
-import { resetStatus, updateTask } from "../../../features/tasks/taskSlice";
+import { updateTask } from "../../../features/tasks/taskSlice";
 import { getCategory, getPriority, parseGamesToOptions } from "../../../utils/taskUtil";
 import { getAllowedDate } from "../../../utils/dateUtil";
 import { postComment } from "../../../features/comments/commentSlice";
@@ -19,11 +19,10 @@ import { Container95 } from "../../layout/containers/StyledContainers";
 import { selectSelectedTask } from "../../../features/tasks/taskSelectors";
 
 const actionDispatch = (dispatch) => ({
-    updateTask: (query) => dispatch(updateTask(query)),
-    resetTasks: (query) => dispatch(resetStatus(query)),
-    postComment: (query) => dispatch(postComment(query)),
-    resetStatistics: () => dispatch(resetStatistics()),
-    addSolved: () => dispatch(addSolved())
+    putTask: (query) => dispatch(updateTask(query)),
+    addComment: (query) => dispatch(postComment(query)),
+    resetStat: () => dispatch(resetStatistics()),
+    postSolved: () => dispatch(addSolved())
 })
 
 const CustomTextField = styled(TextField)({
@@ -44,7 +43,7 @@ const CustomTextField = styled(TextField)({
 
 
 const TaskDetail = ({ open, handleShow }) => {
-    const { updateTask, resetTasks, postComment, resetStatistics, addSolved } = actionDispatch(useAppDispatch());
+    const { putTask, addComment, resetStat, postSolved } = actionDispatch(useAppDispatch());
 
     const task = useSelector(selectSelectedTask);
     const user = useSelector(selectActiveUser);
@@ -52,28 +51,30 @@ const TaskDetail = ({ open, handleShow }) => {
     const [tempComment, setTempComment] = useState('');
 
     const [values, setValues] = useState({
-        title: task.title,
-        description: task.description,
         status: task.status,
         deadline: getAllowedDate(task.deadline),
-        category: task.category,
-        priority: task.priority,
-        user_id: task.responsible.id,
         related_game: task.related_game,
     });
+    
+    useEffect(() => {
+      setValues({...values, 
+        status: task.status,
+        deadline: getAllowedDate(task.deadline),
+        related_game: task.related_game
+      });
+    }, [task]);
     
     const handleChange = (prop) => (event) => {
         const dataToSend = {
             id: task.id,
-            [prop]: event.target.value
+            data: {[prop]: event.target.value}
         }
-        updateTask(dataToSend);
+        putTask(dataToSend);
         setValues({ ...values, [prop]: event.target.value });
         if (prop === 'status' && event.target.value === 'F') {
-            addSolved();
+            postSolved();
         }
-        resetTasks();
-        resetStatistics();
+        resetStat();
     };
 
     const handleCommentChange = (event) => {
@@ -87,7 +88,7 @@ const TaskDetail = ({ open, handleShow }) => {
             user_id: user.id,
             related_task: task.id
         }
-        postComment(temp);
+        addComment(temp);
         setTempComment('');
     }
 

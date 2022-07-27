@@ -19,12 +19,10 @@ const initialState = {
 }
 
 export const fetchStatistics = createAsyncThunk('statistic/fetchStatistics', async () => {
-    let url = 'admin/statistics/';
-    const axe = axiosService.get(url);
-    const response = await axe.then(res => res.data);
-    return response;
+    return axiosService
+        .get('admin/statistics/')
+        .then(res => res.data);
 });
-
 
 export const StatisticSlice = createSlice({
     name: 'statistic',
@@ -36,6 +34,11 @@ export const StatisticSlice = createSlice({
         addCountByGame: (state, action) => {
             state.count_by_game['N'+action.payload] += 1;
             state.questions_count += 1;
+        },
+        addMultipleByGame: (state, action) => {
+            const {id, addedCount} = action.payload;
+            state.count_by_game['N'+id] += addedCount;
+            state.questions_count += addedCount;
         },
         subCountByGame: (state, action) => {
             if (state.count_by_game['N'+action.payload] > 0) {
@@ -57,11 +60,14 @@ export const StatisticSlice = createSlice({
         },
         addGameCountGame: (state, action) => {
             state.count_by_game["N"+action.payload.id] = action.payload.value;
+        },
+        addGameCount: (state, action) => {
+            state.game_count += action.payload;
         }
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchStatistics.pending, (state, action) => {
+            .addCase(fetchStatistics.pending, state => {
                 state.status = 'loading'
             })
             .addCase(fetchStatistics.fulfilled, (state, action) => {
@@ -86,6 +92,6 @@ export const StatisticSlice = createSlice({
     }
 })
 
-export const {resetStatistics, addCountByGame, subCountByGame, addSolved, addGameCountGame} = StatisticSlice.actions;
+export const {resetStatistics, addCountByGame, subCountByGame, addSolved, addGameCountGame, addMultipleByGame, addGameCount} = StatisticSlice.actions;
 
 export default StatisticSlice.reducer;

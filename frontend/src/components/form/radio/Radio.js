@@ -15,7 +15,7 @@ const Radio = props => {
 
     const getWidth = () => (1 / options.length) * 100;
 
-    const CustomRadio = styled(ToggleButton)(({theme, option}) => ({
+    const CustomRadio = styled(ToggleButton)(({_theme, option}) => ({
         width: `${getWidth()}%`,
         fontFamily: 'Quicksand',
         fontSize: fontSize,

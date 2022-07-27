@@ -8,7 +8,7 @@ import DeleteDialog from '../../Dialog/DeleteDialog';
 import CardContainer from '../CardContainer';
 
 const actionDispatch = (dispatch) => ({
-    deleteWeek: (query) => dispatch(deleteWeek(query)),
+    removeWeek: (query) => dispatch(deleteWeek(query)),
     setWeek: (query) => dispatch(setSelectedWeek(query))
 })
 
@@ -21,7 +21,7 @@ const WeekCard = ({week, setStage}) => {
         }
     );
 
-    const { deleteWeek, setWeek } = actionDispatch(useAppDispatch());
+    const { removeWeek, setWeek } = actionDispatch(useAppDispatch());
 
     const handleShow = () => {
         setOpen((wasOpen) => !wasOpen);
@@ -33,7 +33,7 @@ const WeekCard = ({week, setStage}) => {
     }
 
     const handleDelete = () => {
-        deleteWeek(week.id);
+        removeWeek(week.id);
     }
     
     return (

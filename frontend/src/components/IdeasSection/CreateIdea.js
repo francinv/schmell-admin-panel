@@ -6,7 +6,7 @@ import { postIdea } from '../../features/ideas/ideaSlice';
 import { useAppDispatch } from "../../features/hooks";
 
 const actionDispatch = (dispatch) => ({
-    postIdea: (query) => dispatch(postIdea(query)),
+    addIdea: (query) => dispatch(postIdea(query)),
 })
 
 const CreateIdeaComp = ({setStateChange}) => {
@@ -18,7 +18,7 @@ const CreateIdeaComp = ({setStateChange}) => {
         user_id: user.id
     });
 
-    const { postIdea } = actionDispatch(useAppDispatch());
+    const { addIdea } = actionDispatch(useAppDispatch());
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -26,7 +26,7 @@ const CreateIdeaComp = ({setStateChange}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        postIdea(values);
+        addIdea(values);
         setStateChange(false);
     }
     

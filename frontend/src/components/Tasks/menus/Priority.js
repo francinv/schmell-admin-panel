@@ -11,10 +11,10 @@ import { InnerContainer, OuterContainer } from "./StyledComponents";
 
 const actionDispatch = (dispatch) => ({
     setPriority: (query) => dispatch(setPriorityState(query)),
-    resetStatus: () => dispatch(resetStatus())
+    resetStat: () => dispatch(resetStatus())
 });
 
-const PriorityBtn = styled(Button)(({theme}) => ({
+const PriorityBtn = styled(Button)(({_theme}) => ({
     borderRadius: '100px',
     marginLeft: '0.5rem',
     marginRight: '0.5rem',
@@ -25,14 +25,14 @@ const PriorityBtn = styled(Button)(({theme}) => ({
 }));
 
 const Priority = () => {
-    const { setPriority, resetStatus } = actionDispatch(useAppDispatch());
+    const { setPriority, resetStat } = actionDispatch(useAppDispatch());
 
     const priority = useSelector(selectPriorityState);
     
     const getOpacity = value => (priority === value) ? 1 : 0.5;
 
     const handleClick = (value) => {
-        resetStatus();
+        resetStat();
         setPriority(value);
     };
 
@@ -40,9 +40,9 @@ const Priority = () => {
         <OuterContainer>
             <H4>Prioritet</H4>
             <InnerContainer>
-                {PRIORITY_OPTIONS.map(priority => (
-                    <PriorityBtn sx={{opacity: getOpacity(priority.value), backgroundColor: priority.color}} onClick={() => handleClick(priority.value)} key={priority.value}>
-                        {priority.text}
+                {PRIORITY_OPTIONS.map(importance => (
+                    <PriorityBtn sx={{opacity: getOpacity(importance.value), backgroundColor: importance.color}} onClick={() => handleClick(importance.value)} key={importance.value}>
+                        {importance.text}
                     </PriorityBtn>
                 ))}
             </InnerContainer>

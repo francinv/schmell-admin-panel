@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
-export const OuterContainer = styled(Box)(({ theme }) => ({
+export const OuterContainer = styled(Box)(({ _theme }) => ({
     marginTop: '1rem',
     display:'flex',
     flexDirection: 'column',
@@ -10,7 +10,7 @@ export const OuterContainer = styled(Box)(({ theme }) => ({
     paddingTop: '0.8rem',
 }));
 
-export const InnerContainer = styled(Box)(({ theme }) => ({
+export const InnerContainer = styled(Box)(({ _theme }) => ({
     display: 'flex',
     marginTop: '1rem',
     marginBottom: '1rem',

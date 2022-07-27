@@ -7,32 +7,21 @@ const initialState = {
     error: null,
 }
 
-export const fetchComments = createAsyncThunk('comment/fetchComments/', async (taskId) => {
-    let url = `tasks/comment/?task=${taskId}`
-    const axe = axiosService.get(url);
-    const response = await axe.then(res => res.data);
-    return response;
+export const fetchComments = createAsyncThunk('comment/fetchComments/', async (taskId) => { 
+    return axiosService.get(`tasks/comment/?task=${taskId}`).then(res => res.data);
 });
 
 export const postComment = createAsyncThunk('comment/postComment/', async (data) => {
-    const url = 'tasks/comment/';
-    const axe = axiosService.post(url, data)
-    const response = await axe.then(res => res.data)
-    axe.catch(res => console.log(res));
-    return response;
+    return axiosService.post('tasks/comment/', data).then(res => res.data);
 });
 
 export const CommentSlice = createSlice({
     name: 'comment',
     initialState,
-    reducers: {
-        resetCommentStatus: (state) => {
-            state.status = 'idle';
-        },
-    },
+    reducers: {}, 
     extraReducers(builder) {
         builder
-            .addCase(fetchComments.pending, (state, action) => {
+            .addCase(fetchComments.pending, state => {
                 state.status = 'loading'
             })
             .addCase(fetchComments.fulfilled, (state, action) => {
@@ -43,12 +32,12 @@ export const CommentSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(postComment.pending, (state, action) => {
+            .addCase(postComment.pending, state => {
                 state.status = 'loading'
             })
             .addCase(postComment.fulfilled, (state, action) => {
                 state.status = 'succeeded';
-                state.comments.push(action.payload);
+                state.comments.push(...action.payload);
             })
             .addCase(postComment.rejected, (state, action) => {
                 state.status = 'failed'
@@ -56,7 +45,5 @@ export const CommentSlice = createSlice({
             })
     }
 })
-
-export const {resetCommentStatus} = CommentSlice.actions;
 
 export default CommentSlice.reducer;

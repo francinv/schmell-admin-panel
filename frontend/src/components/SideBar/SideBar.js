@@ -11,7 +11,7 @@ import { styled } from '@mui/system';
 import { CustomText } from '../styles/Typography';
 import { SIDEBAR_ELEMENTS, SIDEBAR_WIDTH } from '../../constants/sidebar';
 
-const CustomListItem = styled(ListItem)(({ theme }) => ({
+const CustomListItem = styled(ListItem)(({ _theme }) => ({
     height:'56px',
     color: '#e0e000',
 }));
@@ -20,18 +20,16 @@ const SideBar = ({ activeTab, setActiveTab }) => {
 
     const getStyling = isWanted => {
         if (isWanted === activeTab) {
-            const styling = {
+            return {
                 opacity: 1,
                 borderLeft: '3px solid #e0e000',
                 background: 'rgba(159,162,180,0.08)',
                 
             }
-            return styling
         } else {
-            const styling = {
+            return {
                 opacity: 0.5,
             }
-            return styling
         }
     };
 

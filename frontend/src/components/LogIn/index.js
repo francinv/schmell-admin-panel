@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { selectUserStatus } from '../../features/user/userSelectors';
 
 const actionDispatch = (dispatch) => ({
-  logIn: (query) => dispatch(logIn(query)),
+  authenticate: (query) => dispatch(logIn(query)),
 });
 
 const LogIn = () => {
@@ -26,7 +26,7 @@ const LogIn = () => {
 
   const status = useSelector(selectUserStatus);
   
-  const { logIn } = actionDispatch(useAppDispatch());
+  const { authenticate } = actionDispatch(useAppDispatch());
     
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -48,7 +48,7 @@ const LogIn = () => {
     const data = new FormData(event.currentTarget);
     data.append('username', values.username);
     data.append('password', values.password);
-    logIn(data);
+    authenticate(data);
   };
 
   return (

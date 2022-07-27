@@ -40,7 +40,7 @@ const UploadAudioFile = ({open, handleClose}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        var data = new FormData();
+        let data = new FormData();
 
         Object.keys(values).forEach(key => data.append(key, values[key]));
         data.append('file', fileState);

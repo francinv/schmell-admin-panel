@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosService from '../../services/axiosService';
+import { replaceUsingMap } from '../../utils/filterUtil';
 
 const initialState = {
     count: 0,
@@ -32,26 +33,23 @@ export const fetchTasks = createAsyncThunk('task/fetchTasks', async (content) =>
     if (page_size !== '') url += `&page_size=${page_size}`;
     if (p !== '') url += `&p=${p}`;
     
-    const axe = axiosService.get(url);
-    const response = await axe.then(res => res.data);
-    return response;
+    return axiosService
+        .get(url)
+        .then(res => res.data);
 });
 
 export const postTask = createAsyncThunk('task/postTask', async (data) => {
-    const url = 'tasks/task/';
-    const axe = axiosService.post(url, data)
-    const response = await axe.then(res => res.data)
-    axe.catch(res => console.log(res));
-    return response;
+    return axiosService
+        .post('tasks/task/', data)
+        .then(res => res.data);
 });
 
 export const updateTask = createAsyncThunk('task/updateTask', async (content) => {
     const { id, data } = content;
-    const url = `tasks/task/${id}/`;
-    const axe = axiosService.patch(url, data);
-    const response = await axe.then(res => res.data);
-    axe.catch(res => console.log(res));
-    return response;
+    console.log(data);
+    return axiosService
+        .patch(`tasks/task/${id}/`, data)
+        .then(res => res.data);
 })
 
 export const TaskSlice = createSlice({
@@ -86,7 +84,7 @@ export const TaskSlice = createSlice({
     },
     extraReducers(builder) {
         builder
-            .addCase(fetchTasks.pending, (state, action) => {
+            .addCase(fetchTasks.pending, state => {
                 state.status = 'loading'
             })
             .addCase(fetchTasks.fulfilled, (state, action) => {
@@ -100,21 +98,26 @@ export const TaskSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(postTask.pending, (state, action) => {
+            .addCase(postTask.pending, (state) => {
                 state.status = 'loading'
             })
             .addCase(postTask.fulfilled, (state, action) => {
-                state.status = 'succeeded'
+                state.status = 'succeeded';
+                if (state.tasks.length < state.page_size && state.sortState === 'PUBL_DESC') {
+                    state.tasks.unshift(action.payload);
+                }
+                state.count++
             })
             .addCase(postTask.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })
-            .addCase(updateTask.pending, (state, action) => {
+            .addCase(updateTask.pending, (state) => {
                 state.status = 'loading'
             })
             .addCase(updateTask.fulfilled, (state, action) => {
                 state.status = 'succeeded'
+                state.tasks = replaceUsingMap(state.tasks, action.payload);
             })
             .addCase(updateTask.rejected, (state, action) => {
                 state.status = 'failed'

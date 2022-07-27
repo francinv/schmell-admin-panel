@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectP, selectPageSize, selectSelectedTask, selectTaskCount, selectTasks } from '../../features/tasks/taskSelectors';
 import { Avatar, Box, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
@@ -13,17 +13,17 @@ import { CTableCell, CustomFooter, DTableCell, TableHeader } from '../table/Tabl
 import { getDateFromDate, getTimeFromDate } from '../../utils/dateUtil';
 
 const actionDispatch = (dispatch) => ({
-    setP: (query) => dispatch(setP(query)),
-    setPageSize: (query) => dispatch(setPageSize(query)),
-    resetStatus: () => dispatch(resetStatus()),
-    fetchComments: (query) => dispatch(fetchComments(query)),
+    updateP: (query) => dispatch(setP(query)),
+    updatePageSize: (query) => dispatch(setPageSize(query)),
+    reset: () => dispatch(resetStatus()),
+    getComments: (query) => dispatch(fetchComments(query)),
     setSelectedTask: (query) => dispatch(setSelected(query))
 });
 
 const TaskTable = () => {
     const [open, setOpen] = useState(false);
 
-    const { setP, setPageSize, resetStatus, fetchComments, setSelectedTask } = actionDispatch(useAppDispatch());
+    const { updateP, updatePageSize, reset, getComments, setSelectedTask } = actionDispatch(useAppDispatch());
     
     const tasks = useSelector(selectTasks);
     const count = useSelector(selectTaskCount);
@@ -33,20 +33,20 @@ const TaskTable = () => {
 
     const handleShow = () => setOpen((wasOpen) => !wasOpen);
 
-    const handleChangePage = (event, newAlignment) => {
-        resetStatus();
-        setP(newAlignment + 1);
+    const handleChangePage = (_event, newAlignment) => {
+        reset();
+        updateP(newAlignment + 1);
     };
     
     const handleChangeRowsPerPage = (event) => {
-        resetStatus();
-        setPageSize(parseInt(event.target.value, 10));
-        setP(1);
+        reset();
+        updatePageSize(parseInt(event.target.value, 10));
+        updateP(1);
     };
 
     const handleClick = (task) => {
         setSelectedTask(task);
-        fetchComments(task.id);
+        getComments(task.id);
         handleShow();
     };
 

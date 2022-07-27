@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 
-const OuterContainer = styled(Box)(({ theme }) => ({
+const OuterContainer = styled(Box)(({ _theme }) => ({
     width: '85%',
     backgroundColor: '#fff',
     flexDirection: 'row',
@@ -11,7 +11,7 @@ const OuterContainer = styled(Box)(({ theme }) => ({
     marginRight: 'auto',
 }));
 
-const InnerContainer = styled(Box)(({ theme }) => ({
+const InnerContainer = styled(Box)(({ _theme }) => ({
     width:'80%',
     marginLeft: 'auto',
     marginRight: 'auto',

@@ -10,6 +10,15 @@ const axiosService = axios.create({
 	}, 
 });
 
+export const authService = axios.create({
+	baseURL: 'api/auth',
+	timeout: 5000,
+	headers: {
+		accept: 'application/json',
+		'Content-Type': 'application/json'
+	}
+});
+
 axiosService.interceptors.request.use(
 	async request => {
 	  const token = localStorage.getItem('access');
@@ -63,8 +72,8 @@ axiosService.interceptors.response.use(
 				console.log(tokenParts.exp);
 
 				if (tokenParts.exp > now) {
-					return axiosService
-						.post('auth/key/refresh/', { refresh: refreshToken })
+					return authService
+						.post('key/refresh/', { refresh: refreshToken })
 						.then((response) => {
 							localStorage.setItem('access', response.data.access);
 
