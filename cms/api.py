@@ -1,3 +1,4 @@
+from random import shuffle
 from rest_framework import viewsets, permissions, status
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework.response import Response
@@ -61,8 +62,17 @@ class QuestionViewSet(viewsets.ModelViewSet):
         queryset = Question.objects.all()
         related_week = self.request.query_params.get('related_week')
         related_game = self.request.query_params.get('game')
+        sort = self.request.query_params.get('sort')
+        function = self.request.query_params.get('function')
         if related_week is not None:
             queryset = queryset.filter(related_week=related_week)
+            if function == 'RANDOMIZE':
+                list_queryset = list(queryset)
+                shuffle(list_queryset)
+                queryset = list_queryset
+            if sort == 'PHASE_ASC':
+                queryset.sort(key=lambda x: x.phase)
+            
         elif related_game is not None:
             queryset = queryset.filter(related_game=related_game)
         return queryset
