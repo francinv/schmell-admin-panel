@@ -61,8 +61,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
         queryset = Question.objects.all()
         related_week = self.request.query_params.get('related_week')
         related_game = self.request.query_params.get('game')
+        sort = self.request.query_params.get('sort')
         if related_week is not None:
             queryset = queryset.filter(related_week=related_week)
+            if sort == 'PHASE_ASC':
+                queryset = queryset.order_by('phase')
         elif related_game is not None:
             queryset = queryset.filter(related_game=related_game)
         return queryset
