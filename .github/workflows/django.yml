@@ -24,7 +24,6 @@ jobs:
     - name: Install Dependencies
       run: |
         python3 -m pip install --user pipenv
-        pipenv shell
         pipenv install
     - name: Run Tests
       run: |
