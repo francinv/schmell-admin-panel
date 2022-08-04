@@ -25,31 +25,29 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Set environment variables
+    - name: Run Tests
       env: 
-          REDIS_URL: ${{ secrets.REDIS_URL }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DEBUG: ${{ secrets.DEBUG }}
-          DISABLE_COLLECTSTATIC: ${{ secrets.DISABLE_COLLECTSTATIC }}
-          HOST: ${{ secrets.HOST }}
-          NAME: ${{ secrets.NAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          REDIS_TLS_URL: ${{ secrets.REDIS_TLS_URL }}
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-          SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
-          SENDGRID_USERNAME: ${{ secrets.SENDGRID_USERNAME }}
-          USER: ${{ secrets.USER }}
+            REDIS_URL: ${{ secrets.REDIS_URL }}
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            DATABASE_URL: ${{ secrets.DATABASE_URL }}
+            DEBUG: ${{ secrets.DEBUG }}
+            DISABLE_COLLECTSTATIC: ${{ secrets.DISABLE_COLLECTSTATIC }}
+            HOST: ${{ secrets.HOST }}
+            NAME: ${{ secrets.NAME }}
+            PASSWORD: ${{ secrets.PASSWORD }}
+            REDIS_TLS_URL: ${{ secrets.REDIS_TLS_URL }}
+            S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+            SECRET_KEY: ${{ secrets.SECRET_KEY }}
+            SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+            SENDGRID_PASSWORD: ${{ secrets.SENDGRID_PASSWORD }}
+            SENDGRID_USERNAME: ${{ secrets.SENDGRID_USERNAME }}
+            USER: ${{ secrets.USER }}
       run: |
         echo "REDIS_URL=${REDIS_URL}\nAWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}\nAWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}\n
         DATABASE_URL=${DATABASE_URL}\nDEBUG=${DEBUG}\nDISABLE_COLLECTSTATIC=${DISABLE_COLLECTSTATIC}\nHOST=${HOST}\n
         NAME=${NAME}\nPASSWORD=${PASSWORD}\nREDIS_TLS_URL=${REDIS_TLS_URL}\nS3_BUCKET_NAME=${S3_BUCKET_NAME}\nSECRET_KEY=${SECRET_KEY}\n
         SENDGRID_API_KEY=${SENDGRID_API_KEY}\nSENDGRID_PASSWORD=${SENDGRID_PASSWORD}\nSENDGRID_USERNAME=${SENDGRID_USERNAME}\nUSER=${USER}" >> .env
-    - name: Run Tests
-      run: |
         python manage.py test
     - name: Collect Static
       run: |
