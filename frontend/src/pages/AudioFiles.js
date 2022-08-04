@@ -4,7 +4,7 @@ import AudioFilesHeader from "../components/AudioFiles/AudioFilesHeader";
 import AudioFilesTable from "../components/AudioFiles/AudioFilesTable";
 import ContentWrapper from "../components/layout/ContentWrapper";
 import InnerWrapper from "../components/layout/InnerWrapper";
-import { selectAudioFilesP, selectAudioFilesPageSize, selectAudioFilesQuestion, selectAudioFilesQuestionId, selectAudioFileStatus } from "../features/audiofiles/audiofileSelector";
+import { selectAudioFilesP, selectAudioFilesPageSize, selectAudioFilesQuestion, selectAudioFilesQuestionId, selectAudioFileStatus } from "../features/audiofiles/audioFileSelector";
 import { fetchAudioFiles } from "../features/audiofiles/audioFileSlice";
 import { useAppDispatch } from "../features/hooks";
 

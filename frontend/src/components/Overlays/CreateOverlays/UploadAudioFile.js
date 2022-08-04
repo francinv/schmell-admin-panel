@@ -5,7 +5,7 @@ import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 import { useAppDispatch } from "../../../features/hooks";
 import { useSelector } from "react-redux";
 import { addAudioFile } from "../../../features/audiofiles/audioFileSlice";
-import { selectAudioFileError, selectAudioFileStatus } from "../../../features/audiofiles/audiofileSelector";
+import { selectAudioFileError, selectAudioFileStatus } from "../../../features/audiofiles/audioFileSelector";
 import { resetUploadFile, parseQuestionsToOptions } from "../../../utils/audioFileUtil";
 import axiosService from "../../../services/axiosService";
 import { genderOptions } from "../../../constants/audioFileConstants";

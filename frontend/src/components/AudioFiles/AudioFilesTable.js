@@ -4,7 +4,7 @@ import { Box, IconButton, Link, Table, TableBody, TableCell, TableContainer, Tab
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch } from '../../features/hooks';
-import { selectAudioFiles, selectAudioFilesCount, selectAudioFilesP, selectAudioFilesPageSize } from '../../features/audiofiles/audiofileSelector';
+import { selectAudioFiles, selectAudioFilesCount, selectAudioFilesP, selectAudioFilesPageSize } from '../../features/audiofiles/audioFileSelector';
 import { deleteAudioFile, setP, setPageSize } from '../../features/audiofiles/audioFileSlice';
 import { getGender } from '../../utils/audioFileUtil';
 import DeleteDialog from '../Dialog/DeleteDialog';
