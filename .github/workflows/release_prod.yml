@@ -18,4 +18,4 @@ jobs:
             heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
             heroku_email_address: ${{ secrets.HEROKU_EMAIL_ADDRESS }}
             use_git: true
-            git_branch: master
+            git_branch: main
