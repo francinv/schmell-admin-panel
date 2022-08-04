@@ -1,0 +1,22 @@
+name: Release Staging
+
+on:
+  push:
+    branches: [ "development" ]
+  pull_request:
+    branches: [ "development" ]
+jobs:
+  heroku_git_deploy_job:
+      runs-on: ubuntu-latest
+      name: Deploy to staging
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Deploy django to heroku
+          uses: nyakaz73/heroku-django-deploy@v0.81
+          with: 
+            heroku_app_name : 'schmell-staging'
+            heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+            heroku_email_address: ${{ secrets.HEROKU_EMAIL_ADDRESS }}
+            use_git: true
+            git_branch: main
