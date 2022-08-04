@@ -49,5 +49,6 @@ jobs:
         NAME=${NAME}\nPASSWORD=${PASSWORD}\nREDIS_TLS_URL=${REDIS_TLS_URL}\nS3_BUCKET_NAME=${S3_BUCKET_NAME}\nSECRET_KEY=${SECRET_KEY}\n
         SENDGRID_API_KEY=${SENDGRID_API_KEY}\nSENDGRID_PASSWORD=${SENDGRID_PASSWORD}\nSENDGRID_USERNAME=${SENDGRID_USERNAME}\nUSER=${USER}" >> .env
         python manage.py test
+        rm -rf staticfiles
         python manage.py collectstatic
         
