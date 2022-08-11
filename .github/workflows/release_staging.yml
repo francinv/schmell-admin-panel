@@ -3,8 +3,6 @@ name: Release Staging
 on:
   push:
     branches: [ "development" ]
-  pull_request:
-    branches: [ "development" ]
 jobs:
   heroku_git_deploy_job:
       runs-on: ubuntu-latest
