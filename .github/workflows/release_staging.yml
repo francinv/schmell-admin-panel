@@ -3,8 +3,6 @@ name: Release Staging
 on:
   push:
     branches: [ "development" ]
-  pull_request:
-    branches: [ "development" ]
 jobs:
   heroku_git_deploy_job:
       runs-on: ubuntu-latest
@@ -19,4 +17,4 @@ jobs:
             heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
             heroku_email_address: ${{ secrets.HEROKU_EMAIL_ADDRESS }}
             use_git: true
-            git_branch: main
+            git_branch: development:main

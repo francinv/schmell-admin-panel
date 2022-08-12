@@ -30,6 +30,8 @@ const TaskTable = () => {
     const page_size = useSelector(selectPageSize);
     const p = useSelector(selectP);
     const activeTask = useSelector(selectSelectedTask);
+    
+    const isFinished = (task) => task.status === 'F';
 
     const handleShow = () => setOpen((wasOpen) => !wasOpen);
 
@@ -61,7 +63,10 @@ const TaskTable = () => {
                                 hover
                                 onClick={() => handleClick(task)}
                                 key={task.id}
-                                sx={{cursor:'pointer'}}
+                                sx={{
+                                    cursor:'pointer',
+                                    opacity: isFinished(task) ? 0.5 : 1.0,
+                                }}
                             >
                                 <TableCell sx={{display:'flex'}}>
                                     <Avatar 
