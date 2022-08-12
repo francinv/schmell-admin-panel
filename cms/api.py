@@ -86,8 +86,11 @@ class ReadOutFileViewset(viewsets.ModelViewSet):
         queryset = ReadOutFile.objects.all()
         related_question = self.request.query_params.get('questionid')
         question_desc = self.request.query_params.get('question')
+        gender = self.request.query_params.get('gender')
         if related_question is not None:
             queryset = queryset.filter(related_question = related_question)
+        if gender is not None:
+            queryset = queryset.filter(gender_voice = gender)
         if question_desc is not None:
             question_queryset = Question.objects.all().filter(question_desc__contains = question_desc)
             if question_queryset.count() > 0:
