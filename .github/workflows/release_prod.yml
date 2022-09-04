@@ -1,7 +1,8 @@
 name: Release Production
 on:
   push:
-    branches: [ "main" ]
+    tags:
+    - 'v*.*.*'
 jobs:
   heroku_git_deploy_job:
       runs-on: ubuntu-latest

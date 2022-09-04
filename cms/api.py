@@ -2,9 +2,11 @@ from random import shuffle
 from rest_framework import viewsets, permissions, status
 from rest_framework_api_key.permissions import HasAPIKey
 from rest_framework.response import Response
+from cms.helpers import include_players, switch_player
 
 from cms.models import Game, Question, ReadOutFile, Week
 from cms.serializers import GameSerializer, QuestionSerializer, ReadOutFileSerializer, WeekSerializer
+from rest_framework.decorators import action
 from jobmanager.jobs import alert_game_not_updated
 from schmelladmin.pagination import CustomPagination
 
@@ -76,6 +78,40 @@ class QuestionViewSet(viewsets.ModelViewSet):
         elif related_game is not None:
             queryset = queryset.filter(related_game=related_game)
         return queryset
+    
+    @action(detail=False, methods=['post'], url_path='players/add')
+    def add_player(self, request):
+        try:
+            players = list(request.data['players'])
+            questions = list(request.data['questions'])
+            for question in questions:
+                question['question_desc'] = switch_player(question['question_desc'], players)
+            return Response(questions)
+        except Exception as e:
+            return Response(e, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['post'], url_path='players/add/inGame')
+    def add_player_inGame(self, request):
+
+        try: 
+            players = list(request.data['players'])
+            current_index = int(request.data['currentIndex'])
+            unedited_questions = list(request.data['uneditedQuestions'])
+            edited_questions = list(request.data['editedQuestions'])
+
+            for question in unedited_questions[current_index:]:
+                question['question_desc'] = switch_player(question['question_desc'], players)
+            
+            updated_lists = edited_questions[:current_index] + unedited_questions[current_index:]
+
+            return Response(updated_lists)
+        except Exception as e: 
+            return Response(e, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
 
 class ReadOutFileViewset(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated | HasAPIKey]
