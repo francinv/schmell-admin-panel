@@ -79,7 +79,7 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Here you will get information about how you can run the app both locally and remote. The app is deployed on heroku now: [https://schmell-staging.herokuapp.com](https://schmell-staging.herokuapp.com). 
+Here you will get information about how you can run the app both locally and remote. The app is deployed on heroku now: [https://schmell-dev.up.railway.app/](https://schmell-dev.up.railway.app/). 
 
 ### Prerequisites
 

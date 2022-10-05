@@ -28,7 +28,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['schmell-staging.herokuapp.com', 'schmell.herokuapp.com']
+ALLOWED_HOSTS = ['schmell-dev.up.railway.app', 'schmell.herokuapp.com']
 
 # Application definition
 
