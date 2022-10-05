@@ -378,4 +378,6 @@ francin_test_code.py
 bin/
 schmell-admin/
 
+Makefile
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,django,react,node
