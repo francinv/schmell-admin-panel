@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os.path
 from datetime import timedelta
-import dj_database_url
 import django_heroku
 from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,8 +27,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['https://schmell-dev.up.railway.app', 'schmell.herokuapp.com']
-CSRF_TRUSTED_ORIGINS = ['https://schmell-dev.up.railway.app','https://*.127.0.0.1']
+ALLOWED_HOSTS = ['https://schmell-dev.up.railway.app', 'https://schmell.up.railway.app', 'schmell.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['https://schmell-dev.up.railway.app','https://*.127.0.0.1', 'https://schmell.up.railway.app']
 
 
 # Application definition
@@ -105,12 +104,10 @@ DATABASES = {
         'USER': 'postgres',
         'PASSWORD': config('PASSWORD'),
         'HOST': config('HOST'),
-        'PORT': '5432',
+        'PORT': config('PORT'),
     }
 }
 
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
