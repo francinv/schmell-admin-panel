@@ -9,7 +9,7 @@ from celery import Celery
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'adminpanel.settings')
 
-app = Celery('adminpanel')
+app = Celery('adminpanel', BROKER_URL=config('REDIS_URL'))
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
@@ -30,5 +30,3 @@ app.conf.beat_schedule = {
         'schedule': crontab(hour='*/168'),
     }
 }
-
-app.conf.update(BROKER_URL=config('REDIS_URL'))
