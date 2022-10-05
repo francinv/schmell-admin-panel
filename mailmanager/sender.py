@@ -26,7 +26,7 @@ class SendTaskCreatedMail():
             'Ansvarlig: ' + self.firstname + ' ' + self.lastname + '\n'\
             'Prioritet: ' + parse_priority_to_string(self.priority) + '\n'\
             'Frist: ' + self.format_deadline() + '\n'\
-            'Gå til panelet for å fullføre oppgaven: https://schmell.herokuapp.com \n\n'\
+            'Gå til panelet for å fullføre oppgaven: https://schmell.up.railway.app \n\n'\
             'Mvh Schmell :-)'
     
     def send_mail(self):
@@ -55,7 +55,7 @@ class SendTaskDeadlineClosing():
                 'Beskrivelse: ' + self.description + '\n'\
                 'Prioritet: ' + self.priority + '\n'\
                 'Frist: ' + self.format_deadline() + '\n'\
-                'Gå til panelet for å fullføre oppgaven: https://schmell.herokuapp.com \n\n'\
+                'Gå til panelet for å fullføre oppgaven: https://schmell.up.railway.app \n\n'\
                 'Mvh Schmell :-)'
     
     def send_mail(self):
@@ -80,7 +80,7 @@ class SendGameNotUpdated():
                 'Beskrivelse: ' + self.description + '\n'\
                 'Status: ' + parseStatusToString(self.status) + '\n'\
                 'Sist oppdatert: ' +  str(self.last_updated) + '\n'\
-                'Gå til panelet for å oppdatere: https://schmell.herokuapp.com \n\n'\
+                'Gå til panelet for å oppdatere: https://schmell.up.railway.app \n\n'\
                 'Mvh Schmell :-)'
     
     def send_mail(self):
