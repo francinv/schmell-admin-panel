@@ -19,10 +19,7 @@ const Ideas = () => {
 
     useEffect(() => {
         if (ideaStatus === 'idle') {
-            getIdeas('G');
-            getIdeas('D');
-            getIdeas('W');
-            getIdeas('E');
+            getIdeas();
         }
     }, [])
     

@@ -1,20 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosService from '../../services/axiosService';
 import { deleteObject } from '../../utils/filterUtil';
-import { getIdeaList } from '../../utils/ideaUtil';
 
 const initialState = {
-    gameIdeas: [],
-    devIdeas: [],
-    designIdeas: [],
-    variousIdeas: [],
+    ideas: [],
     status: 'idle',
     error: null
 }
 
-export const fetchIdeas = createAsyncThunk('idea/fetchIdea', async (category) => {
+export const fetchIdeas = createAsyncThunk('idea/fetchIdea', async () => {
     return axiosService
-        .get(`admin/idea/?category=${category}`)
+        .get(`admin/idea/`)
         .then(res => res.data);
 });
 
@@ -41,21 +37,7 @@ export const IdeaSlice = createSlice({
             })
             .addCase(fetchIdeas.fulfilled, (state, action) => {
                 state.statusByWeek = 'succeeded'
-                if (action.payload.length !== 0) {
-                    switch (action.payload[0].category) {
-                        case 'G':
-                            state.gameIdeas = action.payload;
-                            break
-                        case 'D':
-                            state.devIdeas = action.payload;
-                            break
-                        case 'W':
-                            state.designIdeas = action.payload;
-                            break
-                        case 'E':
-                            state.variousIdeas = action.payload;
-                    }
-                }
+                state.ideas = action.payload;
             })
             .addCase(fetchIdeas.rejected, (state, action) => {
                 state.statusByWeek = 'failed'
@@ -66,19 +48,7 @@ export const IdeaSlice = createSlice({
             })
             .addCase(postIdea.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                switch (action.payload.category) {
-                    case 'G':
-                        state.gameIdeas.push(action.payload);
-                        break
-                    case 'D':
-                        state.devIdeas.push(action.payload);
-                        break
-                    case 'W':
-                        state.designIdeas.push(action.payload);
-                        break
-                    case 'E':
-                        state.variousIdeas.push(action.payload);
-                }
+                state.ideas = state.ideas.push(action.payload);
             })
             .addCase(postIdea.rejected, (state, action) => {
                 state.status = 'failed'
@@ -89,22 +59,7 @@ export const IdeaSlice = createSlice({
             })
             .addCase(deleteIdea.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                switch(getIdeaList(state.gameIdeas, state.devIdeas, state.designIdeas, state.variousIdeas, action.payload)) {
-                    case 'G':
-                        state.gameIdeas = deleteObject(state.gameIdeas, action.payload);
-                        break;
-                    case 'D':
-                        state.devIdeas = deleteObject(state.devIdeas, action.payload);
-                        break;
-                    case 'W':
-                        state.designIdeas = deleteObject(state.designIdeas, action.payload);
-                        break;
-                    case 'E':
-                        state.variousIdeas = deleteObject(state.variousIdeas, action.payload);
-                        break;
-                    default: 
-                        break;
-                }
+                state.ideas = deleteObject(state.ideas, action.payload);
             })
             .addCase(deleteIdea.rejected, (state, action) => {
                 state.status = 'failed'
