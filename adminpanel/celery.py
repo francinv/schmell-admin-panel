@@ -1,4 +1,4 @@
-from __future__ import absolute_import, unicode_literals
+""" from __future__ import absolute_import, unicode_literals
 from celery.schedules import crontab
 from decouple import config
 
@@ -29,4 +29,4 @@ app.conf.beat_schedule = {
         'task': 'alert_game(id)',
         'schedule': crontab(hour='*/168'),
     }
-}
+} """
