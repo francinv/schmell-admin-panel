@@ -7,7 +7,7 @@ from cms.helpers import include_players, switch_player
 from cms.models import Game, Question, ReadOutFile, Week
 from cms.serializers import GameSerializer, QuestionSerializer, ReadOutFileSerializer, WeekSerializer
 from rest_framework.decorators import action
-from jobmanager.jobs import alert_game_not_updated
+""" from jobmanager.jobs import alert_game_not_updated """
 from schmelladmin.pagination import CustomPagination
 
 
@@ -33,7 +33,7 @@ class GameViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save()
-        alert_game_not_updated(serializer.data['id'])
+        """ alert_game_not_updated(serializer.data['id']) """
 
 class WeekViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated | HasAPIKey]
