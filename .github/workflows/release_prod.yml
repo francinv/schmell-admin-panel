@@ -4,17 +4,24 @@ on:
     tags:
     - 'v*.*.*'
 jobs:
-  heroku_git_deploy_job:
+  deploy:
       runs-on: ubuntu-latest
+
       name: Deploy to production
+
       steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: Deploy django to heroku
-          uses: nyakaz73/heroku-django-deploy@v0.81
-          with: 
-            heroku_app_name : 'schmell'
-            heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-            heroku_email_address: ${{ secrets.HEROKU_EMAIL_ADDRESS }}
-            use_git: true
-            git_branch: main:main
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node 12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Deploy
+        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
