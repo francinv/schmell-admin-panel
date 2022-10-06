@@ -27,8 +27,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['https://schmell-dev.up.railway.app', 'https://schmell.up.railway.app', 'schmell.herokuapp.com']
-CSRF_TRUSTED_ORIGINS = ['https://schmell-dev.up.railway.app','https://*.127.0.0.1', 'https://schmell.up.railway.app']
+ALLOWED_HOSTS = [config('ADMIN_URL'), config('ADMIN_DEV_URL'), 'schmell.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = [config('ADMIN_URL'), config('ADMIN_DEV_URL'),'https://*.127.0.0.1']
 
 
 # Application definition
